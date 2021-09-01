@@ -1,23 +1,21 @@
-import React, { VFC, VFCX } from 'react';
-import styled from '@emotion/styled';
-import { DeepReadonly } from 'utility-types';
+import React, { VFC } from 'react';
 import { useRecoilValue } from 'recoil';
+import { DeepReadonly } from 'utility-types';
 
 import { loadingState } from '../../states/loading';
+import { existsRecordState } from '../../states/exsists-record';
 
-import Table from './layout';
+import Layout from './layout';
 import Head from './head';
 import Body from './body';
 import Empty from './empty';
-
-import { existsRecordState } from '../../states/exsists-record';
 import { Loading } from '@common/components/loading';
 
 type ContainerProps = DeepReadonly<{}>;
 type Props = ContainerProps & DeepReadonly<{ exists: boolean; loading: boolean }>;
 
-const Component: VFCX<Props> = ({ className, exists, loading }) => (
-  <div {...{ className }}>
+const Component: VFC<Props> = ({ exists, loading }) => (
+  <Layout>
     {!exists && (
       <>
         {loading && <Loading label='レコードを取得しています' />}
@@ -25,21 +23,19 @@ const Component: VFCX<Props> = ({ className, exists, loading }) => (
       </>
     )}
     {exists && (
-      <Table>
+      <table>
         <Head />
         <Body />
-      </Table>
+      </table>
     )}
-  </div>
+  </Layout>
 );
-
-const StyledComponent = styled(Component)``;
 
 const Container: VFC<ContainerProps> = () => {
   const exists = useRecoilValue(existsRecordState);
   const loading = useRecoilValue(loadingState);
 
-  return <StyledComponent {...{ exists, loading }} />;
+  return <Component {...{ exists, loading }} />;
 };
 
 export default Container;
