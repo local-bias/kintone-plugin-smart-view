@@ -28,7 +28,7 @@ export const filterdRecordsState = selector<Record[]>({
             return field.value.some(({ name }) => ~name.indexOf(input));
 
           case 'FILE':
-            return field.value.some(({ name }) => name.indexOf(input));
+            return field.value.some(({ name }) => ~name.indexOf(input));
 
           case 'SUBTABLE':
             return false; // 非対応
