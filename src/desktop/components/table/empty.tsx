@@ -14,9 +14,9 @@ const Component: VFCX<Props> = ({ className }) => (
       height='92px'
       viewBox='0 0 24 24'
       stroke='#0004'
-      stroke-width='0.5217391304347826'
-      stroke-linecap='square'
-      stroke-linejoin='miter'
+      strokeWidth='0.5217391304347826'
+      strokeLinecap='square'
+      strokeLinejoin='miter'
       fill='none'
       color='#0004'
     >

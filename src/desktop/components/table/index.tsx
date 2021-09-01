@@ -25,7 +25,7 @@ const Component: VFCX<Props> = ({ className, exists, loading }) => (
       </>
     )}
     {exists && (
-      <Table hoverEffect>
+      <Table>
         <Head />
         <Body />
       </Table>

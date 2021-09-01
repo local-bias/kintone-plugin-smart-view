@@ -1,9 +1,7 @@
-import React, { DetailedHTMLProps, FCX, TableHTMLAttributes } from 'react';
+import React, { DetailedHTMLProps, FCX, TableHTMLAttributes, VFC } from 'react';
 import styled from '@emotion/styled';
 
-type Props = DetailedHTMLProps<TableHTMLAttributes<HTMLTableElement>, HTMLTableElement> & {
-  hoverEffect?: boolean;
-};
+type Props = DetailedHTMLProps<TableHTMLAttributes<HTMLTableElement>, HTMLTableElement>;
 
 const Component: FCX<Props> = ({ children, className, ...others }) => (
   <table {...{ className, ...others }}>{children}</table>
@@ -93,7 +91,7 @@ const StyledComponent = styled(Component)`
 
       &:hover {
         td {
-          ${({ hoverEffect }) => (hoverEffect ? `filter: brightness(0.95);` : '')}
+          filter: brightness(0.95);
         }
       }
     }
