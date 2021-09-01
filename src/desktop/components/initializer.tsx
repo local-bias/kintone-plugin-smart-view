@@ -22,8 +22,6 @@ const Container: VFC = memo(() => {
 
         const query = getQueryCondition() || '';
         await getAllRecords({ app, query, onAdvance: (records) => setAllRecords(records) });
-
-        console.log('initialized');
       } finally {
         setLoading(false);
       }

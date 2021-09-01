@@ -38,8 +38,6 @@ const Container: VFC<ContainerProps> = () => {
   const records = useRecoilValue(displayingRecordsState);
   const condition = useRecoilValue(pluginConditionState)!;
 
-  console.log({ records });
-
   return <StyledComponent {...{ records, condition }} />;
 };
 
