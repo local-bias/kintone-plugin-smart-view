@@ -7,6 +7,7 @@ const StyledComponent = styled(Component)`
   padding: 8px 16px 16px;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 `;
 
 export default StyledComponent;
