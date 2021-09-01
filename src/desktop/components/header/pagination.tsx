@@ -1,6 +1,5 @@
-import React, { VFC, VFCX } from 'react';
+import React, { VFC } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
 import { Pagination } from '@material-ui/lab';
 import { filterdRecordsState } from '../../states/filterd-records';
 import { paginationIndexState } from '../../states/pagination-index';
@@ -13,18 +12,14 @@ type Props = {
   chunkSize: number;
 };
 
-const Component: VFCX<Props> = ({ className, size, index, setIndex, chunkSize }) => (
-  <div {...{ className }}>
-    <Pagination
-      count={Math.ceil(size / chunkSize)}
-      page={index}
-      color='primary'
-      onChange={(_, index) => setIndex(index)}
-    />
-  </div>
+const Component: VFC<Props> = ({ size, index, setIndex, chunkSize }) => (
+  <Pagination
+    count={Math.ceil(size / chunkSize)}
+    page={index}
+    color='primary'
+    onChange={(_, index) => setIndex(index)}
+  />
 );
-
-const StyledComponent = styled(Component)``;
 
 const Container: VFC = () => {
   const records = useRecoilValue(filterdRecordsState);
@@ -33,7 +28,7 @@ const Container: VFC = () => {
 
   const size = records.length || 0;
 
-  return <>{!!size && <StyledComponent {...{ size, index, setIndex, chunkSize }} />}</>;
+  return <>{!!size && <Component {...{ size, index, setIndex, chunkSize }} />}</>;
 };
 
 export default Container;
