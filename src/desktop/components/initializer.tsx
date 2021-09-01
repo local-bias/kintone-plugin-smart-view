@@ -1,17 +1,22 @@
 import { getAppId, getQueryCondition } from '@common/kintone';
 import { getAllRecords } from '@common/kintone-rest-api';
 import React, { memo, useEffect, VFC } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { allReceivedRecordsState } from '../states/all-received-records';
 import { loadingState } from '../states/loading';
+import { pluginConditionState } from '../states/plugin-condition';
 
 const Container: VFC = memo(() => {
   const setAllRecords = useSetRecoilState(allReceivedRecordsState);
   const setLoading = useSetRecoilState(loadingState);
+  const condition = useRecoilValue(pluginConditionState);
 
   useEffect(() => {
     (async () => {
+      if (!condition) {
+        return;
+      }
       setLoading(true);
       try {
         const app = getAppId();
@@ -21,12 +26,14 @@ const Container: VFC = memo(() => {
         }
 
         const query = getQueryCondition() || '';
-        await getAllRecords({ app, query, onAdvance: (records) => setAllRecords(records) });
+        const fields = ['$id', ...condition.viewDisplayingFields];
+
+        await getAllRecords({ app, query, fields, onAdvance: (records) => setAllRecords(records) });
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [condition]);
 
   return null;
 });
