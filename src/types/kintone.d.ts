@@ -7,7 +7,12 @@ declare namespace kintone {
       conditions: Condition[];
     };
 
-    type Condition = { field: string };
+    type Condition = {
+      viewId: string;
+      viewDisplayingFields: string[];
+      enableCustomizedFiltering: boolean;
+      viewFilteringFields: string[];
+    };
   }
 
   type EventType =
@@ -66,7 +71,7 @@ declare namespace kintone {
   /**
    * イベントタイプ以外の実行条件
    */
-  type Enables = (event: Event) => boolean;
+  type Enables = (event: Event, pluginId: string) => boolean;
 
   /**
    * 各イベントに登録する処理

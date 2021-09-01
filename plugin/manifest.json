@@ -4,12 +4,12 @@
   "type": "APP",
   "name": {
     "en": "kintone-plugin-template",
-    "ja": "プラグインテンプレート",
+    "ja": "一覧高速検索＆絞り込みプラグイン",
     "zh": "插件模板"
   },
   "description": {
     "en": "kintone-plugin-template",
-    "ja": "プラグインテンプレート",
+    "ja": "指定した一覧を独自のテーブルに置き換え、高速な検索と絞り込みを実現します。",
     "zh": "插件模板"
   },
   "desktop": {

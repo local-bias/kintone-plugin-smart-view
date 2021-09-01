@@ -1,5 +1,5 @@
 {
-  "name": "kintone-plugin-template",
+  "name": "kintone-plugin-smart-view",
   "version": "1.0.0",
   "scripts": {
     "develop": "webpack --config webpack.dev.js",
@@ -22,6 +22,7 @@
     "@kintone/webpack-plugin-kintone-plugin": "^5.0.14",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@types/luxon": "^2.0.1",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
@@ -37,6 +38,7 @@
     "ts-loader": "^9.2.5",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2",
+    "utility-types": "^3.10.0",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0",
     "webpack-merge": "^5.8.0"

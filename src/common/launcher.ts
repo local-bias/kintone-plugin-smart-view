@@ -40,7 +40,7 @@ class Launcher {
 
       const handler = (event: kintone.Event) => {
         try {
-          return enables(event) ? action(event, this._pluginId) : event;
+          return enables(event, this._pluginId) ? action(event, this._pluginId) : event;
         } catch (error) {
           event.error = `プラグイン「${PLUGIN_NAME}」の処理内でエラーが発生しました。`;
           console.error('エラー', error);
