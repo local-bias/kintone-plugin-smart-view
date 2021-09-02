@@ -18,7 +18,9 @@ type Props = ContainerProps & {
   onViewDisplayingFieldsChange: (i: number, value: string) => void;
   addViewDisplayingField: (rowIndex: number) => void;
   removeViewDisplayingField: (rowIndex: number) => void;
-  setCustomizedFiltering: (checked: boolean) => void;
+  setCSVExport: (checked: boolean) => void;
+  setEditable: (checked: boolean) => void;
+  setSortable: (checked: boolean) => void;
 };
 
 const Component: VFCX<Props> = ({
@@ -28,7 +30,9 @@ const Component: VFCX<Props> = ({
   onViewDisplayingFieldsChange,
   addViewDisplayingField,
   removeViewDisplayingField,
-  setCustomizedFiltering,
+  setCSVExport,
+  setEditable,
+  setSortable,
 }) => (
   <div {...{ className }}>
     <Suspense fallback={<div>一覧情報を取得しています...</div>}>
@@ -62,26 +66,35 @@ const Component: VFCX<Props> = ({
       ))}
     </div>
     <FormControlLabel
-      control={<Switch checked={condition.enableCustomizedFiltering} />}
-      onChange={(_, checked) => setCustomizedFiltering(checked)}
-      label='独自の絞り込みを有効にする'
+      control={<Switch color='primary' checked={condition.enableCSVExport} />}
+      onChange={(_, checked) => setCSVExport(checked)}
+      label='CSV出力機能を有効にする(未実装)'
+    />
+    <FormControlLabel
+      control={<Switch color='primary' checked={condition.editable} />}
+      onChange={(_, checked) => setEditable(checked)}
+      label='一覧での編集を有効にする(未実装)'
+    />
+    <FormControlLabel
+      control={<Switch color='primary' checked={condition.sortable} />}
+      onChange={(_, checked) => setSortable(checked)}
+      label='並び替えを有効にする(未実装)'
     />
   </div>
 );
 
 const StyledComponent = styled(Component)`
   padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 
   > div {
-    border-left: 5px solid #3f51b566;
+    border-left: 5px solid #3f51b5aa;
     > *:not(h3) {
       padding-left: 16px;
     }
     padding: 4px 0;
-
-    &:not(:last-of-type) {
-      margin-bottom: 32px;
-    }
   }
 
   h3 {
@@ -142,13 +155,17 @@ const Container: VFC<ContainerProps> = ({ condition, index }) => {
     );
   };
 
-  const setCustomizedFiltering = (checked: boolean) => {
+  const onSwitchChange = (checked: boolean, option: keyof kintone.plugin.Condition) => {
     setStorage((_, _storage = _!) =>
       produce(_storage, (draft) => {
-        draft.conditions[index].enableCustomizedFiltering = checked;
+        draft.conditions[index][option] = checked as never;
       })
     );
   };
+
+  const setCSVExport = (checked: boolean) => onSwitchChange(checked, 'enableCSVExport');
+  const setEditable = (checked: boolean) => onSwitchChange(checked, 'editable');
+  const setSortable = (checked: boolean) => onSwitchChange(checked, 'sortable');
 
   return (
     <StyledComponent
@@ -159,7 +176,9 @@ const Container: VFC<ContainerProps> = ({ condition, index }) => {
         onViewDisplayingFieldsChange,
         addViewDisplayingField,
         removeViewDisplayingField,
-        setCustomizedFiltering,
+        setCSVExport,
+        setEditable,
+        setSortable,
       }}
     />
   );

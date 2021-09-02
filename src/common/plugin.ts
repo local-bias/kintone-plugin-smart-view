@@ -35,6 +35,7 @@ const createConfig = (): kintone.plugin.Storage => ({
 export const getNewCondition = (): kintone.plugin.Condition => ({
   viewId: '',
   viewDisplayingFields: [''],
-  enableCustomizedFiltering: false,
-  viewFilteringFields: [''],
+  enableCSVExport: false,
+  editable: false,
+  sortable: false,
 });
