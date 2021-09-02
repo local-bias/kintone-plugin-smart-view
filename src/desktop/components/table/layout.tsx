@@ -6,7 +6,6 @@ const Component: FCX = ({ children, className }) => <div {...{ className }}>{chi
 const StyledComponent = styled(Component)`
   table {
     width: 100%;
-    padding: 0 16px 16px;
     white-space: nowrap;
     background-color: #fff;
     font-size: 88%;
