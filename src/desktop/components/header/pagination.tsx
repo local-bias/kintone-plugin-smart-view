@@ -14,6 +14,7 @@ type Props = {
 
 const Component: VFC<Props> = ({ size, index, setIndex, chunkSize }) => (
   <Pagination
+    className='ribbit-pagination'
     count={Math.ceil(size / chunkSize)}
     page={index}
     color='primary'
