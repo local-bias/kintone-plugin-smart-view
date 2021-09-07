@@ -17,6 +17,10 @@
     "css": []
   },
   "icon": "image/icon.png",
+  "homepage_url": {
+    "ja": "https://ribbit.work/",
+    "en": "https://ribbit.work/"
+  },
   "config": {
     "html": "html/config.html",
     "js": ["js/config.js", "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/config.js"],
