@@ -68,7 +68,7 @@ const Component: VFCX<Props> = ({
     <FormControlLabel
       control={<Switch color='primary' checked={condition.enableCSVExport} />}
       onChange={(_, checked) => setCSVExport(checked)}
-      label='CSV出力機能を有効にする(未実装)'
+      label='CSV出力機能を有効にする'
     />
     <FormControlLabel
       control={<Switch color='primary' checked={condition.editable} />}

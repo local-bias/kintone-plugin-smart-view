@@ -1,9 +1,10 @@
 import React, { VFC } from 'react';
 import { RecoilRoot } from 'recoil';
-
-import { pluginConditionState } from './states/plugin-condition';
+import { SnackbarProvider } from 'notistack';
 
 import { ErrorBoundary } from '@common/components/error-boundary';
+
+import { pluginConditionState } from './states/plugin-condition';
 import Initializer from './components/initializer';
 import Layout from './components/layout';
 import Header from './components/header';
@@ -18,14 +19,16 @@ const Component: VFC<Props> = ({ condition }) => (
       set(pluginConditionState, condition);
     }}
   >
-    <ErrorBoundary>
-      <Initializer />
-      <Layout>
-        <Header />
-        <Table />
-        <Footer />
-      </Layout>
-    </ErrorBoundary>
+    <SnackbarProvider maxSnack={1}>
+      <ErrorBoundary>
+        <Initializer />
+        <Layout>
+          <Header />
+          <Table />
+          <Footer />
+        </Layout>
+      </ErrorBoundary>
+    </SnackbarProvider>
   </RecoilRoot>
 );
 

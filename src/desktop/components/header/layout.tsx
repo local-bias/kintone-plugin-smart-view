@@ -8,6 +8,11 @@ const StyledComponent = styled(Component)`
   justify-content: space-between;
   align-items: center;
 
+  & > div {
+    display: flex;
+    gap: 16px;
+  }
+
   @media screen and (max-width: 1000px) {
     .ribbit-pagination {
       position: fixed;
