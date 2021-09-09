@@ -1,5 +1,4 @@
-import React, { VFC, VFCX } from 'react';
-import styled from '@emotion/styled';
+import React, { VFC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
 import { useRecoilValue } from 'recoil';
@@ -9,11 +8,9 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 
 import Cell from './cell';
 
-type ContainerProps = DeepReadonly<{}>;
-type Props = ContainerProps &
-  DeepReadonly<{ records: Record[]; condition: kintone.plugin.Condition }>;
+type Props = DeepReadonly<{ records: Record[]; condition: kintone.plugin.Condition }>;
 
-const Component: VFCX<Props> = ({ className, records, condition }) => (
+const Component: VFC<Props> = ({ records, condition }) => (
   <tbody>
     {records.map((record, i) => (
       <tr key={i}>
@@ -32,13 +29,11 @@ const Component: VFCX<Props> = ({ className, records, condition }) => (
   </tbody>
 );
 
-const StyledComponent = styled(Component)``;
-
-const Container: VFC<ContainerProps> = () => {
+const Container: VFC = () => {
   const records = useRecoilValue(displayingRecordsState);
   const condition = useRecoilValue(pluginConditionState)!;
 
-  return <StyledComponent {...{ records, condition }} />;
+  return <Component {...{ records, condition }} />;
 };
 
 export default Container;

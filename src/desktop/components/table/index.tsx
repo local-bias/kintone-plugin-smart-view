@@ -11,8 +11,7 @@ import Body from './body';
 import Empty from './empty';
 import { Loading } from '@common/components/loading';
 
-type ContainerProps = DeepReadonly<{}>;
-type Props = ContainerProps & DeepReadonly<{ exists: boolean; loading: boolean }>;
+type Props = DeepReadonly<{ exists: boolean; loading: boolean }>;
 
 const Component: VFC<Props> = ({ exists, loading }) => (
   <Layout>
@@ -31,7 +30,7 @@ const Component: VFC<Props> = ({ exists, loading }) => (
   </Layout>
 );
 
-const Container: VFC<ContainerProps> = () => {
+const Container: VFC = () => {
   const exists = useRecoilValue(existsRecordState);
   const loading = useRecoilValue(loadingState);
 

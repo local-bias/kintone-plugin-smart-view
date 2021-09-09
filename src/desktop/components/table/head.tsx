@@ -1,13 +1,11 @@
-import React, { VFC, VFCX } from 'react';
-import styled from '@emotion/styled';
+import React, { VFC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { pluginConditionState } from '../../states/plugin-condition';
 import { useRecoilValue } from 'recoil';
 
-type ContainerProps = DeepReadonly<{}>;
-type Props = ContainerProps & DeepReadonly<{ condition: kintone.plugin.Condition }>;
+type Props = DeepReadonly<{ condition: kintone.plugin.Condition }>;
 
-const Component: VFCX<Props> = ({ className, condition }) => (
+const Component: VFC<Props> = ({ condition }) => (
   <thead>
     <tr>
       <th></th>
@@ -18,12 +16,10 @@ const Component: VFCX<Props> = ({ className, condition }) => (
   </thead>
 );
 
-const StyledComponent = styled(Component)``;
-
-const Container: VFC<ContainerProps> = () => {
+const Container: VFC = () => {
   const condition = useRecoilValue(pluginConditionState)!;
 
-  return <StyledComponent {...{ condition }} />;
+  return <Component {...{ condition }} />;
 };
 
 export default Container;

@@ -6,12 +6,10 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { paginationIndexState } from '../../states/pagination-index';
 import { searchTextState } from '../../states/search-text';
 
-type ContainerProps = DeepReadonly<{}>;
-type Props = ContainerProps &
-  DeepReadonly<{
-    searchText: string;
-    onSearchTextChange: ChangeEventHandler<HTMLInputElement>;
-  }>;
+type Props = DeepReadonly<{
+  searchText: string;
+  onSearchTextChange: ChangeEventHandler<HTMLInputElement>;
+}>;
 
 const Component: VFCX<Props> = ({ searchText, onSearchTextChange }) => (
   <TextField
@@ -30,7 +28,7 @@ const Component: VFCX<Props> = ({ searchText, onSearchTextChange }) => (
   />
 );
 
-const Container: VFC<ContainerProps> = () => {
+const Container: VFC = () => {
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const setPaginationIndex = useSetRecoilState(paginationIndexState);
 
