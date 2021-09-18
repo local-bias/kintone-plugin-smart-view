@@ -1,5 +1,5 @@
 const { merge } = require('webpack-merge');
-const common = require('./webpack.common.ts');
+const common = require('./webpack.common.js');
 const TerserPlugin = require('terser-webpack-plugin');
 const KintonePlugin = require('@kintone/webpack-plugin-kintone-plugin');
 
@@ -19,6 +19,7 @@ module.exports = merge(common, {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
+          format: { comments: false },
           compress: { drop_console: true },
         },
       }),
