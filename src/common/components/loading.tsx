@@ -7,7 +7,7 @@ type Props = DeepReadonly<{ label: string }>;
 const Component: VFCX<Props> = ({ className, label }) => (
   <div {...{ className }}>
     <div></div>
-    <h2>{label}</h2>
+    <p>{label}</p>
   </div>
 );
 
@@ -19,7 +19,7 @@ const StyledComponent = styled(Component)`
   align-items: center;
   gap: 32px;
 
-  > h2 {
+  > p {
     color: #0007;
   }
 

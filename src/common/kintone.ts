@@ -13,6 +13,8 @@ const DEFAULT_DEFINED_FIELDS: PickType<OneOf, 'type'>[] = [
   'STATUS',
 ];
 
+const IGNORE_FIELDS: PickType<OneOf, 'type'>[] = ['GROUP'];
+
 declare const cybozu: Cybozu;
 
 /**
@@ -95,6 +97,16 @@ export const getUserDefinedFields = async (): Promise<Properties> => {
 
   const filterd = Object.entries(fields).filter(
     ([_, value]) => !DEFAULT_DEFINED_FIELDS.includes(value.type)
+  );
+
+  return filterd.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+};
+
+export const getFieldsWithoutIgnores = async (): Promise<Properties> => {
+  const fields = await getAppFields();
+
+  const filterd = Object.entries(fields).filter(
+    ([_, value]) => !IGNORE_FIELDS.includes(value.type)
   );
 
   return filterd.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
