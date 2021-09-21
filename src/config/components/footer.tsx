@@ -9,6 +9,7 @@ import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore'
 import { storeStorage } from '@common/plugin';
 
 import { storageState } from '../states';
+import produce from 'immer';
 
 type Props = {
   onSaveButtonClick: () => void;
@@ -57,7 +58,15 @@ const Container: VFC = () => {
       async () => {
         const storage = await snapshot.getPromise(storageState);
 
-        storeStorage(storage!, () => true);
+        const filled = produce(storage!, (draft) => {
+          for (const condition of draft.conditions) {
+            condition.viewDisplayingFields = condition.viewDisplayingFields.filter(
+              (field) => field
+            );
+          }
+        });
+
+        storeStorage(filled, () => true);
         enqueueSnackbar('設定を保存しました', {
           variant: 'success',
           action: (
