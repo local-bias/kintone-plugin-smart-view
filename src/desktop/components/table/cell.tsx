@@ -5,6 +5,9 @@ import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
 type ContainerProps = DeepReadonly<{ field: OneOf }>;
 
 const Container: VFC<ContainerProps> = ({ field }) => {
+  if (!field) {
+    return null;
+  }
   switch (field.type) {
     case 'CREATOR':
     case 'MODIFIER':
