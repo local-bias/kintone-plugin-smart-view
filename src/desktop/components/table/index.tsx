@@ -1,4 +1,4 @@
-import React, { VFC } from 'react';
+import React, { Suspense, VFC } from 'react';
 import { useRecoilValue } from 'recoil';
 import { DeepReadonly } from 'utility-types';
 
@@ -23,7 +23,9 @@ const Component: VFC<Props> = ({ exists, loading }) => (
     )}
     {exists && (
       <table>
-        <Head />
+        <Suspense fallback={null}>
+          <Head />
+        </Suspense>
         <Body />
       </table>
     )}

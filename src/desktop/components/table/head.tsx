@@ -1,25 +1,25 @@
 import React, { VFC } from 'react';
 import { DeepReadonly } from 'utility-types';
-import { pluginConditionState } from '../../states/plugin-condition';
 import { useRecoilValue } from 'recoil';
+import { headerCellsState } from '../../states/header-cells';
 
-type Props = DeepReadonly<{ condition: kintone.plugin.Condition }>;
+type Props = DeepReadonly<{ cells: string[] }>;
 
-const Component: VFC<Props> = ({ condition }) => (
+const Component: VFC<Props> = ({ cells }) => (
   <thead>
     <tr>
       <th></th>
-      {condition.viewDisplayingFields.map((field, i) => (
-        <th key={i}>{field}</th>
+      {cells.map((cell, i) => (
+        <th key={i}>{cell}</th>
       ))}
     </tr>
   </thead>
 );
 
 const Container: VFC = () => {
-  const condition = useRecoilValue(pluginConditionState)!;
+  const cells = useRecoilValue(headerCellsState);
 
-  return <Component {...{ condition }} />;
+  return <Component {...{ cells }} />;
 };
 
 export default Container;
