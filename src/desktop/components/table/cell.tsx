@@ -1,6 +1,7 @@
 import React, { VFC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
+import { sanitize } from 'dompurify';
 
 type ContainerProps = DeepReadonly<{ field: OneOf }>;
 
@@ -41,6 +42,9 @@ const Container: VFC<ContainerProps> = ({ field }) => {
           ))}
         </>
       );
+    case 'RICH_TEXT':
+      const __html = sanitize(field.value);
+      return <div dangerouslySetInnerHTML={{ __html }} />;
     case 'SUBTABLE':
       return <>{field.value.length}行</>;
     default:
