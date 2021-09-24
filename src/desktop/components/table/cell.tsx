@@ -23,6 +23,14 @@ const Container: VFC<ContainerProps> = ({ field }) => {
           ))}
         </>
       );
+    case 'MULTI_LINE_TEXT':
+      return (
+        <>
+          {field.value.split(/\r?\n/g).map((text, i) => (
+            <div key={i}>{text}</div>
+          ))}
+        </>
+      );
     case 'USER_SELECT':
     case 'ORGANIZATION_SELECT':
     case 'GROUP_SELECT':
