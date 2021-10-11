@@ -1,6 +1,6 @@
 import React, { VFC } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
-import { Pagination } from '@material-ui/lab';
+import { Pagination } from '@mui/material';
 import { filterdRecordsState } from '../../states/filterd-records';
 import { paginationIndexState } from '../../states/pagination-index';
 import { paginationChunkState } from '../../states/pagination-chunk';

@@ -4,7 +4,7 @@ import { Record } from '@kintone/rest-api-client/lib/client/types';
 import { useRecoilValue } from 'recoil';
 import { displayingRecordsState } from '../../states/displaying-records';
 import { pluginConditionState } from '../../states/plugin-condition';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 import Cell from './cell';
 

@@ -2,7 +2,7 @@ import React, { VFC, VFCX } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Properties } from '@kintone/rest-api-client/lib/client/types';
-import { CircularProgress, TextField, MenuItem, TextFieldProps } from '@material-ui/core';
+import { CircularProgress, TextField, MenuItem, TextFieldProps } from '@mui/material';
 
 import { appFieldsState } from '../../../states';
 

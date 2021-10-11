@@ -2,9 +2,9 @@ import React, { Suspense, VFC, VFCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
-import { FormControlLabel, IconButton, Switch, Tooltip } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Properties } from '@kintone/rest-api-client/lib/client/types';
 
 import { appFieldsState, storageState } from '../../../states';
@@ -39,6 +39,9 @@ const Component: VFCX<Props> = ({
       <div>
         <h3>テーブルを表示する一覧の設定</h3>
         <ViewIdForm conditionIndex={index} />
+        <small>
+          選択する一覧は必ず表示形式を「カスタマイズ」に変更し、「ページネーションを表示する」のチェックを外してください。
+        </small>
       </div>
     </Suspense>
     <div>
@@ -46,6 +49,7 @@ const Component: VFCX<Props> = ({
       {condition.viewDisplayingFields.map((field, i) => (
         <div key={i} className='row'>
           <AppFieldsInput
+            variant='standard'
             label='対象フィールド'
             value={field}
             onChange={(e) => onViewDisplayingFieldsChange(i, e.target.value)}
@@ -95,6 +99,11 @@ const StyledComponent = styled(Component)`
       padding-left: 16px;
     }
     padding: 4px 0;
+  }
+
+  small {
+    opacity: 0.7;
+    color: #f70;
   }
 
   h3 {

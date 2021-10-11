@@ -1,15 +1,4 @@
-import { PLUGIN_NAME } from '@common/constants';
-
-/**
- * イベント実行に必要なプロパティ情報
- * 必須はactionのみで、eventsに指定がない場合は一覧表示イベント(app.record.index.show)が設定されます
- */
-export type Config = Readonly<{
-  enables?: kintone.Enables;
-  events?: string[] | ((pluginId: string) => string[]);
-  action: kintone.Action;
-  disableMobile?: boolean;
-}>;
+import { PLUGIN_NAME } from '@common/statics';
 
 class Launcher {
   private readonly _pluginId: string;
@@ -19,13 +8,14 @@ class Launcher {
    */
   public constructor(pluginId: string) {
     this._pluginId = pluginId;
+    this.pushLocalStorage();
   }
 
   /**
    * 指定された各処理を、各イベント発生時に実行されるよう登録していきます.
    * 特に指定がない場合、モバイル向けにもイベントが登録されます.
    */
-  public launch = (configs: Config[]) => {
+  public launch = (configs: launcher.Config[]): void => {
     for (const config of configs) {
       const {
         enables = () => true,
@@ -36,7 +26,7 @@ class Launcher {
 
       const desktopEvents = typeof events === 'function' ? events(this._pluginId) : events;
 
-      const mobileEvents = !disableMobile ? desktopEvents.map((type) => 'mobile.' + type) : [];
+      const mobileEvents = !disableMobile ? desktopEvents.map((type) => `mobile.${type}`) : [];
 
       const handler = (event: kintone.Event) => {
         try {
@@ -51,6 +41,15 @@ class Launcher {
       kintone.events.on([...desktopEvents, ...mobileEvents], handler);
     }
   };
+
+  private pushLocalStorage() {
+    const stored = localStorage.getItem('ribbit-kintone-plugin');
+    const local = stored ? JSON.parse(stored) : {};
+    local.pluginNames = local.pluginNames || [];
+    if (!local.pluginNames.includes(PLUGIN_NAME)) {
+      local.pluginNames.push(PLUGIN_NAME);
+    }
+  }
 }
 
 export default Launcher;

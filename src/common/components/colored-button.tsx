@@ -1,6 +1,6 @@
 import React, { VFCX } from 'react';
 import styled from '@emotion/styled';
-import { default as Button, ButtonProps } from '@material-ui/core/Button';
+import { default as Button, ButtonProps } from '@mui/material/Button';
 
 type Props = ButtonProps;
 

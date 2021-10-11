@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { appViewsState, storageState } from '../../../states';
 import produce from 'immer';
 import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
-import { MenuItem, TextField } from '@material-ui/core';
+import { MenuItem, TextField } from '@mui/material';
 
 type ContainerProps = Readonly<{ conditionIndex: number }>;
 type Props = Readonly<{

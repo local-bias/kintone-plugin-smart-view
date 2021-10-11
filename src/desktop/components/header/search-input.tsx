@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, VFC, VFCX } from 'react';
 import { DeepReadonly } from 'utility-types';
-import { InputAdornment, TextField } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { InputAdornment, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { paginationIndexState } from '../../states/pagination-index';
 import { searchTextState } from '../../states/search-text';

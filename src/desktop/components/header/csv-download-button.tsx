@@ -2,8 +2,8 @@ import React, { VFC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { DeepReadonly } from 'utility-types';
 import { useSnackbar } from 'notistack';
-import { Tooltip } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { Tooltip } from '@mui/material';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
 
 import { ColoredButton } from '@common/components/colored-button';
@@ -39,6 +39,7 @@ const Container: VFC = () => {
 
       enqueueSnackbar('CSVを出力しました', { variant: 'success' });
     } catch (error) {
+      console.error('CSV出力に失敗しました', error);
       enqueueSnackbar('CSV出力に失敗しました', { variant: 'error' });
     }
   });
@@ -57,6 +58,9 @@ const download = (condition: kintone.plugin.Condition, records: Record[]) => {
   const body = records.map((record) =>
     header.map((key) => {
       const field = record[key];
+      if (!field) {
+        return '';
+      }
 
       switch (field.type) {
         case 'CREATOR':

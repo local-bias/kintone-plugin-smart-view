@@ -1,6 +1,6 @@
 {
   "name": "kintone-plugin-smart-view",
-  "version": "1.0.0",
+  "version": "1.5.1",
   "scripts": {
     "develop": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
@@ -8,8 +8,6 @@
     "init": "run-s create-ppk move-ppk",
     "start": "run-p watch upload",
     "upload": "kintone-plugin-uploader dist/plugin-dev.zip --watch --waiting-dialog-ms 3000",
-    "update-modules": "ncu -u",
-    "check-updates": "ncu",
     "create-ppk": "kintone-plugin-packer --out dist/plugin-dev.zip plugin",
     "move-ppk": "node scripts/move-ppk.ts",
     "lint": "eslint ./src --cache --ext .js,.ts,.tsx"
@@ -24,6 +22,8 @@
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.60",
+    "@mui/icons-material": "^5.0.3",
+    "@mui/material": "^5.0.3",
     "@types/dompurify": "^2.2.3",
     "@types/luxon": "2.0.4",
     "@types/react": "17.0.22",

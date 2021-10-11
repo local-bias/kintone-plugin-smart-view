@@ -4,9 +4,9 @@ import { render } from 'react-dom';
 
 import App from './app';
 
-const events: kintone.EventType[] = ['app.record.index.show'];
+const events: launcher.EventTypes = ['app.record.index.show'];
 
-const action: kintone.Action = async (event, pluginId) => {
+const action: launcher.Action = async (event, pluginId) => {
   const config = restoreStorage(pluginId);
 
   const found = config.conditions.find((condition) => Number(condition.viewId) === event.viewId);
