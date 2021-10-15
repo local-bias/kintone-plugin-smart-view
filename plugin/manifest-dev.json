@@ -18,25 +18,16 @@
     "en": "https://ribbit.work/"
   },
   "desktop": {
-    "js": [
-      "https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view/cdn/desktop.js",
-      "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/desktop.js"
-    ],
+    "js": ["js/desktop.js", "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/desktop.js"],
     "css": []
   },
   "mobile": {
-    "js": [
-      "https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view/cdn/desktop.js",
-      "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/desktop.js"
-    ],
+    "js": ["js/desktop.js", "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/desktop.js"],
     "css": []
   },
   "config": {
     "html": "html/config.html",
-    "js": [
-      "https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view/cdn/config.js",
-      "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/config.js"
-    ],
+    "js": ["js/config.js", "https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn/dist/config.js"],
     "css": [],
     "required_params": []
   }

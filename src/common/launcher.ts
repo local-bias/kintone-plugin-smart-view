@@ -49,6 +49,7 @@ class Launcher {
     if (!local.pluginNames.includes(PLUGIN_NAME)) {
       local.pluginNames.push(PLUGIN_NAME);
     }
+    localStorage.setItem('ribbit-kintone-plugin', JSON.stringify(local));
   }
 }
 

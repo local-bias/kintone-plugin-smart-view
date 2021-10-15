@@ -1,6 +1,6 @@
 {
   "name": "kintone-plugin-smart-view",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "scripts": {
     "develop": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
