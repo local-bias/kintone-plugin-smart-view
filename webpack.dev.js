@@ -20,7 +20,7 @@ module.exports = merge(common, {
 
   plugins: [
     new KintonePlugin({
-      manifestJSONPath: './plugin/manifest-dev.json',
+      manifestJSONPath: './plugin/manifest.json',
       privateKeyPath: './private.ppk',
       pluginZipPath: './dist/plugin-dev.zip',
     }),
