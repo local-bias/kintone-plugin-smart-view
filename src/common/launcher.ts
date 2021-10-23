@@ -1,5 +1,5 @@
 import { PLUGIN_NAME } from '@common/statics';
-import { parsable } from './utilities';
+import { pushPluginName } from './local-storage';
 
 class Launcher {
   private readonly _pluginId: string;
@@ -9,7 +9,9 @@ class Launcher {
    */
   public constructor(pluginId: string) {
     this._pluginId = pluginId;
-    this.pushLocalStorage();
+    try {
+      pushPluginName();
+    } catch (error) {}
   }
 
   /**
@@ -42,16 +44,6 @@ class Launcher {
       kintone.events.on([...desktopEvents, ...mobileEvents], handler);
     }
   };
-
-  private pushLocalStorage() {
-    const stored = localStorage.getItem('ribbit-kintone-plugin');
-    const local = stored && parsable(stored) ? JSON.parse(stored) : {};
-    local.pluginNames = local.pluginNames || [];
-    if (!local.pluginNames.includes(PLUGIN_NAME)) {
-      local.pluginNames.push(PLUGIN_NAME);
-    }
-    localStorage.setItem('ribbit-kintone-plugin', JSON.stringify(local));
-  }
 }
 
 export default Launcher;
