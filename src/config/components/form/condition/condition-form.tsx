@@ -94,7 +94,7 @@ const StyledComponent = styled(Component)`
   gap: 32px;
 
   > div {
-    border-left: 5px solid #3f51b5aa;
+    border-left: 4px solid #0002;
     > *:not(h3) {
       padding-left: 16px;
     }
@@ -107,7 +107,8 @@ const StyledComponent = styled(Component)`
   }
 
   h3 {
-    font-weight: 500;
+    font-weight: 600;
+    color: #0008;
     margin: 0 0 12px;
     padding-left: 12px;
   }
