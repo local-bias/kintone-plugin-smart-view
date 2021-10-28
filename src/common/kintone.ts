@@ -1,4 +1,4 @@
-import { Properties } from '@kintone/rest-api-client/lib/client/types';
+import { Properties, Record as KintoneRecord } from '@kintone/rest-api-client/lib/client/types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import { Cybozu } from '../types/cybozu';
@@ -137,4 +137,34 @@ export const getAppViews = async () => {
   const { views } = await client.app.getViews({ app });
 
   return views;
+};
+
+export const someField = (record: KintoneRecord, searchValue: string): boolean => {
+  return Object.values(record).some((field) => {
+    switch (field.type) {
+      case 'CREATOR':
+      case 'MODIFIER':
+        return ~field.value.name.indexOf(searchValue);
+
+      case 'CHECK_BOX':
+      case 'MULTI_SELECT':
+      case 'CATEGORY':
+        return field.value.some((value) => ~value.indexOf(searchValue));
+
+      case 'USER_SELECT':
+      case 'ORGANIZATION_SELECT':
+      case 'GROUP_SELECT':
+      case 'STATUS_ASSIGNEE':
+        return field.value.some(({ name }) => ~name.indexOf(searchValue));
+
+      case 'FILE':
+        return field.value.some(({ name }) => ~name.indexOf(searchValue));
+
+      case 'SUBTABLE':
+        return field.value.some(({ value }) => someField(value, searchValue));
+
+      default:
+        return field.value && ~field.value.indexOf(searchValue);
+    }
+  });
 };
