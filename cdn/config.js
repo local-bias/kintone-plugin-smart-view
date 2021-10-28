@@ -225,7 +225,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 32px;
 
   > p {
     color: #0007;
@@ -265,6 +265,15 @@
         animation-delay: -0.4s;
         transform: translate(-100%, -20%);
       }
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      width: 100%;
+      height: 20px;
+      background-image: radial-gradient(#0003 20%, #0001 40%, transparent 60%);
     }
   }
 
