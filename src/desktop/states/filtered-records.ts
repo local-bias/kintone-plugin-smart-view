@@ -10,6 +10,8 @@ export const filteredRecordsState = selector<Record[]>({
     const records = get(allReceivedRecordsState);
     const input = get(searchTextState);
 
-    return records.filter((record) => someField(record, input));
+    const words = input.split(/\s+/g);
+
+    return records.filter((record) => words.every((word) => someField(record, word)));
   },
 });
