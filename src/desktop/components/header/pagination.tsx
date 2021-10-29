@@ -1,7 +1,7 @@
 import React, { VFC } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import { Pagination } from '@mui/material';
-import { filterdRecordsState } from '../../states/filterd-records';
+import { filteredRecordsState } from '../../states/filtered-records';
 import { paginationIndexState } from '../../states/pagination-index';
 import { paginationChunkState } from '../../states/pagination-chunk';
 
@@ -23,7 +23,7 @@ const Component: VFC<Props> = ({ size, index, setIndex, chunkSize }) => (
 );
 
 const Container: VFC = () => {
-  const records = useRecoilValue(filterdRecordsState);
+  const records = useRecoilValue(filteredRecordsState);
   const [index, setIndex] = useRecoilState(paginationIndexState);
   const chunkSize = useRecoilValue(paginationChunkState);
 

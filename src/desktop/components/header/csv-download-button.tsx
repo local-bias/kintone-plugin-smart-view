@@ -8,7 +8,7 @@ import { Record } from '@kintone/rest-api-client/lib/client/types';
 
 import { ColoredButton } from '@common/components/colored-button';
 
-import { filterdRecordsState } from '../../states/filterd-records';
+import { filteredRecordsState } from '../../states/filtered-records';
 import { pluginConditionState } from '../../states/plugin-condition';
 
 type Props = DeepReadonly<{ condition: kintone.plugin.Condition; onClick: () => void }>;
@@ -27,7 +27,7 @@ const Container: VFC = () => {
 
   const onClick = useRecoilCallback(({ snapshot }) => async () => {
     try {
-      const records = await snapshot.getPromise(filterdRecordsState);
+      const records = await snapshot.getPromise(filteredRecordsState);
 
       if (!records.length) {
         enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {

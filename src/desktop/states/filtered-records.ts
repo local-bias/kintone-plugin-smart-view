@@ -4,8 +4,8 @@ import { selector } from 'recoil';
 import { allReceivedRecordsState } from './all-received-records';
 import { searchTextState } from './search-text';
 
-export const filterdRecordsState = selector<Record[]>({
-  key: 'filterdRecordsState',
+export const filteredRecordsState = selector<Record[]>({
+  key: 'filteredRecordsState',
   get: ({ get }) => {
     const records = get(allReceivedRecordsState);
     const input = get(searchTextState);

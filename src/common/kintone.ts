@@ -95,21 +95,21 @@ export const getAppFields = async (targetApp?: string | number) => {
 export const getUserDefinedFields = async (): Promise<Properties> => {
   const fields = await getAppFields();
 
-  const filterd = Object.entries(fields).filter(
+  const filtered = Object.entries(fields).filter(
     ([_, value]) => !DEFAULT_DEFINED_FIELDS.includes(value.type)
   );
 
-  return filterd.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  return filtered.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 };
 
 export const getFieldsWithoutIgnores = async (): Promise<Properties> => {
   const fields = await getAppFields();
 
-  const filterd = Object.entries(fields).filter(
+  const filtered = Object.entries(fields).filter(
     ([_, value]) => !IGNORE_FIELDS.includes(value.type)
   );
 
-  return filterd.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  return filtered.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 };
 
 export const getAppLayout = async () => {
