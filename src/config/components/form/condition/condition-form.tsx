@@ -69,21 +69,24 @@ const Component: VFCX<Props> = ({
         </div>
       ))}
     </div>
-    <FormControlLabel
-      control={<Switch color='primary' checked={condition.enableCSVExport} />}
-      onChange={(_, checked) => setCSVExport(checked)}
-      label='CSV出力機能を有効にする'
-    />
-    <FormControlLabel
-      control={<Switch color='primary' checked={condition.editable} />}
-      onChange={(_, checked) => setEditable(checked)}
-      label='一覧での編集を有効にする(未実装)'
-    />
-    <FormControlLabel
-      control={<Switch color='primary' checked={condition.sortable} />}
-      onChange={(_, checked) => setSortable(checked)}
-      label='並び替えを有効にする(未実装)'
-    />
+    <div>
+      <h3>その他のオプション</h3>
+      <FormControlLabel
+        control={<Switch color='primary' checked={condition.enableCSVExport} />}
+        onChange={(_, checked) => setCSVExport(checked)}
+        label='CSV出力機能を有効にする'
+      />
+      <FormControlLabel
+        control={<Switch color='primary' checked={condition.editable} />}
+        onChange={(_, checked) => setEditable(checked)}
+        label='一覧での編集を有効にする(未実装)'
+      />
+      <FormControlLabel
+        control={<Switch color='primary' checked={condition.sortable} />}
+        onChange={(_, checked) => setSortable(checked)}
+        label='並び替えを有効にする(未実装)'
+      />
+    </div>
   </div>
 );
 
@@ -99,6 +102,9 @@ const StyledComponent = styled(Component)`
       padding-left: 16px;
     }
     padding: 4px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   small {
