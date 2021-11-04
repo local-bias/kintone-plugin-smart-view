@@ -79,7 +79,7 @@ export const getHeaderSpace = (eventType: string) => {
 };
 
 export const getAppFields = async (targetApp?: string | number) => {
-  const app = targetApp || kintone.app.getId();
+  const app = targetApp || getAppId();
 
   if (!app) {
     throw new Error('アプリのフィールド情報が取得できませんでした');
