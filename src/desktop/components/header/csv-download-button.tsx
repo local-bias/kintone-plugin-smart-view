@@ -2,11 +2,9 @@ import React, { VFC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { DeepReadonly } from 'utility-types';
 import { useSnackbar } from 'notistack';
-import { Tooltip } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
-
-import { ColoredButton } from '@common/components/colored-button';
 
 import { filteredRecordsState } from '../../states/filtered-records';
 import { pluginConditionState } from '../../states/plugin-condition';
@@ -15,9 +13,9 @@ type Props = DeepReadonly<{ condition: kintone.plugin.Condition; onClick: () => 
 
 const Component: VFC<Props> = ({ onClick }) => (
   <Tooltip title='現在の検索条件でCSVファイルを出力します'>
-    <ColoredButton endIcon={<GetAppIcon />} onClick={onClick}>
+    <Button variant='contained' color='inherit' endIcon={<GetAppIcon />} onClick={onClick}>
       CSV
-    </ColoredButton>
+    </Button>
   </Tooltip>
 );
 
