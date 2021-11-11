@@ -1,15 +1,21 @@
 import { selector } from 'recoil';
-import { appFieldsState } from './app-fields';
+import { appPropertiesState } from './app-properties';
 import { pluginConditionState } from './plugin-condition';
+import { propertiesReadyState } from './properties-ready';
 
 export const headerCellsState = selector<string[]>({
   key: 'headerCellsState',
   get: async ({ get }) => {
     const condition = get(pluginConditionState);
-    const appFields = get(appFieldsState);
+    const appFields = get(appPropertiesState);
+    const propertiesReady = get(propertiesReadyState);
 
     if (!condition?.viewDisplayingFields.length) {
       return [];
+    }
+
+    if (!propertiesReady) {
+      return condition.viewDisplayingFields;
     }
 
     const cells = condition.viewDisplayingFields.map((fieldCode) => {

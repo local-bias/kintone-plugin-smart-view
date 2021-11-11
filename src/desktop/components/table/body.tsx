@@ -21,7 +21,7 @@ const Component: VFC<Props> = ({ records, condition }) => (
         </td>
         {condition.viewDisplayingFields.map((field, j) => (
           <td key={j}>
-            <Cell field={record[field]} />
+            <Cell code={field} field={record[field]} />
           </td>
         ))}
       </tr>

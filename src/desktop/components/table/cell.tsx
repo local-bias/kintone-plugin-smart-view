@@ -2,10 +2,16 @@ import React, { VFC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
 import { sanitize } from 'dompurify';
+import { useRecoilValue } from 'recoil';
+import { appPropertiesState } from '../../states/app-properties';
 
-type ContainerProps = DeepReadonly<{ field: OneOf }>;
+type ContainerProps = DeepReadonly<{ code: string; field: OneOf }>;
 
-const Container: VFC<ContainerProps> = ({ field }) => {
+const Container: VFC<ContainerProps> = ({ code, field }) => {
+  const properties = useRecoilValue(appPropertiesState);
+
+  const found = Object.entries(properties).find(([key]) => code === key);
+
   if (!field) {
     return null;
   }
@@ -55,6 +61,24 @@ const Container: VFC<ContainerProps> = ({ field }) => {
       return <div dangerouslySetInnerHTML={{ __html }} />;
     case 'SUBTABLE':
       return <>{field.value.length}行</>;
+    case 'NUMBER':
+    case 'CALC':
+      if (!found || ['', undefined, null].includes(field.value)) {
+        return <>{field.value}</>;
+      }
+      const property: any = found[1];
+
+      const value = property?.digit ? Number(field.value).toLocaleString() : field.value;
+
+      if (property?.unit) {
+        if (property.unitPosition === 'BEFORE') {
+          return <>{`${property.unit}${value}`}</>;
+        } else {
+          return <>{`${value}${property.unit}`}</>;
+        }
+      }
+      return <>{field.value}</>;
+
     default:
       return <>{field.value}</>;
   }

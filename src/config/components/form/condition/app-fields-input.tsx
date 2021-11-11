@@ -19,7 +19,7 @@ const Component: VFCX<Props> = ({ className, fields, ...others }) => (
       <TextField {...others} select>
         {Object.values(fields).map(({ code, label }, i) => (
           <MenuItem key={i} value={code}>
-            {label}
+            {label}({code})
           </MenuItem>
         ))}
       </TextField>
