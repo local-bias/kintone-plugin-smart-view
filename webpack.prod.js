@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const TerserPlugin = require('terser-webpack-plugin');
 const KintonePlugin = require('@kintone/webpack-plugin-kintone-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -13,6 +14,7 @@ module.exports = merge(common, {
   },
 
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new KintonePlugin({
       manifestJSONPath: './plugin/manifest.json',
       privateKeyPath: './private.ppk',
