@@ -19,6 +19,7 @@ const StyledComponent = styled(Component)`
       bottom: 60px;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 10;
 
       padding: 8px 0;
       background-color: #fff;
