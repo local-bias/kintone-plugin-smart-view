@@ -1,5 +1,6 @@
-import React, { VFC } from 'react';
+import React, { VFC, VFCX } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
+import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
 import { useSnackbar } from 'notistack';
 import { Button, Tooltip } from '@mui/material';
@@ -11,13 +12,28 @@ import { pluginConditionState } from '../../states/plugin-condition';
 
 type Props = DeepReadonly<{ condition: kintone.plugin.Condition; onClick: () => void }>;
 
-const Component: VFC<Props> = ({ onClick }) => (
+const Component: VFCX<Props> = ({ onClick, className }) => (
   <Tooltip title='現在の検索条件でCSVファイルを出力します'>
-    <Button variant='contained' color='inherit' endIcon={<GetAppIcon />} onClick={onClick}>
+    <Button
+      {...{ className }}
+      variant='contained'
+      color='inherit'
+      endIcon={<GetAppIcon />}
+      onClick={onClick}
+    >
       CSV
     </Button>
   </Tooltip>
 );
+
+const StyledComponent = styled(Component)`
+  color: #1976d2;
+  background-color: #f1f1f7;
+  &:hover,
+  &:active {
+    background-color: #e1e1ea;
+  }
+`;
 
 const Container: VFC = () => {
   const condition = useRecoilValue(pluginConditionState)!;
@@ -43,7 +59,7 @@ const Container: VFC = () => {
   });
 
   if (condition.enableCSVExport) {
-    return <Component {...{ condition, onClick }} />;
+    return <StyledComponent {...{ condition, onClick }} />;
   }
   return null;
 };
