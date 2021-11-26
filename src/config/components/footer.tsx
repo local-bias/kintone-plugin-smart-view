@@ -59,15 +59,7 @@ const Container: VFC = () => {
       async () => {
         const storage = await snapshot.getPromise(storageState);
 
-        const filled = produce(storage!, (draft) => {
-          for (const condition of draft.conditions) {
-            condition.viewDisplayingFields = condition.viewDisplayingFields.filter(
-              (field) => field
-            );
-          }
-        });
-
-        storeStorage(filled, () => true);
+        storeStorage(storage!, () => true);
         enqueueSnackbar('設定を保存しました', {
           variant: 'success',
           action: (

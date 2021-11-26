@@ -27,7 +27,9 @@ const Container: VFC = () => {
         }
 
         const query = getQueryCondition() || '';
-        const fields = ['$id', ...condition.viewDisplayingFields];
+
+        const targetFields = condition.viewDisplayingFields.filter((field) => !!field);
+        const fields = ['$id', ...targetFields];
 
         await getAllRecords({ app, query, fields, onAdvance: (records) => setAllRecords(records) });
       } finally {
