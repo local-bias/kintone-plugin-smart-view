@@ -84,7 +84,7 @@ const Component: VFCX<Props> = ({
       <FormControlLabel
         control={<Switch color='primary' checked={condition.sortable} />}
         onChange={(_, checked) => setSortable(checked)}
-        label='並び替えを有効にする(未実装)'
+        label='並び替えを有効にする'
       />
     </div>
   </div>

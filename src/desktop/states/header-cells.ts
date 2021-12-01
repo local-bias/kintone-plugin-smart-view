@@ -2,8 +2,11 @@ import { selector } from 'recoil';
 import { appPropertiesState } from './app-properties';
 import { pluginConditionState } from './plugin-condition';
 import { propertiesReadyState } from './properties-ready';
+import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 
-export const headerCellsState = selector<string[]>({
+export type HeaderCell = { label: string; property: OneOf | null };
+
+export const headerCellsState = selector<HeaderCell[]>({
   key: 'headerCellsState',
   get: async ({ get }) => {
     const condition = get(pluginConditionState);
@@ -15,12 +18,16 @@ export const headerCellsState = selector<string[]>({
     }
 
     if (!propertiesReady) {
-      return condition.viewDisplayingFields;
+      return condition.viewDisplayingFields.map((field) => ({ label: field, property: null }));
     }
 
-    const cells = condition.viewDisplayingFields.map((fieldCode) => {
-      const found = Object.entries(appFields).find(([code]) => code === fieldCode);
-      return found ? found[1].label ?? '' : '';
+    const cells = condition.viewDisplayingFields.map<HeaderCell>((fieldCode) => {
+      const found = Object.values(appFields).find((property) => property.code === fieldCode);
+
+      if (found) {
+        return { label: found.label, property: found };
+      }
+      return { label: fieldCode, property: null };
     });
 
     return cells;

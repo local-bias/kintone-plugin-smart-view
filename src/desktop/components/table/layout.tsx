@@ -45,11 +45,26 @@ const StyledComponent = styled(Component)`
           background-color: #fff;
           border-bottom: 1px solid #0002;
           border-top: 1px solid #0002;
-          padding: 10px 15px;
+          height: 24px;
           @media screen {
             position: sticky;
             top: 48px;
             z-index: 1;
+          }
+
+          &.sortable {
+            cursor: pointer;
+          }
+
+          > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            > svg {
+              width: 1em;
+              height: 1em;
+            }
           }
         }
       }
