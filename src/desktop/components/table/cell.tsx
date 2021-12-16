@@ -79,6 +79,14 @@ const Container: VFC<ContainerProps> = ({ code, field }) => {
       }
       return <>{field.value}</>;
 
+    case 'DATE':
+      return <>{field.value ? new Date(field.value).toLocaleDateString() : ''}</>;
+
+    case 'DATETIME':
+    case 'CREATED_TIME':
+    case 'UPDATED_TIME':
+      return <>{field.value ? new Date(field.value).toLocaleString() : ''}</>;
+
     default:
       return <>{field.value}</>;
   }

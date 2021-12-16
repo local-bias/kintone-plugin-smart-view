@@ -78,6 +78,10 @@ const StyledComponent = styled(Component)`
           background-color: #fff;
           transition: filter 0.1s ease;
 
+          &.right {
+            text-align: right;
+          }
+
           a {
             display: flex;
             justify-content: center;

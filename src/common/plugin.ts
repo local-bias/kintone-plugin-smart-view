@@ -38,4 +38,5 @@ export const getNewCondition = (): kintone.plugin.Condition => ({
   enableCSVExport: false,
   editable: false,
   sortable: false,
+  ignoresLetterCase: true,
 });

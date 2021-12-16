@@ -16,13 +16,26 @@ export const filteredRecordsState = selector<Record[]>({
 
     const words = input.split(/\s+/g);
 
+    const innoresLetterCase = condition?.ignoresLetterCase ?? false;
+
     if (!condition?.sortable || !sorting.field) {
-      return records.filter((record) => words.every((word) => someField(record, word)));
+      return records.filter((record) =>
+        words.every((word) => someField(record, word, innoresLetterCase))
+      );
     }
 
     const sorted = [...records].sort((recordA, recordB) => {
       const a = (recordA[sorting.field]?.value || '') as string;
       const b = (recordB[sorting.field]?.value || '') as string;
+
+      const fieldType = recordA[sorting.field]?.type;
+
+      if (['NUMBER', 'CALC'].includes(fieldType)) {
+        const numA = Number(a);
+        const numB = Number(b);
+
+        return sorting.order === 'desc' ? numB - numA : numA - numB;
+      }
 
       if (sorting.order === 'desc') {
         return a.localeCompare(b, 'ja') * -1;
@@ -30,6 +43,8 @@ export const filteredRecordsState = selector<Record[]>({
       return a.localeCompare(b, 'ja');
     });
 
-    return sorted.filter((record) => words.every((word) => someField(record, word)));
+    return sorted.filter((record) =>
+      words.every((word) => someField(record, word, innoresLetterCase))
+    );
   },
 });

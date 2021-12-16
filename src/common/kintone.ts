@@ -1,7 +1,6 @@
 import { Properties, Record as KintoneRecord } from '@kintone/rest-api-client/lib/client/types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
-import { Cybozu } from '../types/cybozu';
 
 /** kintoneアプリに初期状態で存在するフィールドタイプ */
 const DEFAULT_DEFINED_FIELDS: PickType<OneOf, 'type'>[] = [
@@ -14,8 +13,6 @@ const DEFAULT_DEFINED_FIELDS: PickType<OneOf, 'type'>[] = [
 ];
 
 const IGNORE_FIELDS: PickType<OneOf, 'type'>[] = ['GROUP'];
-
-declare const cybozu: Cybozu;
 
 /**
  * 実行されている環境がモバイル端末である場合はTrueを返却します
@@ -139,31 +136,50 @@ export const getAppViews = async () => {
   return views;
 };
 
-export const someField = (record: KintoneRecord, searchValue: string): boolean => {
+export const someField = (
+  record: KintoneRecord,
+  _searchValue: string,
+  ignoresLetterCase: boolean
+): boolean => {
+  const searchValue = ignoresLetterCase ? _searchValue.toLowerCase() : _searchValue;
+
   return Object.values(record).some((field) => {
     switch (field.type) {
       case 'CREATOR':
       case 'MODIFIER':
-        return ~field.value.name.indexOf(searchValue);
+        const value = ignoresLetterCase ? field.value.name.toLowerCase() : field.value.name;
+        return ~value.indexOf(searchValue);
 
       case 'CHECK_BOX':
       case 'MULTI_SELECT':
       case 'CATEGORY':
+        if (ignoresLetterCase) {
+          return field.value.some((value) => ~value.toLowerCase().indexOf(searchValue));
+        }
         return field.value.some((value) => ~value.indexOf(searchValue));
 
       case 'USER_SELECT':
       case 'ORGANIZATION_SELECT':
       case 'GROUP_SELECT':
       case 'STATUS_ASSIGNEE':
+        if (ignoresLetterCase) {
+          return field.value.some(({ name }) => ~name.toLowerCase().indexOf(searchValue));
+        }
         return field.value.some(({ name }) => ~name.indexOf(searchValue));
 
       case 'FILE':
+        if (ignoresLetterCase) {
+          return field.value.some(({ name }) => ~name.toLowerCase().indexOf(searchValue));
+        }
         return field.value.some(({ name }) => ~name.indexOf(searchValue));
 
       case 'SUBTABLE':
-        return field.value.some(({ value }) => someField(value, searchValue));
+        return field.value.some(({ value }) => someField(value, searchValue, ignoresLetterCase));
 
       default:
+        if (ignoresLetterCase) {
+          return field.value && ~field.value.toLowerCase().indexOf(searchValue);
+        }
         return field.value && ~field.value.indexOf(searchValue);
     }
   });

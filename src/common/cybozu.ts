@@ -1,7 +1,3 @@
-import { Cybozu } from '../types/cybozu';
-
-declare const cybozu: Cybozu;
-
 const getSchema = () => cybozu.data.page.SCHEMA_DATA || cybozu.data.page.FORM_DATA.schema;
 
 export const getFields = () => {
@@ -28,4 +24,8 @@ export const getFieldMap = () => {
   const fields = getFields();
 
   return new Map(fields.map((field) => [field.var, field]));
+};
+
+export const getQueryString = () => {
+  return cybozu?.data?.page?.QUERY_STRING ?? '';
 };

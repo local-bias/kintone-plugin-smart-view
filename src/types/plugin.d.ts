@@ -13,6 +13,7 @@ declare namespace kintone {
       enableCSVExport: boolean;
       editable: boolean;
       sortable: boolean;
+      ignoresLetterCase?: boolean;
     };
   }
 }
