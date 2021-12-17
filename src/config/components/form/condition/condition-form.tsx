@@ -44,6 +44,7 @@ const Component: VFCX<Props> = ({
         <small>
           選択する一覧は必ず表示形式を「カスタマイズ」に変更し、「ページネーションを表示する」のチェックを外してください。
         </small>
+        <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
       </div>
     </Suspense>
     <div>
