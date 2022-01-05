@@ -2,7 +2,7 @@ import React, { Suspense, VFC, VFCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
-import { FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
+import { Button, FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Properties } from '@kintone/rest-api-client/lib/client/types';
@@ -11,6 +11,7 @@ import { appFieldsState, storageState } from '../../../states';
 
 import AppFieldsInput from './app-fields-input';
 import ViewIdForm from './view-id';
+import ViewInheritButton from './view-inherit-button';
 
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 type Props = ContainerProps & {
@@ -42,7 +43,7 @@ const Component: VFCX<Props> = ({
         <h3>テーブルを表示する一覧の設定</h3>
         <ViewIdForm conditionIndex={index} />
         <small>
-          選択する一覧は必ず表示形式を「カスタマイズ」に変更し、「ページネーションを表示する」のチェックを外してください。
+          選択する一覧は必ず表示形式を「カスタマイズ」に設定し、「ページネーションを表示する」のチェックを外してください。
         </small>
         <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
       </div>

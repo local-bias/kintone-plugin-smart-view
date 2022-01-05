@@ -1,9 +1,8 @@
 import React, { VFC } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import { Pagination } from '@mui/material';
-import { filteredRecordsState } from '../../states/filtered-records';
-import { paginationIndexState } from '../../states/pagination-index';
-import { paginationChunkState } from '../../states/pagination-chunk';
+import { filteredRecordsState } from '../../states/records';
+import { paginationIndexState, paginationChunkState } from '../../states/pagination';
 
 type Props = {
   size: number;

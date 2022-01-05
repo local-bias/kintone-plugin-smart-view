@@ -1,15 +1,16 @@
-import React, { useEffect, VFC } from 'react';
+import { useEffect, VFC } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { getAppId, getQueryCondition } from '@common/kintone';
+import { getAppId, getQueryCondition, getQuickSearchString } from '@common/kintone';
 import { getAllRecords } from '@common/kintone-rest-api';
 
-import { allReceivedRecordsState } from '../states/all-received-records';
+import { allViewRecordsState } from '../states/records';
 import { loadingState } from '../states/loading';
 import { pluginConditionState } from '../states/plugin-condition';
+import { ViewRecord } from '../static';
 
 const Container: VFC = () => {
-  const setAllRecords = useSetRecoilState(allReceivedRecordsState);
+  const setAllRecords = useSetRecoilState(allViewRecordsState);
   const setLoading = useSetRecoilState(loadingState);
   const condition = useRecoilValue(pluginConditionState);
 
@@ -31,7 +32,23 @@ const Container: VFC = () => {
         const targetFields = condition.viewDisplayingFields.filter((field) => !!field);
         const fields = ['$id', ...targetFields];
 
-        await getAllRecords({ app, query, fields, onAdvance: (records) => setAllRecords(records) });
+        await getAllRecords({
+          app,
+          query,
+          fields,
+          onAdvance: (records) => {
+            const viewRecords = records.map<ViewRecord>((record) => {
+              let __quickSearch = getQuickSearchString(record);
+
+              if (condition.ignoresLetterCase) {
+                __quickSearch = __quickSearch.toLowerCase();
+              }
+
+              return { record, __quickSearch };
+            });
+            setAllRecords(viewRecords);
+          },
+        });
       } finally {
         setLoading(false);
       }

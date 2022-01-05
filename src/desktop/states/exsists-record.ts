@@ -1,5 +1,5 @@
 import { selector } from 'recoil';
-import { filteredRecordsState } from './filtered-records';
+import { filteredRecordsState } from './records';
 
 export const existsRecordState = selector({
   key: 'existsRecordState',

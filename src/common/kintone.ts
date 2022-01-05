@@ -136,51 +136,34 @@ export const getAppViews = async () => {
   return views;
 };
 
-export const someField = (
-  record: KintoneRecord,
-  _searchValue: string,
-  ignoresLetterCase: boolean
-): boolean => {
-  const searchValue = ignoresLetterCase ? _searchValue.toLowerCase() : _searchValue;
-
-  return Object.values(record).some((field) => {
+export const getQuickSearchString = (record: KintoneRecord): string => {
+  const values = Object.values(record).map((field) => {
     switch (field.type) {
       case 'CREATOR':
       case 'MODIFIER':
-        const value = ignoresLetterCase ? field.value.name.toLowerCase() : field.value.name;
-        return ~value.indexOf(searchValue);
+        return field.value.name;
 
       case 'CHECK_BOX':
       case 'MULTI_SELECT':
       case 'CATEGORY':
-        if (ignoresLetterCase) {
-          return field.value.some((value) => ~value.toLowerCase().indexOf(searchValue));
-        }
-        return field.value.some((value) => ~value.indexOf(searchValue));
+        return field.value.join('');
 
       case 'USER_SELECT':
       case 'ORGANIZATION_SELECT':
       case 'GROUP_SELECT':
       case 'STATUS_ASSIGNEE':
-        if (ignoresLetterCase) {
-          return field.value.some(({ name }) => ~name.toLowerCase().indexOf(searchValue));
-        }
-        return field.value.some(({ name }) => ~name.indexOf(searchValue));
+        return field.value.map(({ name }) => name).join('');
 
       case 'FILE':
-        if (ignoresLetterCase) {
-          return field.value.some(({ name }) => ~name.toLowerCase().indexOf(searchValue));
-        }
-        return field.value.some(({ name }) => ~name.indexOf(searchValue));
+        return field.value.map(({ name }) => name).join('');
 
       case 'SUBTABLE':
-        return field.value.some(({ value }) => someField(value, searchValue, ignoresLetterCase));
+        return field.value.map(({ value }) => getQuickSearchString(value)).join('');
 
       default:
-        if (ignoresLetterCase) {
-          return field.value && ~field.value.toLowerCase().indexOf(searchValue);
-        }
-        return field.value && ~field.value.indexOf(searchValue);
+        return field.value || '';
     }
   });
+
+  return values.join('');
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { restoreStorage } from '@common/plugin';
 import { render } from 'react-dom';
+import { css } from '@emotion/css';
 
 import App from './app';
 
@@ -15,10 +16,17 @@ const action: launcher.Action = async (event, pluginId) => {
     return event;
   }
 
+  document.body.classList.add(css`
+    .gaia-argoui-app-index-pager {
+      display: none !important;
+    }
+  `);
+
   render(
     <App condition={found} />,
     document.querySelector('.gaia-app-indexview-customview-html') ||
-      document.querySelector('.gaia-mobile-app-customview')
+      document.querySelector('.gaia-mobile-app-customview') ||
+      document.querySelector('.contents-gaia')
   );
 
   return event;

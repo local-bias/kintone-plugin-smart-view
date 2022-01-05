@@ -7,7 +7,7 @@ import { Button, Tooltip } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
 
-import { filteredRecordsState } from '../../states/filtered-records';
+import { filteredRecordsState } from '../../states/records';
 import { pluginConditionState } from '../../states/plugin-condition';
 
 type Props = DeepReadonly<{ condition: kintone.plugin.Condition; onClick: () => void }>;
