@@ -52,7 +52,10 @@ export const filteredRecordsState = selector<Record[]>({
   key: 'filteredRecordsState',
   get: ({ get }) => {
     const records = get(sortedDatasState);
-    const input = get(searchTextState);
+    const text = get(searchTextState);
+    const condition = get(pluginConditionState);
+
+    const input = condition?.ignoresLetterCase ? text.toLowerCase() : text;
 
     const words = input.split(/\s+/g);
 
