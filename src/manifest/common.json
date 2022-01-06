@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": 8,
+  "version": 240,
   "type": "APP",
   "name": {
     "en": "kintone-plugin-template",
