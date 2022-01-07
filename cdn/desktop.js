@@ -138,7 +138,7 @@
       z-index: 10;
 
       padding: 8px 0;
-      background: linear-gradient(135deg, #fff7 60%, #fff5);
+      background: linear-gradient(135deg, #fff7 60%, #ddd7);
       backdrop-filter: blur(8px);
       box-shadow: 0px 3px 1px -2px #0003, 0px 2px 2px 0px #0002, 0px 1px 5px 0px #0002,
         inset 2px 2px 3px -1px #fffc;
