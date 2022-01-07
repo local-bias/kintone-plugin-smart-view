@@ -1,8 +1,10 @@
-import React, { VFC } from 'react';
+import React, { VFC, VFCX } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
+import styled from '@emotion/styled';
 import { Pagination } from '@mui/material';
 import { filteredRecordsState } from '../../states/records';
 import { paginationIndexState, paginationChunkState } from '../../states/pagination';
+import { isMobile } from '@common/kintone';
 
 type Props = {
   size: number;
@@ -11,15 +13,33 @@ type Props = {
   chunkSize: number;
 };
 
-const Component: VFC<Props> = ({ size, index, setIndex, chunkSize }) => (
-  <Pagination
-    className='ribbit-pagination'
-    count={Math.ceil(size / chunkSize)}
-    page={index}
-    color='primary'
-    onChange={(_, index) => setIndex(index)}
-  />
+const Component: VFCX<Props> = ({ className, size, index, setIndex, chunkSize }) => (
+  <div {...{ className }}>
+    {!isMobile() && (
+      <div className='location'>
+        {(index - 1) * chunkSize + 1} - {index * chunkSize > size ? size : index * chunkSize}（
+        {size}
+        件中）
+      </div>
+    )}
+    <Pagination
+      className='ribbit-pagination'
+      count={Math.ceil(size / chunkSize)}
+      page={index}
+      color='primary'
+      onChange={(_, index) => setIndex(index)}
+    />
+  </div>
 );
+
+const StyledComponent = styled(Component)`
+  display: flex;
+  align-items: center;
+
+  .location {
+    font-size: 14px;
+  }
+`;
 
 const Container: VFC = () => {
   const records = useRecoilValue(filteredRecordsState);
@@ -28,7 +48,7 @@ const Container: VFC = () => {
 
   const size = records.length || 0;
 
-  return <>{!!size && <Component {...{ size, index, setIndex, chunkSize }} />}</>;
+  return <>{!!size && <StyledComponent {...{ size, index, setIndex, chunkSize }} />}</>;
 };
 
 export default Container;
