@@ -5,6 +5,7 @@ import { sortingState } from './sorting';
 import { ViewRecord } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
+import { katakana2hiragana } from '@common/utilities';
 
 export const allViewRecordsState = atom<ViewRecord[]>({
   key: 'allViewRecordsState',
@@ -55,7 +56,15 @@ export const filteredRecordsState = selector<Record[]>({
     const text = get(searchTextState);
     const condition = get(pluginConditionState);
 
-    const input = condition?.ignoresLetterCase ? text.toLowerCase() : text;
+    let input = text;
+
+    if (condition?.ignoresLetterCase) {
+      input = input.toLowerCase();
+    }
+
+    if (condition?.ignoresKatakana) {
+      input = katakana2hiragana(input);
+    }
 
     const words = input.split(/\s+/g);
 

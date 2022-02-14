@@ -23,6 +23,7 @@ type Props = ContainerProps & {
   setEditable: (checked: boolean) => void;
   setSortable: (checked: boolean) => void;
   setIgnoreLetterCase: (checked: boolean) => void;
+  setIgnoreKatakana: (checked: boolean) => void;
 };
 
 const Component: VFCX<Props> = ({
@@ -36,6 +37,7 @@ const Component: VFCX<Props> = ({
   setEditable,
   setSortable,
   setIgnoreLetterCase,
+  setIgnoreKatakana,
 }) => (
   <div {...{ className }}>
     <Suspense fallback={<div>一覧情報を取得しています...</div>}>
@@ -94,6 +96,11 @@ const Component: VFCX<Props> = ({
         control={<Switch color='primary' checked={condition.ignoresLetterCase} />}
         onChange={(_, checked) => setIgnoreLetterCase(checked)}
         label='絞り込みの際、大文字と小文字を区別しない'
+      />
+      <FormControlLabel
+        control={<Switch color='primary' checked={condition.ignoresKatakana} />}
+        onChange={(_, checked) => setIgnoreKatakana(checked)}
+        label='絞り込みの際、カタカナとひらがなを区別しない'
       />
     </div>
   </div>
@@ -192,6 +199,7 @@ const Container: VFC<ContainerProps> = ({ condition, index }) => {
   const setEditable = (checked: boolean) => onSwitchChange(checked, 'editable');
   const setSortable = (checked: boolean) => onSwitchChange(checked, 'sortable');
   const setIgnoreLetterCase = (checked: boolean) => onSwitchChange(checked, 'ignoresLetterCase');
+  const setIgnoreKatakana = (checked: boolean) => onSwitchChange(checked, 'ignoresKatakana');
 
   return (
     <StyledComponent
@@ -206,6 +214,7 @@ const Container: VFC<ContainerProps> = ({ condition, index }) => {
         setEditable,
         setSortable,
         setIgnoreLetterCase,
+        setIgnoreKatakana,
       }}
     />
   );

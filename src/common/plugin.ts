@@ -39,4 +39,5 @@ export const getNewCondition = (): kintone.plugin.Condition => ({
   editable: false,
   sortable: false,
   ignoresLetterCase: true,
+  ignoresKatakana: true,
 });

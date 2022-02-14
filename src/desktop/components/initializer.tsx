@@ -8,6 +8,7 @@ import { allViewRecordsState } from '../states/records';
 import { loadingState } from '../states/loading';
 import { pluginConditionState } from '../states/plugin-condition';
 import { ViewRecord } from '../static';
+import { katakana2hiragana } from '@common/utilities';
 
 const Container: VFC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);
@@ -42,6 +43,10 @@ const Container: VFC = () => {
 
               if (condition.ignoresLetterCase) {
                 __quickSearch = __quickSearch.toLowerCase();
+              }
+
+              if (condition.ignoresKatakana) {
+                __quickSearch = katakana2hiragana(__quickSearch);
               }
 
               return { record, __quickSearch };

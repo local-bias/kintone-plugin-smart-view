@@ -14,6 +14,7 @@ declare namespace kintone {
       editable: boolean;
       sortable: boolean;
       ignoresLetterCase?: boolean;
+      ignoresKatakana?: boolean;
     };
   }
 }
