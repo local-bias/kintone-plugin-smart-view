@@ -3,14 +3,14 @@
   "version": 250,
   "type": "APP",
   "name": {
-    "en": "kintone-plugin-template",
+    "en": "faster search plugin",
     "ja": "一覧高速検索＆絞り込みプラグイン",
-    "zh": "插件模板"
+    "zh": "更快的搜索插件"
   },
   "description": {
-    "en": "kintone-plugin-template",
+    "en": "This plugin replaces the default view with a customized view and enables faster searches",
     "ja": "指定した一覧を独自のテーブルに置き換え、高速な検索と絞り込みを実現します。",
-    "zh": "插件模板"
+    "zh": "此插件用自定义视图替换默认视图并实现更快的搜索"
   },
   "icon": "image/icon.png",
   "homepage_url": {
