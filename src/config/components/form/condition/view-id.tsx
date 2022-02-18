@@ -1,10 +1,11 @@
 import React, { ChangeEventHandler, memo, VFC, VFCX } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { appViewsState, storageState } from '../../../states';
+import { storageState } from '../../../states';
 import produce from 'immer';
 import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
 import { MenuItem, TextField } from '@mui/material';
+import { customViewsState } from '../../../states/app-views';
 
 type ContainerProps = Readonly<{ conditionIndex: number }>;
 type Props = Readonly<{
@@ -15,7 +16,7 @@ type Props = Readonly<{
 
 const Component: VFCX<Props> = memo(({ className, views, viewId, onChange }) => (
   <div {...{ className }}>
-    <TextField select label='一覧ID' value={viewId} {...{ onChange }}>
+    <TextField select label='一覧の名前' value={viewId} {...{ onChange }}>
       {Object.entries(views).map(([name, { id }], i) => (
         <MenuItem key={i} value={id}>
           {name}
@@ -33,7 +34,7 @@ const StyledComponent = styled(Component)`
 
 const Container: VFC<ContainerProps> = ({ conditionIndex }) => {
   const [storage, setStorage] = useRecoilState(storageState);
-  const views = useRecoilValue(appViewsState);
+  const views = useRecoilValue(customViewsState);
 
   const { viewId } = storage!.conditions[conditionIndex];
 

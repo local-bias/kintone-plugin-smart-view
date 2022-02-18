@@ -2,7 +2,7 @@ import React, { Suspense, VFC, VFCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
-import { Button, FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
+import { FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Properties } from '@kintone/rest-api-client/lib/client/types';
@@ -11,7 +11,7 @@ import { appFieldsState, storageState } from '../../../states';
 
 import AppFieldsInput from './app-fields-input';
 import ViewIdForm from './view-id';
-import ViewInheritButton from './view-inherit-button';
+import ImportingViewFields from '../importing-view-fields';
 
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 type Props = ContainerProps & {
@@ -51,7 +51,10 @@ const Component: VFCX<Props> = ({
       </div>
     </Suspense>
     <div>
-      <h3>テーブルに表示するフィールドの設定</h3>
+      <div className='titleWithButton'>
+        <h3>テーブルに表示するフィールドの設定</h3>
+        <ImportingViewFields conditionIndex={index} />
+      </div>
       {condition.viewDisplayingFields.map((field, i) => (
         <div key={i} className='row'>
           <AppFieldsInput
@@ -157,6 +160,19 @@ const StyledComponent = styled(Component)`
     > svg {
       fill: #999;
     }
+  }
+
+  .titleWithButton {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    h3 {
+      margin: 0;
+      padding: 0;
+    }
+
+    margin: 0 0 12px;
   }
 `;
 
