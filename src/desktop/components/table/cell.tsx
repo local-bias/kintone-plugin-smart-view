@@ -63,21 +63,29 @@ const Container: VFC<ContainerProps> = ({ code, field }) => {
       return <>{field.value.length}行</>;
     case 'NUMBER':
     case 'CALC':
-      if (!found || ['', undefined, null].includes(field.value)) {
+      if (!found || ['', undefined, null].includes(field.value) || isNaN(Number(field.value))) {
         return <>{field.value}</>;
       }
       const property: any = found[1];
 
-      const value = property?.digit ? Number(field.value).toLocaleString() : field.value;
+      const casted = Number(field.value);
+      const scaled = property?.displayScale
+        ? Math.round(casted * Math.pow(10, Number(property.displayScale))) /
+          Math.pow(10, Number(property.displayScale))
+        : casted;
+      const separated = property?.digit ? Number(scaled).toLocaleString() : scaled;
+
+      console.log({ separated });
 
       if (property?.unit) {
         if (property.unitPosition === 'BEFORE') {
-          return <>{`${property.unit}${value}`}</>;
+          return <>{`${property.unit}${separated}`}</>;
         } else {
-          return <>{`${value}${property.unit}`}</>;
+          return <>{`${separated}${property.unit}`}</>;
         }
       }
-      return <>{field.value}</>;
+
+      return <>{separated}</>;
 
     case 'DATE':
       return <>{field.value ? new Date(field.value).toLocaleDateString() : ''}</>;
