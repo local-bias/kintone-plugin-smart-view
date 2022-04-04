@@ -1,9 +1,10 @@
-import React, { useState, VFC, VFCX } from 'react';
+import React, { Suspense, useState, VFC, VFCX } from 'react';
 import styled from '@emotion/styled';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
 
 import ConditionForm from './condition-form';
 import ConditionDeletionButton from '../condition-deletion-button';
+import ViewName from './view-name';
 
 type ContainerProps = Readonly<{ condition: kintone.plugin.Condition; index: number }>;
 type Props = ContainerProps & {
@@ -13,7 +14,12 @@ type Props = ContainerProps & {
 
 const Component: VFCX<Props> = ({ className, condition, index, expanded, onChange }) => (
   <Accordion {...{ expanded, onChange, className }} variant='outlined' square>
-    <AccordionSummary>設定{index + 1}</AccordionSummary>
+    <AccordionSummary>
+      設定{index + 1}
+      <Suspense fallback={null}>
+        <ViewName id={condition.viewId} />
+      </Suspense>
+    </AccordionSummary>
     <AccordionDetails>
       <ConditionForm {...{ condition, index }} />
     </AccordionDetails>
