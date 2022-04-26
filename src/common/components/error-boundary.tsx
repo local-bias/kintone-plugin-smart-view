@@ -106,7 +106,7 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: FC = ({ children }) => (
+const Container: FC<{ children: React.ReactNode }> = ({ children }) => (
   <ErrBoundary fallbackRender={(props) => <StyledComponent {...props} />}>{children}</ErrBoundary>
 );
 
