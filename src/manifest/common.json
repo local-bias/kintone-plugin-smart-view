@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": 260,
+  "version": 272,
   "type": "APP",
   "name": {
     "en": "faster search plugin",
