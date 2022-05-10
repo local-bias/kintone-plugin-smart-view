@@ -1,4 +1,4 @@
-import React, { Suspense, useState, VFC, VFCX } from 'react';
+import React, { Suspense, useState, FC, VFCX } from 'react';
 import styled from '@emotion/styled';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
 
@@ -35,7 +35,7 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: VFC<ContainerProps> = ({ condition, index }) => {
+const Container: FC<ContainerProps> = ({ condition, index }) => {
   const [expanded, setExpanded] = useState<boolean>(index === 0);
 
   const onChange = () => setExpanded((_expanded) => !_expanded);

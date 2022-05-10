@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, VFC, VFCX } from 'react';
+import React, { ChangeEventHandler, FC, VFCX } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,7 +28,7 @@ const Component: VFCX<Props> = ({ searchText, onSearchTextChange }) => (
   />
 );
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const setPaginationIndex = useSetRecoilState(paginationIndexState);
 

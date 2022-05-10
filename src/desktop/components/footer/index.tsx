@@ -1,9 +1,9 @@
-import React, { VFC } from 'react';
+import React, { FC } from 'react';
 
 import Layout from './layout';
 import Pagination from '../header/pagination';
 
-const Component: VFC = () => (
+const Component: FC = () => (
   <Layout>
     <Pagination />
   </Layout>

@@ -1,4 +1,4 @@
-import React, { Suspense, VFC, VFCX } from 'react';
+import React, { Suspense, FC, VFCX } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
@@ -25,7 +25,7 @@ const Component: VFCX<Props> = (props) => (
 
 const StyledComponent = styled(Component)``;
 
-const Container: VFC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC<ContainerProps> = ({ conditionIndex }) => {
   const [shownIndex, setShownIndex] = useRecoilState(listViewDialogShownIndexState);
 
   const onDialogClose = () => {

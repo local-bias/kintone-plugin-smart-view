@@ -1,11 +1,11 @@
-import { useEffect, VFC } from 'react';
+import { useEffect, FC } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { propertiesReadyState } from '../states/properties-ready';
 
 import { getFieldsWithoutIgnores } from '@common/kintone';
 import { appPropertiesState } from '../states/app-properties';
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const setReady = useSetRecoilState(propertiesReadyState);
   const setAppProperties = useSetRecoilState(appPropertiesState);
 

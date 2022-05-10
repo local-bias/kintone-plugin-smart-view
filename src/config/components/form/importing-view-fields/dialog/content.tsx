@@ -1,4 +1,4 @@
-import React, { VFC, VFCX } from 'react';
+import React, { FC, VFCX } from 'react';
 import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
@@ -31,7 +31,7 @@ const Component: VFCX<Props> = (props) => (
 
 const StyledComponent = styled(Component)``;
 
-const Container: VFC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC<ContainerProps> = ({ conditionIndex }) => {
   const setStorage = useSetRecoilState(storageState);
   const setDialogShownIndex = useSetRecoilState(listViewDialogShownIndexState);
   const listViews = useRecoilValue(listViewsState);

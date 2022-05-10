@@ -1,4 +1,4 @@
-import { useEffect, VFC } from 'react';
+import { useEffect, FC } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { getAppId, getQueryCondition, getQuickSearchString } from '@common/kintone';
@@ -10,7 +10,7 @@ import { pluginConditionState } from '../states/plugin-condition';
 import { ViewRecord } from '../static';
 import { katakana2hiragana } from '@common/utilities';
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);
   const setLoading = useSetRecoilState(loadingState);
   const condition = useRecoilValue(pluginConditionState);

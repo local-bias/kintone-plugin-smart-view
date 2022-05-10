@@ -1,4 +1,4 @@
-import React, { Suspense, VFC } from 'react';
+import React, { Suspense, FC } from 'react';
 import { useRecoilValue } from 'recoil';
 import { DeepReadonly } from 'utility-types';
 
@@ -13,7 +13,7 @@ import { Loading } from '@common/components/loading';
 
 type Props = DeepReadonly<{ exists: boolean; loading: boolean }>;
 
-const Component: VFC<Props> = ({ exists, loading }) => (
+const Component: FC<Props> = ({ exists, loading }) => (
   <Layout>
     {!exists && (
       <>
@@ -32,7 +32,7 @@ const Component: VFC<Props> = ({ exists, loading }) => (
   </Layout>
 );
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const exists = useRecoilValue(existsRecordState);
   const loading = useRecoilValue(loadingState);
 

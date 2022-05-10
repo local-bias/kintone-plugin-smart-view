@@ -1,4 +1,4 @@
-import React, { VFC } from 'react';
+import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
 import { sanitize } from 'dompurify';
@@ -7,7 +7,7 @@ import { appPropertiesState } from '../../states/app-properties';
 
 type ContainerProps = DeepReadonly<{ code: string; field: OneOf }>;
 
-const Container: VFC<ContainerProps> = ({ code, field }) => {
+const Container: FC<ContainerProps> = ({ code, field }) => {
   const properties = useRecoilValue(appPropertiesState);
 
   const found = Object.entries(properties).find(([key]) => code === key);

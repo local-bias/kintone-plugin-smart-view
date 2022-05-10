@@ -1,4 +1,4 @@
-import React, { VFC, VFCX } from 'react';
+import React, { FC, VFCX } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Pagination } from '@mui/material';
@@ -41,7 +41,7 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const records = useRecoilValue(filteredRecordsState);
   const [index, setIndex] = useRecoilState(paginationIndexState);
   const chunkSize = useRecoilValue(paginationChunkState);

@@ -1,4 +1,4 @@
-import React, { VFC } from 'react';
+import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { HeaderCell, headerCellsState } from '../../states/header-cells';
@@ -17,7 +17,7 @@ type Props = DeepReadonly<{
   onCellClick: (cell: DeepReadonly<HeaderCell>) => void;
 }>;
 
-const Component: VFC<Props> = ({ cells, sorting, onCellClick, sortable }) => (
+const Component: FC<Props> = ({ cells, sorting, onCellClick, sortable }) => (
   <thead>
     <tr>
       <th></th>
@@ -49,7 +49,7 @@ const Component: VFC<Props> = ({ cells, sorting, onCellClick, sortable }) => (
   </thead>
 );
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const cells = useRecoilValue(headerCellsState);
   const [sorting, setSorting] = useRecoilState(sortingState);
   const condition = useRecoilValue(pluginConditionState);

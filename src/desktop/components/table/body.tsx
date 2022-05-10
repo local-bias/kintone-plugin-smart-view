@@ -1,4 +1,4 @@
-import React, { VFC } from 'react';
+import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
 import { useRecoilValue } from 'recoil';
@@ -12,7 +12,7 @@ import { isMobile } from '@common/kintone';
 
 type Props = DeepReadonly<{ records: Record[]; condition: kintone.plugin.Condition }>;
 
-const Component: VFC<Props> = ({ records, condition }) => (
+const Component: FC<Props> = ({ records, condition }) => (
   <tbody>
     {records.map((record, i) => (
       <tr key={i}>
@@ -35,7 +35,7 @@ const Component: VFC<Props> = ({ records, condition }) => (
   </tbody>
 );
 
-const Container: VFC = () => {
+const Container: FC = () => {
   const records = useRecoilValue(displayingRecordsState);
   const condition = useRecoilValue(pluginConditionState)!;
 

@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, memo, VFC, VFCX } from 'react';
+import React, { ChangeEventHandler, memo, FC, VFCX } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { storageState } from '../../../states';
@@ -32,7 +32,7 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: VFC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC<ContainerProps> = ({ conditionIndex }) => {
   const [storage, setStorage] = useRecoilState(storageState);
   const views = useRecoilValue(customViewsState);
 
