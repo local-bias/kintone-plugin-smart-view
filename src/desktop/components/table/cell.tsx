@@ -75,8 +75,6 @@ const Container: FC<ContainerProps> = ({ code, field }) => {
         : casted;
       const separated = property?.digit ? Number(scaled).toLocaleString() : scaled;
 
-      console.log({ separated });
-
       if (property?.unit) {
         if (property.unitPosition === 'BEFORE') {
           return <>{`${property.unit}${separated}`}</>;
