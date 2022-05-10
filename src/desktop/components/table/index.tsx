@@ -11,32 +11,41 @@ import Body from './body';
 import Empty from './empty';
 import { Loading } from '@common/components/loading';
 
-type Props = DeepReadonly<{ exists: boolean; loading: boolean }>;
+const Table: FC = () => {
+  const exists = useRecoilValue(existsRecordState);
 
-const Component: FC<Props> = ({ exists, loading }) => (
-  <Layout>
-    {!exists && (
-      <>
-        {loading && <Loading label='レコードを取得しています' />}
-        {!loading && <Empty />}
-      </>
-    )}
-    {exists && (
-      <table>
-        <Suspense fallback={null}>
-          <Head />
-        </Suspense>
-        <Body />
-      </table>
-    )}
-  </Layout>
-);
+  if (!exists) {
+    return null;
+  }
+  return (
+    <table>
+      <Suspense fallback={null}>
+        <Head />
+      </Suspense>
+      <Body />
+    </table>
+  );
+};
 
-const Container: FC = () => {
+const PlaceHolder: FC = () => {
   const exists = useRecoilValue(existsRecordState);
   const loading = useRecoilValue(loadingState);
 
-  return <Component {...{ exists, loading }} />;
+  if (exists) {
+    return null;
+  }
+
+  if (loading) {
+    return <Loading label='レコードを取得しています' />;
+  }
+  return <Empty />;
 };
 
-export default Container;
+const Component: FC = () => (
+  <Layout>
+    <PlaceHolder />
+    <Table />
+  </Layout>
+);
+
+export default Component;
