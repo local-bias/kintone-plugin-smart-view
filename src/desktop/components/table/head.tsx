@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { HeaderCell, headerCellsState } from '../../states/header-cells';
 import { SORTABLE_FIELDS } from '../../static';
 import { Sorting, sortingState } from '../../states/sorting';
@@ -51,25 +51,29 @@ const Component: FC<Props> = ({ cells, sorting, onCellClick, sortable }) => (
 
 const Container: FC = () => {
   const cells = useRecoilValue(headerCellsState);
-  const [sorting, setSorting] = useRecoilState(sortingState);
+  const sorting = useRecoilValue(sortingState);
   const condition = useRecoilValue(pluginConditionState);
-  const setPaginationIndex = useSetRecoilState(paginationIndexState);
+
+  const onCellClick = useRecoilCallback(
+    ({ set, reset }) =>
+      (cell: DeepReadonly<HeaderCell>) => {
+        const { label, property } = cell;
+
+        reset(paginationIndexState);
+        set(sortingState, (_sorting) => {
+          const fieldCode = property?.code || label;
+
+          const order = (
+            _sorting.field === fieldCode ? (_sorting.order === 'desc' ? 'asc' : 'desc') : 'desc'
+          ) as Sorting['order'];
+
+          return { field: fieldCode, order };
+        });
+      },
+    []
+  );
 
   const sortable = !!condition?.sortable;
-
-  const onCellClick = (cell: DeepReadonly<HeaderCell>) => {
-    const { label, property } = cell;
-
-    setPaginationIndex(1);
-    setSorting((_sorting) => {
-      const fieldCode = property?.code || label;
-
-      const order =
-        _sorting.field === fieldCode ? (_sorting.order === 'desc' ? 'asc' : 'desc') : 'desc';
-
-      return { field: fieldCode, order };
-    });
-  };
 
   return <Component {...{ cells, sorting, onCellClick, sortable }} />;
 };
