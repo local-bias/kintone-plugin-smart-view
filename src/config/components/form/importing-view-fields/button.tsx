@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 import { DeepReadonly } from 'utility-types';
 import { Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -16,11 +16,13 @@ const Component: FC<Props> = ({ onClick }) => (
 );
 
 const Container: FC<ContainerProps> = ({ conditionIndex }) => {
-  const setDialogShownIndex = useSetRecoilState(listViewDialogShownIndexState);
-
-  const onClick = () => {
-    setDialogShownIndex(conditionIndex);
-  };
+  const onClick = useRecoilCallback(
+    ({ set }) =>
+      () => {
+        set(listViewDialogShownIndexState, conditionIndex);
+      },
+    [conditionIndex]
+  );
 
   return <Component {...{ onClick }} />;
 };

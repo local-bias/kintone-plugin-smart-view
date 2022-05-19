@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useSetRecoilState } from 'recoil';
 import { produce } from 'immer';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -26,15 +26,17 @@ const Component: FC<Props> = ({ addCondition, label }) => (
 );
 
 const Container: FC<ContainerProps> = ({ label }) => {
-  const setStorage = useSetRecoilState(storageState);
-
-  const addCondition = () => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions.push(getNewCondition());
-      })
-    );
-  };
+  const addCondition = useRecoilCallback(
+    ({ set }) =>
+      () => {
+        set(storageState, (_, _storage = _!) =>
+          produce(_storage, (draft) => {
+            draft.conditions.push(getNewCondition());
+          })
+        );
+      },
+    []
+  );
 
   return <Component {...{ label, addCondition }} />;
 };
