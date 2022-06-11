@@ -1,4 +1,4 @@
-import React, { FC, VFCX } from 'react';
+import React, { FC, useState, VFCX } from 'react';
 import { useRecoilCallback } from 'recoil';
 import styled from '@emotion/styled';
 import { useSnackbar } from 'notistack';
@@ -9,17 +9,22 @@ import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore
 import { storeStorage } from '@common/plugin';
 
 import { storageState } from '../states';
+import { getAppViews, updateAppViews } from '@common/kintone';
+import produce from 'immer';
+import { VIEW_ROOT_ID } from '@common/statics';
 
 type Props = {
+  loading: boolean;
   onSaveButtonClick: () => void;
   onBackButtonClick: () => void;
 };
 
-const Component: VFCX<Props> = ({ className, onSaveButtonClick, onBackButtonClick }) => (
+const Component: VFCX<Props> = ({ className, loading, onSaveButtonClick, onBackButtonClick }) => (
   <div {...{ className }}>
     <Button
       variant='contained'
       color='primary'
+      disabled={loading}
       onClick={onSaveButtonClick}
       startIcon={<SaveIcon />}
     >
@@ -29,6 +34,7 @@ const Component: VFCX<Props> = ({ className, onSaveButtonClick, onBackButtonClic
       variant='contained'
       color='inherit'
       onClick={onBackButtonClick}
+      disabled={loading}
       startIcon={<SettingsBackupRestoreIcon />}
     >
       プラグイン一覧へ戻る
@@ -50,28 +56,49 @@ const StyledComponent = styled(Component)`
 
 const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   const onBackButtonClick = () => history.back();
 
   const onSaveButtonClick = useRecoilCallback(
     ({ snapshot }) =>
       async () => {
-        const storage = await snapshot.getPromise(storageState);
+        try {
+          setLoading(true);
+          const storage = await snapshot.getPromise(storageState);
 
-        storeStorage(storage!, () => true);
-        enqueueSnackbar('設定を保存しました', {
-          variant: 'success',
-          action: (
-            <Button color='inherit' onClick={onBackButtonClick}>
-              プラグイン一覧に戻る
-            </Button>
-          ),
-        });
+          const views = await getAppViews();
+
+          const newViews = produce(views, (draft) => {
+            for (const condition of storage?.conditions || []) {
+              for (const view of Object.values(draft)) {
+                if (view.id === condition.viewId && view.type === 'CUSTOM') {
+                  view.html = `<div id='${VIEW_ROOT_ID}'></div>`;
+                  view.pager = false;
+                }
+              }
+            }
+          });
+
+          await updateAppViews(newViews);
+
+          storeStorage(storage!, () => true);
+          enqueueSnackbar('設定を保存しました', {
+            variant: 'success',
+            action: (
+              <Button color='inherit' onClick={onBackButtonClick}>
+                プラグイン一覧に戻る
+              </Button>
+            ),
+          });
+        } finally {
+          setLoading(false);
+        }
       },
     []
   );
 
-  return <StyledComponent {...{ onSaveButtonClick, onBackButtonClick }} />;
+  return <StyledComponent {...{ loading, onSaveButtonClick, onBackButtonClick }} />;
 };
 
 export default Container;
