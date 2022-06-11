@@ -44,9 +44,7 @@ const Component: VFCX<Props> = ({
       <div>
         <h3>テーブルを表示する一覧の設定</h3>
         <ViewIdForm conditionIndex={index} />
-        <small>
-          選択する一覧は必ず表示形式を「カスタマイズ」に設定し、「ページネーションを表示する」のチェックを外してください。
-        </small>
+        <small>表示形式が「カスタマイズ」の一覧が対象です。</small>
         <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
       </div>
     </Suspense>
