@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { css } from '@emotion/css';
 
 import App from './app';
+import { VIEW_ROOT_ID } from '@common/statics';
 
 const events: launcher.EventTypes = ['app.record.index.show'];
 
@@ -23,6 +24,7 @@ const action: launcher.Action = async (event, pluginId) => {
   `);
 
   const root =
+    document.querySelector(`#${VIEW_ROOT_ID}`) ||
     document.querySelector('.gaia-app-indexview-customview-html') ||
     document.querySelector('.gaia-mobile-app-customview') ||
     document.querySelector('.contents-gaia');

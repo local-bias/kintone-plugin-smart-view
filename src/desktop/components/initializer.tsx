@@ -1,7 +1,7 @@
 import { useEffect, FC } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { getAppId, getQueryCondition, getQuickSearchString } from '@common/kintone';
+import { getAppId, getQuery, getQuickSearchString } from '@common/kintone';
 import { getAllRecords } from '@common/kintone-rest-api';
 
 import { allViewRecordsState } from '../states/records';
@@ -28,7 +28,7 @@ const Container: FC = () => {
           throw new Error('アプリ情報が取得できませんでした');
         }
 
-        const query = getQueryCondition() || '';
+        const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
 
         const targetFields = condition.viewDisplayingFields.filter((field) => !!field);
         const fields = ['$id', ...targetFields];

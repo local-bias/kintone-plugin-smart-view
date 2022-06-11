@@ -7,3 +7,5 @@ export const LOCAL_STORAGE_KEY = 'ribbit-kintone-plugin';
 export const URL_HOMEPAGE = 'https://ribbit.konomi.app';
 export const URL_TWITTER = 'https://twitter.com/LbRibbit';
 export const URL_GITHUB = 'https://github.com/Local-Bias';
+
+export const VIEW_ROOT_ID = 'ribbit-smart-view-root';

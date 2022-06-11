@@ -1,4 +1,8 @@
-import { Properties, Record as KintoneRecord } from '@kintone/rest-api-client/lib/client/types';
+import {
+  Properties,
+  Record as KintoneRecord,
+  ViewForParameter,
+} from '@kintone/rest-api-client/lib/client/types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 
@@ -134,6 +138,17 @@ export const getAppViews = async () => {
   const { views } = await client.app.getViews({ app });
 
   return views;
+};
+
+export const updateAppViews = async (views: Record<string, ViewForParameter>) => {
+  const app = getAppId();
+
+  if (!app) {
+    throw new Error('アプリのフィールド情報が取得できませんでした');
+  }
+  const client = new KintoneRestAPIClient();
+
+  return client.app.updateViews({ app, views });
 };
 
 export const getQuickSearchString = (record: KintoneRecord): string => {
