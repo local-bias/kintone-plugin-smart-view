@@ -1,4 +1,4 @@
-import React, { Suspense, useState, FC, VFCX } from 'react';
+import React, { Suspense, useState, FC, FCX } from 'react';
 import styled from '@emotion/styled';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
 
@@ -12,7 +12,7 @@ type Props = ContainerProps & {
   onChange: () => void;
 };
 
-const Component: VFCX<Props> = ({ className, condition, index, expanded, onChange }) => (
+const Component: FCX<Props> = ({ className, condition, index, expanded, onChange }) => (
   <Accordion {...{ expanded, onChange, className }} variant='outlined' square>
     <AccordionSummary>
       設定{index + 1}

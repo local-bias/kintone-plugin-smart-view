@@ -1,10 +1,10 @@
-import React, { VFCX } from 'react';
+import React, { FCX } from 'react';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
 
 type Props = DeepReadonly<{ label: string }>;
 
-const Component: VFCX<Props> = ({ className, label }) => (
+const Component: FCX<Props> = ({ className, label }) => (
   <div {...{ className }}>
     <div>
       {['#fc0', '#fd5', '#fff'].map((color, i) => (

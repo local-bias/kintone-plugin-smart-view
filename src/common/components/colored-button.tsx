@@ -1,10 +1,10 @@
-import React, { VFCX } from 'react';
+import React, { FCX } from 'react';
 import styled from '@emotion/styled';
 import { default as Button, ButtonProps } from '@mui/material/Button';
 
 type Props = ButtonProps;
 
-const Component: VFCX<Props> = (props) => <Button variant='contained' {...props} />;
+const Component: FCX<Props> = (props) => <Button variant='contained' {...props} />;
 
 const StyledComponent = styled(Component)`
   background-color: #f7f9fa !important;

@@ -1,4 +1,4 @@
-import React, { FC, useState, VFCX } from 'react';
+import React, { FC, useState, FCX } from 'react';
 import { useRecoilCallback } from 'recoil';
 import styled from '@emotion/styled';
 import { useSnackbar } from 'notistack';
@@ -19,7 +19,7 @@ type Props = {
   onBackButtonClick: () => void;
 };
 
-const Component: VFCX<Props> = ({ className, loading, onSaveButtonClick, onBackButtonClick }) => (
+const Component: FCX<Props> = ({ className, loading, onSaveButtonClick, onBackButtonClick }) => (
   <div {...{ className }}>
     <Button
       variant='contained'

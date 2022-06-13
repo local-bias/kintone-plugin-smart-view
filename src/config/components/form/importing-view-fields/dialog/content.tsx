@@ -1,4 +1,4 @@
-import React, { FC, VFCX } from 'react';
+import React, { FC, FCX } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
@@ -15,7 +15,7 @@ type Props = ContainerProps &
     onListItemClick: (id: string) => void;
   }>;
 
-const Component: VFCX<Props> = (props) => {
+const Component: FCX<Props> = (props) => {
   const listViews = useRecoilValue(listViewsState);
 
   return (

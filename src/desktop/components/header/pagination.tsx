@@ -1,4 +1,4 @@
-import React, { FC, VFCX } from 'react';
+import React, { FC, FCX } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Pagination } from '@mui/material';
@@ -13,7 +13,7 @@ type Props = {
   chunkSize: number;
 };
 
-const Component: VFCX<Props> = ({ className, size, index, setIndex, chunkSize }) => (
+const Component: FCX<Props> = ({ className, size, index, setIndex, chunkSize }) => (
   <div {...{ className }}>
     {!isMobile() && (
       <div className='location'>

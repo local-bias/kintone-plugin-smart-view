@@ -1,4 +1,4 @@
-import React, { Suspense, FC, VFCX } from 'react';
+import React, { Suspense, FC, FCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
@@ -26,7 +26,7 @@ type Props = ContainerProps & {
   setIgnoreKatakana: (checked: boolean) => void;
 };
 
-const Component: VFCX<Props> = ({
+const Component: FCX<Props> = ({
   className,
   index,
   condition,

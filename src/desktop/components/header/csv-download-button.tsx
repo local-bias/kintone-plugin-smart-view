@@ -1,4 +1,4 @@
-import React, { FC, VFCX } from 'react';
+import React, { FC, FCX } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
@@ -12,7 +12,7 @@ import { pluginConditionState } from '../../states/plugin-condition';
 
 type Props = DeepReadonly<{ condition: kintone.plugin.Condition; onClick: () => void }>;
 
-const Component: VFCX<Props> = ({ onClick, className }) => (
+const Component: FCX<Props> = ({ onClick, className }) => (
   <Tooltip title='現在の検索条件でCSVファイルを出力します'>
     <Button
       {...{ className }}

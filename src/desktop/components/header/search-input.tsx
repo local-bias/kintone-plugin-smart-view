@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, FC, VFCX } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, FC, FCX } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,7 +11,7 @@ type Props = DeepReadonly<{
   onSearchTextChange: ChangeEventHandler<HTMLInputElement>;
 }>;
 
-const Component: VFCX<Props> = ({ searchText, onSearchTextChange }) => (
+const Component: FCX<Props> = ({ searchText, onSearchTextChange }) => (
   <TextField
     variant='outlined'
     color='primary'

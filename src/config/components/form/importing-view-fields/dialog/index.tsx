@@ -1,4 +1,4 @@
-import React, { Suspense, FC, VFCX } from 'react';
+import React, { Suspense, FC, FCX } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
@@ -14,7 +14,7 @@ type Props = ContainerProps &
     onDialogClose: () => void;
   }>;
 
-const Component: VFCX<Props> = (props) => (
+const Component: FCX<Props> = (props) => (
   <Dialog open={props.conditionIndex === props.shownIndex} onClose={props.onDialogClose}>
     <DialogTitle>フィールド情報をインポートする一覧を選択</DialogTitle>
     <Suspense fallback={<CircularProgress />}>

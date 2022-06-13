@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, memo, FC, VFCX } from 'react';
+import React, { ChangeEventHandler, memo, FC, FCX } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { storageState } from '../../../states';
@@ -14,7 +14,7 @@ type Props = Readonly<{
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }>;
 
-const Component: VFCX<Props> = memo(({ className, views, viewId, onChange }) => (
+const Component: FCX<Props> = memo(({ className, views, viewId, onChange }) => (
   <div {...{ className }}>
     <TextField select label='一覧の名前' value={viewId} {...{ onChange }}>
       {Object.entries(views).map(([name, { id }], i) => (

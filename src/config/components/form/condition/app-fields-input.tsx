@@ -1,4 +1,4 @@
-import React, { FC, VFCX } from 'react';
+import React, { FC, FCX } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Properties } from '@kintone/rest-api-client/lib/client/types';
@@ -12,7 +12,7 @@ type Props = ContainerProps & {
   fields: Properties | null;
 };
 
-const Component: VFCX<Props> = ({ className, fields, ...others }) => (
+const Component: FCX<Props> = ({ className, fields, ...others }) => (
   <>
     {!fields && <CircularProgress />}
     {!!fields && (
