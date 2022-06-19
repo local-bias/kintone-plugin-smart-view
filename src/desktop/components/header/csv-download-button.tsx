@@ -1,7 +1,6 @@
 import React, { FC, FCX } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
-import { DeepReadonly } from 'utility-types';
 import { useSnackbar } from 'notistack';
 import { Button, Tooltip } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -10,21 +9,54 @@ import { Record } from '@kintone/rest-api-client/lib/client/types';
 import { filteredRecordsState } from '../../states/records';
 import { pluginConditionState } from '../../states/plugin-condition';
 
-type Props = DeepReadonly<{ condition: kintone.plugin.Condition; onClick: () => void }>;
+const Component: FCX = ({ className }) => {
+  const { enqueueSnackbar } = useSnackbar();
 
-const Component: FCX<Props> = ({ onClick, className }) => (
-  <Tooltip title='現在の検索条件でCSVファイルを出力します'>
-    <Button
-      {...{ className }}
-      variant='contained'
-      color='inherit'
-      endIcon={<GetAppIcon />}
-      onClick={onClick}
-    >
-      CSV
-    </Button>
-  </Tooltip>
-);
+  const onClick = useRecoilCallback(
+    ({ snapshot }) =>
+      async () => {
+        try {
+          const records = await snapshot.getPromise(filteredRecordsState);
+
+          if (!records.length) {
+            enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {
+              variant: 'warning',
+            });
+            return;
+          }
+          const condition = await snapshot.getPromise(pluginConditionState);
+          if (!condition) {
+            enqueueSnackbar('プラグインの設定情報の取得に失敗しました', {
+              variant: 'error',
+            });
+            return;
+          }
+
+          download(condition, records);
+
+          enqueueSnackbar('CSVを出力しました', { variant: 'success' });
+        } catch (error) {
+          console.error('CSV出力に失敗しました', error);
+          enqueueSnackbar('CSV出力に失敗しました', { variant: 'error' });
+        }
+      },
+    []
+  );
+
+  return (
+    <Tooltip title='現在の検索条件でCSVファイルを出力します'>
+      <Button
+        {...{ className }}
+        variant='contained'
+        color='inherit'
+        endIcon={<GetAppIcon />}
+        onClick={onClick}
+      >
+        CSV
+      </Button>
+    </Tooltip>
+  );
+};
 
 const StyledComponent = styled(Component)`
   color: #1976d2;
@@ -37,29 +69,9 @@ const StyledComponent = styled(Component)`
 
 const Container: FC = () => {
   const condition = useRecoilValue(pluginConditionState)!;
-  const { enqueueSnackbar } = useSnackbar();
-
-  const onClick = useRecoilCallback(({ snapshot }) => async () => {
-    try {
-      const records = await snapshot.getPromise(filteredRecordsState);
-
-      if (!records.length) {
-        enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {
-          variant: 'warning',
-        });
-        return;
-      }
-      download(condition, records);
-
-      enqueueSnackbar('CSVを出力しました', { variant: 'success' });
-    } catch (error) {
-      console.error('CSV出力に失敗しました', error);
-      enqueueSnackbar('CSV出力に失敗しました', { variant: 'error' });
-    }
-  });
 
   if (condition.enableCSVExport) {
-    return <StyledComponent {...{ condition, onClick }} />;
+    return <StyledComponent />;
   }
   return null;
 };
