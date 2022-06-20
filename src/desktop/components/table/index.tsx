@@ -1,6 +1,5 @@
 import React, { Suspense, FC } from 'react';
 import { useRecoilValue } from 'recoil';
-import { DeepReadonly } from 'utility-types';
 
 import { loadingState } from '../../states/loading';
 import { existsRecordState } from '../../states/exsists-record';
