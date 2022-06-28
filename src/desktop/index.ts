@@ -1,4 +1,5 @@
 import Launcher from '@common/launcher';
+import '@common/sentry';
 
 import event from './event';
 

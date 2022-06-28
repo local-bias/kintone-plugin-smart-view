@@ -3,7 +3,7 @@ import { RecoilRoot } from 'recoil';
 import { SnackbarProvider } from 'notistack';
 
 import { restoreStorage } from '@common/plugin';
-import { ErrorBoundary } from '@common/components/error-boundary';
+import { PluginErrorBoundary } from '@common/components/error-boundary';
 import { Loading } from '@common/components/loading';
 
 import { pluginIdState, storageState } from './states';
@@ -19,14 +19,14 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
         set(storageState, restoreStorage(pluginId));
       }}
     >
-      <ErrorBoundary>
+      <PluginErrorBoundary>
         <SnackbarProvider maxSnack={3}>
           <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
             <Form />
             <Footer />
           </Suspense>
         </SnackbarProvider>
-      </ErrorBoundary>
+      </PluginErrorBoundary>
     </RecoilRoot>
     <SocialIcons />
   </>

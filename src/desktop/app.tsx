@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { RecoilRoot } from 'recoil';
 import { SnackbarProvider } from 'notistack';
 
-import { ErrorBoundary } from '@common/components/error-boundary';
+import { PluginErrorBoundary } from '@common/components/error-boundary';
 
 import { pluginConditionState } from './states/plugin-condition';
 import Initializer from './components/initializer';
@@ -21,7 +21,7 @@ const Component: FC<Props> = ({ condition }) => (
     }}
   >
     <SnackbarProvider maxSnack={1}>
-      <ErrorBoundary>
+      <PluginErrorBoundary>
         <Initializer />
         <AppPropertiesObserver />
         <Layout>
@@ -29,7 +29,7 @@ const Component: FC<Props> = ({ condition }) => (
           <Table />
           <Footer />
         </Layout>
-      </ErrorBoundary>
+      </PluginErrorBoundary>
     </SnackbarProvider>
   </RecoilRoot>
 );
