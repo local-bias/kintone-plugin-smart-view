@@ -7,10 +7,24 @@ export const restoreStorage = (id: string): kintone.plugin.Storage => {
   if (!Object.keys(config).length) {
     return createConfig();
   }
-  return Object.entries(config).reduce<any>(
+
+  const restored: kintone.plugin.Storage = Object.entries(config).reduce<any>(
     (acc, [key, value]) => ({ ...acc, [key]: JSON.parse(value) }),
     {}
   );
+
+  for (const condition of restored.conditions) {
+    //@ts-ignore
+    if (condition.viewDisplayingFields && !condition.displayingFields) {
+      //@ts-ignore
+      condition.displayingFields = (condition.viewDisplayingFields || []).map((field) => ({
+        code: field,
+        width: 0,
+      }));
+    }
+  }
+
+  return restored;
 };
 
 /**
@@ -34,7 +48,7 @@ const createConfig = (): kintone.plugin.Storage => ({
 
 export const getNewCondition = (): kintone.plugin.Condition => ({
   viewId: '',
-  viewDisplayingFields: [''],
+  displayingFields: [{ code: '', width: 0 }],
   enableCSVExport: false,
   editable: false,
   sortable: false,

@@ -2,7 +2,7 @@ import React, { Suspense, FC, FCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
-import { FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
+import { FormControlLabel, IconButton, Switch, TextField, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Properties } from '@kintone/rest-api-client/lib/client/types';
@@ -16,9 +16,6 @@ import ImportingViewFields from '../importing-view-fields';
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 type Props = ContainerProps & {
   appFields: Properties;
-  onViewDisplayingFieldsChange: (i: number, value: string) => void;
-  addViewDisplayingField: (rowIndex: number) => void;
-  removeViewDisplayingField: (rowIndex: number) => void;
   setCSVExport: (checked: boolean) => void;
   setEditable: (checked: boolean) => void;
   setSortable: (checked: boolean) => void;
@@ -30,9 +27,6 @@ const Component: FCX<Props> = ({
   className,
   index,
   condition,
-  onViewDisplayingFieldsChange,
-  addViewDisplayingField,
-  removeViewDisplayingField,
   setCSVExport,
   setEditable,
   setSortable,
@@ -50,34 +44,7 @@ const Component: FCX<Props> = ({
         <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
       </div>
     </Suspense>
-    <div>
-      <div className='titleWithButton'>
-        <h3>テーブルに表示するフィールドの設定</h3>
-        <ImportingViewFields conditionIndex={index} />
-      </div>
-      {condition.viewDisplayingFields.map((field, i) => (
-        <div key={i} className='row'>
-          <AppFieldsInput
-            variant='standard'
-            label='対象フィールド'
-            value={field}
-            onChange={(e) => onViewDisplayingFieldsChange(i, e.target.value)}
-          />
-          <Tooltip title='フィールドを追加する'>
-            <IconButton size='small' onClick={() => addViewDisplayingField(i)}>
-              <AddIcon fontSize='small' />
-            </IconButton>
-          </Tooltip>
-          {condition.viewDisplayingFields.length > 1 && (
-            <Tooltip title='このフィールドを削除する'>
-              <IconButton size='small' onClick={() => removeViewDisplayingField(i)}>
-                <DeleteIcon fontSize='small' />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
-      ))}
-    </div>
+    <DisplayingFieldsForm index={index} condition={condition} />
     <div>
       <h3>その他のオプション</h3>
       <FormControlLabel
@@ -138,10 +105,6 @@ const StyledComponent = styled(Component)`
     padding-left: 12px;
   }
 
-  .MuiTextField-root {
-    min-width: 200px;
-  }
-
   .row {
     display: flex;
     align-items: center;
@@ -180,29 +143,6 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
   const appFields = useRecoilValue(appFieldsState);
   const setStorage = useSetRecoilState(storageState);
 
-  const onViewDisplayingFieldsChange = (i: number, value: string) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index].viewDisplayingFields[i] = value;
-      })
-    );
-  };
-
-  const addViewDisplayingField = (rowIndex: number) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index].viewDisplayingFields.splice(rowIndex + 1, 0, '');
-      })
-    );
-  };
-  const removeViewDisplayingField = (rowIndex: number) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index].viewDisplayingFields.splice(rowIndex, 1);
-      })
-    );
-  };
-
   const onSwitchChange = (checked: boolean, option: keyof kintone.plugin.Condition) => {
     setStorage((_, _storage = _!) =>
       produce(_storage, (draft) => {
@@ -223,9 +163,6 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
         condition,
         index,
         appFields,
-        onViewDisplayingFieldsChange,
-        addViewDisplayingField,
-        removeViewDisplayingField,
         setCSVExport,
         setEditable,
         setSortable,
@@ -237,3 +174,81 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
 };
 
 export default Container;
+
+const DisplayingFieldsForm: FC<{ index: number; condition: kintone.plugin.Condition }> = ({
+  index,
+  condition,
+}) => {
+  const setStorage = useSetRecoilState(storageState);
+
+  const onViewDisplayingFieldsChange = (i: number, value: string) => {
+    setStorage((_, _storage = _!) =>
+      produce(_storage, (draft) => {
+        draft.conditions[index].displayingFields[i].code = value;
+      })
+    );
+  };
+
+  const onFieldWidthChange = (i: number, value: string) => {
+    setStorage((_, _storage = _!) =>
+      produce(_storage, (draft) => {
+        draft.conditions[index].displayingFields[i].width = Number(value);
+      })
+    );
+  };
+
+  const addViewDisplayingField = (rowIndex: number) => {
+    setStorage((_, _storage = _!) =>
+      produce(_storage, (draft) => {
+        draft.conditions[index].displayingFields.splice(rowIndex + 1, 0, '');
+      })
+    );
+  };
+  const removeViewDisplayingField = (rowIndex: number) => {
+    setStorage((_, _storage = _!) =>
+      produce(_storage, (draft) => {
+        draft.conditions[index].displayingFields.splice(rowIndex, 1);
+      })
+    );
+  };
+
+  return (
+    <div>
+      <div className='titleWithButton'>
+        <h3>テーブルに表示するフィールドの設定</h3>
+        <ImportingViewFields conditionIndex={index} />
+      </div>
+      {condition.displayingFields.map((field, i) => (
+        <div key={i} className='row'>
+          <AppFieldsInput
+            variant='standard'
+            style={{ flex: '1', maxWidth: '300px' }}
+            label='対象フィールド'
+            value={field.code}
+            onChange={(e) => onViewDisplayingFieldsChange(i, e.target.value)}
+          />
+          <TextField
+            type='number'
+            style={{ flex: '0.5', maxWidth: '120px' }}
+            variant='outlined'
+            label='幅の上限(β)'
+            value={field.width}
+            onChange={(e) => onFieldWidthChange(i, e.target.value)}
+          />
+          <Tooltip title='フィールドを追加する'>
+            <IconButton size='small' onClick={() => addViewDisplayingField(i)}>
+              <AddIcon fontSize='small' />
+            </IconButton>
+          </Tooltip>
+          {condition.displayingFields.length > 1 && (
+            <Tooltip title='このフィールドを削除する'>
+              <IconButton size='small' onClick={() => removeViewDisplayingField(i)}>
+                <DeleteIcon fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};

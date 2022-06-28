@@ -4,7 +4,7 @@ import { pluginConditionState } from './plugin-condition';
 import { propertiesReadyState } from './properties-ready';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 
-export type HeaderCell = { label: string; property: OneOf | null };
+export type HeaderCell = { label: string; property: OneOf | null; width: number };
 
 export const headerCellsState = selector<HeaderCell[]>({
   key: 'headerCellsState',
@@ -13,21 +13,25 @@ export const headerCellsState = selector<HeaderCell[]>({
     const appFields = get(appPropertiesState);
     const propertiesReady = get(propertiesReadyState);
 
-    if (!condition?.viewDisplayingFields.length) {
+    if (!condition?.displayingFields.length) {
       return [];
     }
 
     if (!propertiesReady) {
-      return condition.viewDisplayingFields.map((field) => ({ label: field, property: null }));
+      return condition.displayingFields.map(({ code, width }) => ({
+        label: code,
+        property: null,
+        width,
+      }));
     }
 
-    const cells = condition.viewDisplayingFields.map<HeaderCell>((fieldCode) => {
-      const found = Object.values(appFields).find((property) => property.code === fieldCode);
+    const cells = condition.displayingFields.map<HeaderCell>(({ code, width }) => {
+      const found = Object.values(appFields).find((property) => property.code === code);
 
       if (found) {
-        return { label: found.label, property: found };
+        return { label: found.label, property: found, width };
       }
-      return { label: fieldCode, property: null };
+      return { label: code, property: null, width };
     });
 
     return cells;

@@ -79,11 +79,11 @@ const Container: FC = () => {
 export default Container;
 
 const download = (condition: kintone.plugin.Condition, records: Record[]) => {
-  const header = condition.viewDisplayingFields;
+  const header = condition.displayingFields;
 
   const body = records.map((record) =>
-    header.map((key) => {
-      const field = record[key];
+    header.map(({ code }) => {
+      const field = record[code];
       if (!field) {
         return '';
       }

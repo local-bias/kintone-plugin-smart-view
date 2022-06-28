@@ -30,7 +30,8 @@ const Container: FC = () => {
 
         const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
 
-        const targetFields = condition.viewDisplayingFields.filter((field) => !!field);
+        const filtered = condition.displayingFields.filter(({ code }) => !!code);
+        const targetFields = filtered.map(({ code }) => code);
         const fields = ['$id', ...targetFields];
 
         await getAllRecords({

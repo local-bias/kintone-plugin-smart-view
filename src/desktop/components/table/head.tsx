@@ -21,15 +21,16 @@ const Component: FC<Props> = ({ cells, sorting, onCellClick, sortable }) => (
   <thead>
     <tr>
       <th></th>
-      {cells.map(({ label, property }, i) => (
+      {cells.map(({ label, property, width }, i) => (
         <th
           key={i}
+          style={width !== 0 ? { width } : undefined}
           className={
             sortable && property && SORTABLE_FIELDS.includes(property.type) ? 'sortable' : ''
           }
           onClick={
             sortable && property && SORTABLE_FIELDS.includes(property.type)
-              ? () => onCellClick({ label, property })
+              ? () => onCellClick({ label, property, width })
               : () => null
           }
         >

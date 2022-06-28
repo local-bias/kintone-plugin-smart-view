@@ -6,7 +6,6 @@ const Component: FCwC = ({ children, className }) => <div {...{ className }}>{ch
 const StyledComponent = styled(Component)`
   table {
     width: 100%;
-    white-space: nowrap;
     background-color: #fff;
     font-size: 88%;
     @media screen {
@@ -40,6 +39,7 @@ const StyledComponent = styled(Component)`
     }
 
     thead {
+      white-space: nowrap;
       tr {
         th {
           background-color: #fff;

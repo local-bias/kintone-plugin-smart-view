@@ -25,9 +25,13 @@ const Component: FC<Props> = ({ records, condition }) => (
             <InsertDriveFileIcon />
           </a>
         </td>
-        {condition.viewDisplayingFields.map((field, j) => (
-          <td key={j} className={['NUMBER', 'CALC'].includes(record[field]?.type) ? 'right' : ''}>
-            <Cell code={field} field={record[field]} />
+        {condition.displayingFields.map(({ code, width }, j) => (
+          <td
+            key={j}
+            style={width !== 0 ? { width } : { whiteSpace: 'nowrap' }}
+            className={['NUMBER', 'CALC'].includes(record[code]?.type) ? 'right' : ''}
+          >
+            <Cell code={code} field={record[code]} />
           </td>
         ))}
       </tr>

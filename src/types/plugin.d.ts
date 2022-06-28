@@ -9,7 +9,10 @@ declare namespace kintone {
 
     type Condition = {
       viewId: string;
-      viewDisplayingFields: string[];
+      displayingFields: {
+        code: string;
+        width: number;
+      }[];
       enableCSVExport: boolean;
       editable: boolean;
       sortable: boolean;
