@@ -1,13 +1,12 @@
 import React, { Suspense, FC, FCX } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
 import { FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Properties } from '@kintone/rest-api-client/lib/client/types';
 
-import { appFieldsState, storageState } from '../../../states';
+import { storageState } from '../../../states';
 
 import AppFieldsInput from './app-fields-input';
 import ViewIdForm from './view-id';
@@ -15,7 +14,6 @@ import ImportingViewFields from '../importing-view-fields';
 
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 type Props = ContainerProps & {
-  appFields: Properties;
   onViewDisplayingFieldsChange: (i: number, value: string) => void;
   addViewDisplayingField: (rowIndex: number) => void;
   removeViewDisplayingField: (rowIndex: number) => void;
@@ -58,10 +56,8 @@ const Component: FCX<Props> = ({
       {condition.viewDisplayingFields.map((field, i) => (
         <div key={i} className='row'>
           <AppFieldsInput
-            variant='standard'
-            label='対象フィールド'
             value={field}
-            onChange={(e) => onViewDisplayingFieldsChange(i, e.target.value)}
+            onChange={(code) => onViewDisplayingFieldsChange(i, code)}
           />
           <Tooltip title='フィールドを追加する'>
             <IconButton size='small' onClick={() => addViewDisplayingField(i)}>
@@ -177,7 +173,6 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC<ContainerProps> = ({ condition, index }) => {
-  const appFields = useRecoilValue(appFieldsState);
   const setStorage = useSetRecoilState(storageState);
 
   const onViewDisplayingFieldsChange = (i: number, value: string) => {
@@ -222,7 +217,6 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
       {...{
         condition,
         index,
-        appFields,
         onViewDisplayingFieldsChange,
         addViewDisplayingField,
         removeViewDisplayingField,

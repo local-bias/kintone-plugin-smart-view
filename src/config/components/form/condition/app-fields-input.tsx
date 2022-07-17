@@ -1,38 +1,40 @@
-import React, { FC, FCX } from 'react';
+import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
-import { Properties } from '@kintone/rest-api-client/lib/client/types';
-import { CircularProgress, TextField, MenuItem, TextFieldProps } from '@mui/material';
+import { CircularProgress, TextField, Autocomplete } from '@mui/material';
 
-import { appFieldsState } from '../../../states';
+import { appFieldsState } from '../../../states/app-fields';
+import { kx } from '../../../../types/kintone.api';
 
-type ContainerProps = TextFieldProps;
-
-type Props = ContainerProps & {
-  fields: Properties | null;
+type ContainerProps = {
+  value: string;
+  onChange: (code: string) => void;
 };
 
-const Component: FCX<Props> = ({ className, fields, ...others }) => (
+type Props = ContainerProps & {
+  fields: kx.FieldProperty[];
+};
+
+const Component: FC<Props> = ({ fields, value, onChange }) => (
   <>
     {!fields && <CircularProgress />}
     {!!fields && (
-      <TextField {...others} select>
-        {Object.values(fields).map(({ code, label }, i) => (
-          <MenuItem key={i} value={code}>
-            {label}({code})
-          </MenuItem>
-        ))}
-      </TextField>
+      <Autocomplete
+        value={fields.find((field) => field.code === value)}
+        sx={{ width: '350px' }}
+        options={fields}
+        onChange={(_, option) => onChange(option?.code || '')}
+        renderInput={(params) => (
+          <TextField {...params} label='対象フィールド' variant='outlined' color='primary' />
+        )}
+      />
     )}
   </>
 );
 
-const StyledComponent = styled(Component)``;
-
 const Container: FC<ContainerProps> = (props) => {
   const fields = useRecoilValue(appFieldsState);
 
-  return <StyledComponent {...{ ...props, fields }} />;
+  return <Component {...{ ...props, fields }} />;
 };
 
 export default Container;

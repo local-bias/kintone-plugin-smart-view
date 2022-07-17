@@ -1,13 +1,16 @@
 import { selector } from 'recoil';
-import { Properties } from '@kintone/rest-api-client/lib/client/types';
 import { getFieldsWithoutIgnores } from '@common/kintone';
+import { kx } from '../../types/kintone.api';
 
-const state = selector<Properties>({
-  key: 'AppFields',
+const PREFIX = 'kintone';
+
+export const appFieldsState = selector<kx.FieldProperty[]>({
+  key: `${PREFIX}appFieldsState`,
   get: async () => {
     const properties = await getFieldsWithoutIgnores();
-    return properties;
+
+    const values = Object.values(properties);
+
+    return values.sort((a, b) => a.label.localeCompare(b.label, 'ja'));
   },
 });
-
-export default state;
