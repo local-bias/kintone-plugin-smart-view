@@ -13,6 +13,8 @@ declare namespace kintone {
       enableCSVExport: boolean;
       editable: boolean;
       sortable: boolean;
+      paginationChunk?: number;
+      enablesPaginationChunkControl?: boolean;
       ignoresLetterCase?: boolean;
       ignoresKatakana?: boolean;
     };

@@ -11,6 +11,7 @@ import Layout from './components/layout';
 import Header from './components/header';
 import Table from './components/table';
 import Footer from './components/footer';
+import { paginationChunkState } from './states/pagination';
 
 type Props = Readonly<{ condition: kintone.plugin.Condition }>;
 
@@ -18,6 +19,7 @@ const Component: FC<Props> = ({ condition }) => (
   <RecoilRoot
     initializeState={({ set }) => {
       set(pluginConditionState, condition);
+      set(paginationChunkState, condition.paginationChunk || 100);
     }}
   >
     <SnackbarProvider maxSnack={1}>

@@ -12,6 +12,9 @@ import AppFieldsInput from './app-fields-input';
 import ViewIdForm from './view-id';
 import ImportingViewFields from '../importing-view-fields';
 
+import PaginationChunkForm from './form-pagination-chunk';
+import PaginationControlForm from './form-pagination-control';
+
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 type Props = ContainerProps & {
   onViewDisplayingFieldsChange: (i: number, value: string) => void;
@@ -42,9 +45,7 @@ const Component: FCX<Props> = ({
       <div>
         <h3>テーブルを表示する一覧の設定</h3>
         <ViewIdForm conditionIndex={index} />
-        <small>
-          選択する一覧は必ず表示形式を「カスタマイズ」に設定し、「ページネーションを表示する」のチェックを外してください。
-        </small>
+        <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
         <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
       </div>
     </Suspense>
@@ -54,7 +55,7 @@ const Component: FCX<Props> = ({
         <ImportingViewFields conditionIndex={index} />
       </div>
       {condition.viewDisplayingFields.map((field, i) => (
-        <div key={i} className='row'>
+        <div key={`${i}${field}`} className='row'>
           <AppFieldsInput
             value={field}
             onChange={(code) => onViewDisplayingFieldsChange(i, code)}
@@ -73,6 +74,12 @@ const Component: FCX<Props> = ({
           )}
         </div>
       ))}
+    </div>
+
+    <div>
+      <h3>ページネーションの設定</h3>
+      <PaginationControlForm condition={condition} index={index} />
+      <PaginationChunkForm condition={condition} index={index} />
     </div>
     <div>
       <h3>その他のオプション</h3>
