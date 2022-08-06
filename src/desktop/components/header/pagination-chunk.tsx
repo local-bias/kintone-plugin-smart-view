@@ -20,12 +20,12 @@ const Component: FC = () => {
       <TextField
         label='表示件数'
         select
-        variant='standard'
+        variant='outlined'
         color='primary'
         size='small'
         value={paginationChunk}
         onChange={onChunkChange}
-        sx={{ minWidth: '70px' }}
+        sx={{ minWidth: '80px' }}
       >
         {[20, 40, 60, 80, 100].map((chunk) => (
           <MenuItem key={chunk} value={chunk}>

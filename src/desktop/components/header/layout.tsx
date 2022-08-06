@@ -10,6 +10,7 @@ const StyledComponent = styled(Component)`
 
   & > div {
     display: flex;
+    align-items: center;
     gap: 16px;
   }
 
