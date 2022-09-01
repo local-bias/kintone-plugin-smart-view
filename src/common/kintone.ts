@@ -18,6 +18,26 @@ const DEFAULT_DEFINED_FIELDS: PickType<OneOf, 'type'>[] = [
 
 const IGNORE_FIELDS: PickType<OneOf, 'type'>[] = ['GROUP'];
 
+class FlexKintone extends KintoneRestAPIClient {
+  constructor(...options: ConstructorParameters<typeof KintoneRestAPIClient>) {
+    const url = kintone.api.url('/k/v1/app', true);
+    const found = url.match(/k\/guest\/([0-9]+)\//);
+
+    if (found && found.length > 1) {
+      super({
+        guestSpaceId: found[1],
+        ...(options[0] || {}),
+      });
+      return;
+    }
+
+    super(...options);
+  }
+}
+
+/** REST APIクライアント(シングルトン) */
+export const kintoneClient = new FlexKintone();
+
 /**
  * 実行されている環境がモバイル端末である場合はTrueを返却します
  */
@@ -86,9 +106,7 @@ export const getAppFields = async (targetApp?: string | number) => {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const client = new KintoneRestAPIClient();
-
-  const { properties } = await client.app.getFormFields({ app });
+  const { properties } = await kintoneClient.app.getFormFields({ app });
 
   return properties;
 };
@@ -120,9 +138,7 @@ export const getAppLayout = async () => {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const client = new KintoneRestAPIClient();
-
-  const { layout } = await client.app.getFormLayout({ app });
+  const { layout } = await kintoneClient.app.getFormLayout({ app });
 
   return layout;
 };
@@ -134,8 +150,7 @@ export const getAppViews = async () => {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const client = new KintoneRestAPIClient();
-  const { views } = await client.app.getViews({ app });
+  const { views } = await kintoneClient.app.getViews({ app });
 
   return views;
 };
@@ -146,9 +161,8 @@ export const updateAppViews = async (views: Record<string, ViewForParameter>) =>
   if (!app) {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
-  const client = new KintoneRestAPIClient();
 
-  return client.app.updateViews({ app, views });
+  return kintoneClient.app.updateViews({ app, views });
 };
 
 export const getQuickSearchString = (record: KintoneRecord): string => {
