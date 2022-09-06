@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Pagination } from '@mui/material';
 import { filteredRecordsState } from '../../states/records';
 import { paginationIndexState, paginationChunkState } from '../../states/pagination';
-import { isMobile } from '@common/kintone';
+import { isMobile } from '@lb-ribbit/kintone-xapp';
 
 type Props = {
   size: number;

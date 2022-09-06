@@ -1,7 +1,7 @@
 import { useEffect, FC } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { getAppId, getQuery, getQuickSearchString } from '@common/kintone';
+import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { getAllRecords } from '@common/kintone-rest-api';
 
 import { allViewRecordsState } from '../states/records';
@@ -9,6 +9,7 @@ import { loadingState } from '../states/loading';
 import { pluginConditionState } from '../states/plugin-condition';
 import { ViewRecord } from '../static';
 import { katakana2hiragana } from '@common/utilities';
+import { getQuickSearchString } from '@common/kintone';
 
 const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);

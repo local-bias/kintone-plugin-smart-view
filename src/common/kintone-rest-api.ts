@@ -1,5 +1,5 @@
 import { Record } from '@kintone/rest-api-client/lib/client/types';
-import { getAppId } from './kintone';
+import { getAppId } from '@lb-ribbit/kintone-xapp';
 
 const END_POINT = '/k/v1/records';
 
