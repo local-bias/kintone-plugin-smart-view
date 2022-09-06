@@ -45,7 +45,7 @@ export const isMobile = (eventType?: string) => {
   if (eventType) {
     return eventType.includes('mobile.');
   }
-  return cybozu?.data?.IS_MOBILE_DEVICE ?? !kintone.app.getId();
+  return !kintone.app.getId();
 };
 
 export const getApp = (eventType?: string): typeof kintone.mobile.app | typeof kintone.app =>
