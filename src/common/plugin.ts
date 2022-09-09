@@ -37,7 +37,7 @@ export const getNewCondition = (): kintone.plugin.Condition => ({
   viewDisplayingFields: [''],
   enableCSVExport: false,
   editable: false,
-  sortable: false,
+  sortable: true,
   ignoresLetterCase: true,
   ignoresKatakana: true,
 });
