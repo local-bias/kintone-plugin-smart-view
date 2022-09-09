@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { storageState } from '../../../states';
 import produce from 'immer';
 import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
-import { MenuItem, TextField } from '@mui/material';
+import { MenuItem, Skeleton, TextField } from '@mui/material';
 import { customViewsState } from '../../../states/app-views';
 
 type ContainerProps = Readonly<{ conditionIndex: number }>;
@@ -35,6 +35,14 @@ const StyledComponent = styled(Component)`
 const Container: FC<ContainerProps> = ({ conditionIndex }) => {
   const [storage, setStorage] = useRecoilState(storageState);
   const views = useRecoilValue(customViewsState);
+
+  if (!views) {
+    return (
+      <div style={{ marginLeft: '8px' }}>
+        <Skeleton width={250} height={56} />
+      </div>
+    );
+  }
 
   const { viewId } = storage!.conditions[conditionIndex];
 

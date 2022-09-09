@@ -2,7 +2,7 @@ import React, { FC, FCX } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
-import { DialogContent, List, ListItem, ListItemButton } from '@mui/material';
+import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
 import { listViewsState } from '../../../../states/app-views';
 import { storageState } from '../../../../states';
 import { useSnackbar } from 'notistack';
@@ -17,6 +17,16 @@ type Props = ContainerProps &
 
 const Component: FCX<Props> = (props) => {
   const listViews = useRecoilValue(listViewsState);
+
+  if (!listViews) {
+    return (
+      <div>
+        <Skeleton height={32} />
+        <Skeleton height={32} />
+        <Skeleton height={32} />
+      </div>
+    );
+  }
 
   return (
     <List>
@@ -39,7 +49,7 @@ const Container: FC<ContainerProps> = ({ conditionIndex }) => {
           const storage = await snapshot.getPromise(storageState);
           const viewsSnapshot = await snapshot.getPromise(listViewsState);
 
-          if (!storage) {
+          if (!storage || !viewsSnapshot) {
             return;
           }
 

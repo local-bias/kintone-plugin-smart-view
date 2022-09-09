@@ -1,19 +1,18 @@
-import { getAppViews } from '@common/kintone';
 import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
-import { selector } from 'recoil';
+import { atom, selector } from 'recoil';
 
-const allAppViewsState = selector({
+export const allAppViewsState = atom<Record<string, ViewForResponse> | null>({
   key: 'allAppViewsState',
-  get: async () => {
-    const allViews = await getAppViews();
-    return allViews;
-  },
+  default: null,
 });
 
 export const customViewsState = selector({
   key: 'customViewsState',
   get: async ({ get }) => {
     const allViews = get(allAppViewsState);
+    if (!allViews) {
+      return null;
+    }
 
     const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'CUSTOM');
 
@@ -28,6 +27,9 @@ export const listViewsState = selector({
   key: 'listViewsState',
   get: async ({ get }) => {
     const allViews = get(allAppViewsState);
+    if (!allViews) {
+      return null;
+    }
 
     const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'LIST');
 
