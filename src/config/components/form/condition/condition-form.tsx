@@ -2,7 +2,7 @@ import React, { Suspense, FC, FCX } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
-import { FormControlLabel, IconButton, Switch, Tooltip } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -14,17 +14,13 @@ import ImportingViewFields from '../importing-view-fields';
 
 import PaginationChunkForm from './form-pagination-chunk';
 import PaginationControlForm from './form-pagination-control';
+import OptionsForm from './form-options';
 
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 type Props = ContainerProps & {
   onViewDisplayingFieldsChange: (i: number, value: string) => void;
   addViewDisplayingField: (rowIndex: number) => void;
   removeViewDisplayingField: (rowIndex: number) => void;
-  setCSVExport: (checked: boolean) => void;
-  setEditable: (checked: boolean) => void;
-  setSortable: (checked: boolean) => void;
-  setIgnoreLetterCase: (checked: boolean) => void;
-  setIgnoreKatakana: (checked: boolean) => void;
 };
 
 const Component: FCX<Props> = ({
@@ -34,11 +30,6 @@ const Component: FCX<Props> = ({
   onViewDisplayingFieldsChange,
   addViewDisplayingField,
   removeViewDisplayingField,
-  setCSVExport,
-  setEditable,
-  setSortable,
-  setIgnoreLetterCase,
-  setIgnoreKatakana,
 }) => (
   <div {...{ className }}>
     <Suspense fallback={<div>一覧情報を取得しています...</div>}>
@@ -83,31 +74,7 @@ const Component: FCX<Props> = ({
     </div>
     <div>
       <h3>その他のオプション</h3>
-      <FormControlLabel
-        control={<Switch color='primary' checked={condition.enableCSVExport} />}
-        onChange={(_, checked) => setCSVExport(checked)}
-        label='CSV出力機能を有効にする'
-      />
-      <FormControlLabel
-        control={<Switch color='primary' checked={condition.editable} />}
-        onChange={(_, checked) => setEditable(checked)}
-        label='一覧での編集を有効にする(未実装)'
-      />
-      <FormControlLabel
-        control={<Switch color='primary' checked={condition.sortable} />}
-        onChange={(_, checked) => setSortable(checked)}
-        label='並び替えを有効にする'
-      />
-      <FormControlLabel
-        control={<Switch color='primary' checked={condition.ignoresLetterCase} />}
-        onChange={(_, checked) => setIgnoreLetterCase(checked)}
-        label='絞り込みの際、大文字と小文字を区別しない'
-      />
-      <FormControlLabel
-        control={<Switch color='primary' checked={condition.ignoresKatakana} />}
-        onChange={(_, checked) => setIgnoreKatakana(checked)}
-        label='絞り込みの際、カタカナとひらがなを区別しない'
-      />
+      <OptionsForm condition={condition} index={index} />
     </div>
   </div>
 );
@@ -205,20 +172,6 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
     );
   };
 
-  const onSwitchChange = (checked: boolean, option: keyof kintone.plugin.Condition) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index][option] = checked as never;
-      })
-    );
-  };
-
-  const setCSVExport = (checked: boolean) => onSwitchChange(checked, 'enableCSVExport');
-  const setEditable = (checked: boolean) => onSwitchChange(checked, 'editable');
-  const setSortable = (checked: boolean) => onSwitchChange(checked, 'sortable');
-  const setIgnoreLetterCase = (checked: boolean) => onSwitchChange(checked, 'ignoresLetterCase');
-  const setIgnoreKatakana = (checked: boolean) => onSwitchChange(checked, 'ignoresKatakana');
-
   return (
     <StyledComponent
       {...{
@@ -227,11 +180,6 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
         onViewDisplayingFieldsChange,
         addViewDisplayingField,
         removeViewDisplayingField,
-        setCSVExport,
-        setEditable,
-        setSortable,
-        setIgnoreLetterCase,
-        setIgnoreKatakana,
       }}
     />
   );
