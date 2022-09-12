@@ -376,6 +376,11 @@
     "@kintone/plugin-packer" "^6.0.11"
     mkdirp "^1.0.4"
 
+"@lb-ribbit/kintone-secrets@0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-secrets/-/kintone-secrets-0.2.4.tgz#41b7044c4394356de27c0a7ac37ee8d8b7d56896"
+  integrity sha512-dP2EW94/4FALrZmdM8LwkQDvZy+183rVTJb8bn7CjHj4BJTpQOoU7QhsVetGG/aEwNbbw6NjyBiVWBUXt19k5w==
+
 "@lb-ribbit/kintone-secrets@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-secrets/-/kintone-secrets-0.2.1.tgz#4e00018e47727ba5b56e682f29a2e8726c1e7542"
@@ -383,12 +388,7 @@
   dependencies:
     typescript "^4.7.4"
 
-"@lb-ribbit/kintone-secrets@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-secrets/-/kintone-secrets-0.2.4.tgz#41b7044c4394356de27c0a7ac37ee8d8b7d56896"
-  integrity sha512-dP2EW94/4FALrZmdM8LwkQDvZy+183rVTJb8bn7CjHj4BJTpQOoU7QhsVetGG/aEwNbbw6NjyBiVWBUXt19k5w==
-
-"@lb-ribbit/kintone-xapp@^0.3.3":
+"@lb-ribbit/kintone-xapp@0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-xapp/-/kintone-xapp-0.3.3.tgz#8e1115ed1b0c6e59e4aac230c7a41b434227805f"
   integrity sha512-7gjWZfth956KhUuPWGs3VmuFgpHApsSap8qGOAMqVs88dy2WaVlfZR/zI78eNEf7WW/31E66VPx3EAMt6renHw==
