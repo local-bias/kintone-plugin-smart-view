@@ -3,7 +3,7 @@ import { DeepReadonly } from 'utility-types';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
 import { useRecoilValue } from 'recoil';
 import { displayingRecordsState } from '../../states/records';
-import { pluginConditionState } from '../../states/plugin-condition';
+import { pluginConditionState } from '../../states/plugin';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 import Cell from './cell';

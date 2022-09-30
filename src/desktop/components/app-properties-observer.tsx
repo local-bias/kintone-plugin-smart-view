@@ -1,9 +1,9 @@
 import { useEffect, FC } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { propertiesReadyState } from '../states/properties-ready';
+import { propertiesReadyState } from '../states/kintone';
 
 import { getFieldsWithoutIgnores } from '@common/kintone';
-import { appPropertiesState } from '../states/app-properties';
+import { appPropertiesState } from '../states/kintone';
 
 const Container: FC = () => {
   const setReady = useSetRecoilState(propertiesReadyState);

@@ -1,7 +1,7 @@
 import { selector } from 'recoil';
-import { appPropertiesState } from './app-properties';
-import { pluginConditionState } from './plugin-condition';
-import { propertiesReadyState } from './properties-ready';
+import { appPropertiesState } from './kintone';
+import { pluginConditionState } from './plugin';
+import { propertiesReadyState } from './kintone';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 
 export type HeaderCell = { label: string; property: OneOf | null };

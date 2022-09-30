@@ -3,7 +3,7 @@ import { DeepReadonly } from 'utility-types';
 import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
 import { sanitize } from 'dompurify';
 import { useRecoilValue } from 'recoil';
-import { appPropertiesState } from '../../states/app-properties';
+import { appPropertiesState } from '../../states/kintone';
 
 type ContainerProps = DeepReadonly<{ code: string; field: OneOf }>;
 

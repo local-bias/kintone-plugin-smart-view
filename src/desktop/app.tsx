@@ -4,7 +4,7 @@ import { SnackbarProvider } from 'notistack';
 
 import { PluginErrorBoundary } from '@common/components/error-boundary';
 
-import { pluginConditionState } from './states/plugin-condition';
+import { pluginConditionState } from './states/plugin';
 import Initializer from './components/initializer';
 import AppPropertiesObserver from './components/app-properties-observer';
 import Layout from './components/layout';

@@ -7,7 +7,7 @@ import { Sorting, sortingState } from '../../states/sorting';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { pluginConditionState } from '../../states/plugin-condition';
+import { pluginConditionState } from '../../states/plugin';
 import { paginationIndexState } from '../../states/pagination';
 
 type Props = DeepReadonly<{

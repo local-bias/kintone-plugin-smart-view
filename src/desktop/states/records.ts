@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil';
-import { pluginConditionState } from './plugin-condition';
+import { pluginConditionState } from './plugin';
 import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
 import { ViewRecord } from '../static';
@@ -84,5 +84,14 @@ export const displayingRecordsState = selector<Record[]>({
     const chunk = get(paginationChunkState);
 
     return records.slice((index - 1) * chunk, index * chunk);
+  },
+});
+
+export const existsRecordState = selector({
+  key: 'existsRecordState',
+  get: ({ get }) => {
+    const records = get(filteredRecordsState);
+
+    return !!records.length;
   },
 });

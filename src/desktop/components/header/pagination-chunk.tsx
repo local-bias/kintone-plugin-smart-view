@@ -2,7 +2,7 @@ import { MenuItem, TextField } from '@mui/material';
 import React, { ChangeEventHandler, FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { paginationChunkState } from '../../states/pagination';
-import { pluginConditionState } from '../../states/plugin-condition';
+import { pluginConditionState } from '../../states/plugin';
 
 const Component: FC = () => {
   const paginationChunk = useRecoilValue(paginationChunkState);

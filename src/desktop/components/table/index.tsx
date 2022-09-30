@@ -1,14 +1,14 @@
 import React, { Suspense, FC } from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { loadingState } from '../../states/loading';
-import { existsRecordState } from '../../states/exsists-record';
+import { existsRecordState } from '../../states/records';
 
 import Layout from './layout';
 import Head from './head';
 import Body from './body';
 import Empty from './empty';
 import { Loading } from '@common/components/loading';
+import { loadingState } from '../../states/plugin';
 
 const Table: FC = () => {
   const exists = useRecoilValue(existsRecordState);

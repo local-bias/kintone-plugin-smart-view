@@ -5,8 +5,8 @@ import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { getAllRecords } from '@common/kintone-rest-api';
 
 import { allViewRecordsState } from '../states/records';
-import { loadingState } from '../states/loading';
-import { pluginConditionState } from '../states/plugin-condition';
+import { loadingState } from '../states/plugin';
+import { pluginConditionState } from '../states/plugin';
 import { ViewRecord } from '../static';
 import { katakana2hiragana } from '@common/utilities';
 import { getQuickSearchString } from '@common/kintone';
