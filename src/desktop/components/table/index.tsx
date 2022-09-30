@@ -7,8 +7,9 @@ import Layout from './layout';
 import Head from './head';
 import Body from './body';
 import Empty from './empty';
+import ErrorNofitication from './error';
 import { Loading } from '@common/components/loading';
-import { loadingState } from '../../states/plugin';
+import { errorState, loadingState } from '../../states/plugin';
 
 const Table: FC = () => {
   const exists = useRecoilValue(existsRecordState);
@@ -28,7 +29,12 @@ const Table: FC = () => {
 
 const PlaceHolder: FC = () => {
   const exists = useRecoilValue(existsRecordState);
+  const error = useRecoilValue(errorState);
   const loading = useRecoilValue(loadingState);
+
+  if (error) {
+    return <ErrorNofitication />;
+  }
 
   if (exists) {
     return null;

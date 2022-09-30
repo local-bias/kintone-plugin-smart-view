@@ -5,7 +5,7 @@ import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { getAllRecords } from '@common/kintone-rest-api';
 
 import { allViewRecordsState } from '../states/records';
-import { loadingState } from '../states/plugin';
+import { errorState, loadingState } from '../states/plugin';
 import { pluginConditionState } from '../states/plugin';
 import { ViewRecord } from '../static';
 import { katakana2hiragana } from '@common/utilities';
@@ -15,6 +15,7 @@ const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);
   const setLoading = useSetRecoilState(loadingState);
   const condition = useRecoilValue(pluginConditionState);
+  const setError = useSetRecoilState(errorState);
 
   useEffect(() => {
     (async () => {
@@ -55,6 +56,13 @@ const Container: FC = () => {
             setAllRecords(viewRecords);
           },
         });
+      } catch (error: any) {
+        if (error?.code === 'GAIA_TM12') {
+          setError(
+            'ご利用中のドメインにおけるカーソルの作成数の上限に達しました。しばらく時間をおいてから再度お試しください。'
+          );
+        }
+        throw error;
       } finally {
         setLoading(false);
       }
