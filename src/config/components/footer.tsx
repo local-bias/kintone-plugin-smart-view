@@ -9,9 +9,10 @@ import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore
 import { storeStorage } from '@common/plugin';
 
 import { storageState } from '../states';
-import { getAppViews, updateAppViews } from '@common/kintone';
+import { kintoneClient, updateAppViews } from '@common/kintone';
 import produce from 'immer';
 import { VIEW_ROOT_ID } from '@common/statics';
+import { getAppId } from '@lb-ribbit/kintone-xapp';
 
 type Props = {
   loading: boolean;
@@ -67,7 +68,11 @@ const Container: FC = () => {
           setLoading(true);
           const storage = await snapshot.getPromise(storageState);
 
-          const views = await getAppViews();
+          const app = getAppId();
+          if (!app) {
+            throw new Error('アプリのフィールド情報が取得できませんでした');
+          }
+          const { views } = await kintoneClient.app.getViews({ app, preview: true });
 
           const newViews = produce(views, (draft) => {
             for (const condition of storage?.conditions || []) {
