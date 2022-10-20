@@ -10,7 +10,6 @@ import { pluginIdState, storageState } from './states/plugin';
 import Footer from './components/footer';
 import Form from './components/form';
 import SocialIcons from './components/social-icons';
-import { AppViewInitializer } from './components/functional/app-view-initializer';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
   <>
@@ -23,7 +22,6 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
       <PluginErrorBoundary>
         <SnackbarProvider maxSnack={3}>
           <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
-            <AppViewInitializer />
             <Form />
             <Footer />
           </Suspense>

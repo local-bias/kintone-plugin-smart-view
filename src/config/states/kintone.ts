@@ -1,18 +1,27 @@
+import { kintoneClient } from '@common/kintone';
 import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
-import { atom, selector } from 'recoil';
+import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { selector } from 'recoil';
 
-export const allAppViewsState = atom<Record<string, ViewForResponse> | null>({
-  key: 'allAppViewsState',
-  default: null,
+const PREFIX = 'kintone';
+
+export const allAppViewsState = selector<Record<string, ViewForResponse>>({
+  key: `${PREFIX}allAppViewsState`,
+  get: async () => {
+    const app = getAppId();
+    if (!app) {
+      throw new Error('アプリのフィールド情報が取得できませんでした');
+    }
+
+    const { views } = await kintoneClient.app.getViews({ app, preview: true });
+    return views;
+  },
 });
 
 export const customViewsState = selector({
-  key: 'customViewsState',
+  key: `${PREFIX}customViewsState`,
   get: async ({ get }) => {
     const allViews = get(allAppViewsState);
-    if (!allViews) {
-      return null;
-    }
 
     const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'CUSTOM');
 
@@ -24,12 +33,9 @@ export const customViewsState = selector({
 });
 
 export const listViewsState = selector({
-  key: 'listViewsState',
+  key: `${PREFIX}listViewsState`,
   get: async ({ get }) => {
     const allViews = get(allAppViewsState);
-    if (!allViews) {
-      return null;
-    }
 
     const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'LIST');
 

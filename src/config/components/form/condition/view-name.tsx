@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { useRecoilValue } from 'recoil';
-import { customViewsState } from '../../../states/app-views';
+import { customViewsState } from '../../../states/kintone';
 import { Skeleton } from '@mui/material';
 import { viewIdState } from '../../../states/plugin';
 

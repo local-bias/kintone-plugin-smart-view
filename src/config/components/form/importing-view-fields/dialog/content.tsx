@@ -1,13 +1,13 @@
-import React, { FC, FCX } from 'react';
+import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
-import { listViewsState } from '../../../../states/app-views';
+import { listViewsState } from '../../../../states/kintone';
 import { storageState } from '../../../../states/plugin';
 import { useSnackbar } from 'notistack';
 import produce from 'immer';
 import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
+import { Loading } from '@common/components/loading';
 
 type ContainerProps = DeepReadonly<{ conditionIndex: number }>;
 type Props = ContainerProps &
@@ -81,7 +81,9 @@ const Container: FC<ContainerProps> = ({ conditionIndex }) => {
 
   return (
     <DialogContent>
-      <Component {...{ conditionIndex, onListItemClick }} />
+      <Suspense fallback={<Loading label='アプリ情報を取得しています' />}>
+        <Component {...{ conditionIndex, onListItemClick }} />
+      </Suspense>
     </DialogContent>
   );
 };

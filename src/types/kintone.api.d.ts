@@ -8,12 +8,15 @@ import {
   Creator as DefaultCreator,
   UserSelect as DefaultUserSelect,
 } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
+import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
 
 declare namespace kx {
   type App = DefaultApp;
   type Field = DefaultField;
   type FieldProperty = DefaultFieldProperty;
   type FieldPropertyType = FieldProperty['type'];
+
+  type View = ViewForResponse;
 
   type FieldProperties = Record<string, FieldProperty>;
   type FieldEntry = [string, FieldProperty];
