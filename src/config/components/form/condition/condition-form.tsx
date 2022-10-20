@@ -1,12 +1,12 @@
 import React, { Suspense, FC, FCX } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
 import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { storageState } from '../../../states/plugin';
+import { conditionState, storageState } from '../../../states/plugin';
 
 import AppFieldsInput from './app-fields-input';
 import ViewIdForm from './view-id';
@@ -16,7 +16,7 @@ import PaginationChunkForm from './form-pagination-chunk';
 import PaginationControlForm from './form-pagination-control';
 import OptionsForm from './form-options';
 
-type ContainerProps = { condition: kintone.plugin.Condition; index: number };
+type ContainerProps = { index: number };
 type Props = ContainerProps & {
   onViewDisplayingFieldsChange: (i: number, value: string) => void;
   addViewDisplayingField: (rowIndex: number) => void;
@@ -26,58 +26,64 @@ type Props = ContainerProps & {
 const Component: FCX<Props> = ({
   className,
   index,
-  condition,
   onViewDisplayingFieldsChange,
   addViewDisplayingField,
   removeViewDisplayingField,
-}) => (
-  <div {...{ className }}>
-    <Suspense fallback={<div>一覧情報を取得しています...</div>}>
+}) => {
+  const condition = useRecoilValue(conditionState(index));
+  if (!condition) {
+    return null;
+  }
+
+  return (
+    <div {...{ className }}>
+      <Suspense fallback={<div>一覧情報を取得しています...</div>}>
+        <div>
+          <h3>テーブルを表示する一覧の設定</h3>
+          <ViewIdForm conditionIndex={index} />
+          <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
+          <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
+        </div>
+      </Suspense>
       <div>
-        <h3>テーブルを表示する一覧の設定</h3>
-        <ViewIdForm conditionIndex={index} />
-        <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
-        <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
-      </div>
-    </Suspense>
-    <div>
-      <div className='titleWithButton'>
-        <h3>テーブルに表示するフィールドの設定</h3>
-        <ImportingViewFields conditionIndex={index} />
-      </div>
-      {condition.viewDisplayingFields.map((field, i) => (
-        <div key={`${i}${field}`} className='row'>
-          <AppFieldsInput
-            value={field}
-            onChange={(code) => onViewDisplayingFieldsChange(i, code)}
-          />
-          <Tooltip title='フィールドを追加する'>
-            <IconButton size='small' onClick={() => addViewDisplayingField(i)}>
-              <AddIcon fontSize='small' />
-            </IconButton>
-          </Tooltip>
-          {condition.viewDisplayingFields.length > 1 && (
-            <Tooltip title='このフィールドを削除する'>
-              <IconButton size='small' onClick={() => removeViewDisplayingField(i)}>
-                <DeleteIcon fontSize='small' />
+        <div className='titleWithButton'>
+          <h3>テーブルに表示するフィールドの設定</h3>
+          <ImportingViewFields conditionIndex={index} />
+        </div>
+        {condition.viewDisplayingFields.map((field, i) => (
+          <div key={`${i}${field}`} className='row'>
+            <AppFieldsInput
+              value={field}
+              onChange={(code) => onViewDisplayingFieldsChange(i, code)}
+            />
+            <Tooltip title='フィールドを追加する'>
+              <IconButton size='small' onClick={() => addViewDisplayingField(i)}>
+                <AddIcon fontSize='small' />
               </IconButton>
             </Tooltip>
-          )}
-        </div>
-      ))}
-    </div>
+            {condition.viewDisplayingFields.length > 1 && (
+              <Tooltip title='このフィールドを削除する'>
+                <IconButton size='small' onClick={() => removeViewDisplayingField(i)}>
+                  <DeleteIcon fontSize='small' />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
+        ))}
+      </div>
 
-    <div>
-      <h3>ページネーションの設定</h3>
-      <PaginationControlForm condition={condition} index={index} />
-      <PaginationChunkForm condition={condition} index={index} />
+      <div>
+        <h3>ページネーションの設定</h3>
+        <PaginationControlForm condition={condition} index={index} />
+        <PaginationChunkForm condition={condition} index={index} />
+      </div>
+      <div>
+        <h3>その他のオプション</h3>
+        <OptionsForm condition={condition} index={index} />
+      </div>
     </div>
-    <div>
-      <h3>その他のオプション</h3>
-      <OptionsForm condition={condition} index={index} />
-    </div>
-  </div>
-);
+  );
+};
 
 const StyledComponent = styled(Component)`
   padding: 0 16px;
@@ -146,7 +152,7 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: FC<ContainerProps> = ({ condition, index }) => {
+const Container: FC<ContainerProps> = ({ index }) => {
   const setStorage = useSetRecoilState(storageState);
 
   const onViewDisplayingFieldsChange = (i: number, value: string) => {
@@ -175,7 +181,6 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
   return (
     <StyledComponent
       {...{
-        condition,
         index,
         onViewDisplayingFieldsChange,
         addViewDisplayingField,
