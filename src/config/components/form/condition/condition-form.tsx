@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { conditionState, storageState } from '../../../states/plugin';
 
 import AppFieldsInput from './app-fields-input';
-import ViewIdForm from './view-id';
+import ViewIdForm from './form-view-id';
 import ImportingViewFields from '../importing-view-fields';
 
 import PaginationChunkForm from './form-pagination-chunk';
@@ -40,7 +40,7 @@ const Component: FCX<Props> = ({
       <Suspense fallback={<div>一覧情報を取得しています...</div>}>
         <div>
           <h3>テーブルを表示する一覧の設定</h3>
-          <ViewIdForm conditionIndex={index} />
+          <ViewIdForm />
           <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
           <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
         </div>

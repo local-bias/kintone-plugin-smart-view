@@ -17,7 +17,7 @@ const Component: FCX<Props> = ({ className, index, expanded, onChange }) => (
     <AccordionSummary>
       設定{index + 1}
       <Suspense fallback={null}>
-        <ViewName conditionIndex={index} />
+        <ViewName />
       </Suspense>
     </AccordionSummary>
     <AccordionDetails>

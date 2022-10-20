@@ -1,19 +1,14 @@
-import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
+import React, { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
 import { customViewsState } from '../../../states/kintone';
 import { Skeleton } from '@mui/material';
 import { viewIdState } from '../../../states/plugin';
+import { useConditionIndex } from '../../condition-index-provider';
 
-type ContainerProps = DeepReadonly<{ conditionIndex: number }>;
-
-const Container: FC<ContainerProps> = ({ conditionIndex }) => {
+const Component: FC = () => {
+  const conditionIndex = useConditionIndex();
   const views = useRecoilValue(customViewsState);
   const viewId = useRecoilValue(viewIdState(conditionIndex));
-
-  if (!views) {
-    return <Skeleton width={100} />;
-  }
 
   const found = Object.values(views).find((view) => view.id === viewId);
 
@@ -22,6 +17,14 @@ const Container: FC<ContainerProps> = ({ conditionIndex }) => {
   }
 
   return <> ({found.name})</>;
+};
+
+const Container: FC = () => {
+  return (
+    <Suspense fallback={<Skeleton variant='text' />}>
+      <Component />
+    </Suspense>
+  );
 };
 
 export default Container;
