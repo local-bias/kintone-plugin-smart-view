@@ -1,10 +1,10 @@
-import React, { ChangeEventHandler, FC, FCX, Suspense } from 'react';
+import React, { ChangeEventHandler, FC, FCX, memo, Suspense } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { viewIdState } from '../../../states/plugin';
+import { viewIdState } from '../../states/plugin';
 import { MenuItem, Skeleton, TextField } from '@mui/material';
-import { customViewsState } from '../../../states/kintone';
-import { useConditionIndex } from '../../condition-index-provider';
+import { customViewsState } from '../../states/kintone';
+import { useConditionIndex } from '../condition-index-provider';
 
 const Component: FCX = ({ className }) => {
   const conditionIndex = useConditionIndex();
@@ -46,4 +46,4 @@ const Container: FC = () => {
   );
 };
 
-export default Container;
+export default memo(Container);

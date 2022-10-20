@@ -18,7 +18,7 @@ const Component: FCX<Props> = (props) => (
   <Dialog open={props.conditionIndex === props.shownIndex} onClose={props.onDialogClose}>
     <DialogTitle>フィールド情報をインポートする一覧を選択</DialogTitle>
     <Suspense fallback={<CircularProgress />}>
-      <Content conditionIndex={props.conditionIndex} />
+      <Content />
     </Suspense>
   </Dialog>
 );

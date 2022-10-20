@@ -8,12 +8,11 @@ import { useSnackbar } from 'notistack';
 import produce from 'immer';
 import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
 import { Loading } from '@common/components/loading';
+import { useConditionIndex } from '../../../condition-index-provider';
 
-type ContainerProps = DeepReadonly<{ conditionIndex: number }>;
-type Props = ContainerProps &
-  DeepReadonly<{
-    onListItemClick: (id: string) => void;
-  }>;
+type Props = DeepReadonly<{
+  onListItemClick: (id: string) => void;
+}>;
 
 const Component: FCX<Props> = (props) => {
   const listViews = useRecoilValue(listViewsState);
@@ -39,8 +38,9 @@ const Component: FCX<Props> = (props) => {
   );
 };
 
-const Container: FC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const conditionIndex = useConditionIndex();
 
   const onListItemClick = useRecoilCallback(
     ({ snapshot, set }) =>

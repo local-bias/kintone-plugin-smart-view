@@ -92,3 +92,99 @@ export const viewIdState = selectorFamily<string, number>({
       );
     },
 });
+
+export const viewDisplayingFieldsState = selectorFamily<string[], number>({
+  key: `${PREFIX}viewDisplayingFieldsState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'viewDisplayingFields',
+        defaultValue: [''],
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'viewDisplayingFields',
+          value: newValue as string[],
+        })
+      );
+    },
+});
+
+export const paginationChunkState = selectorFamily<number, number>({
+  key: `${PREFIX}paginationChunkState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'paginationChunk',
+        defaultValue: 100,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'paginationChunk',
+          value: newValue as number,
+        })
+      );
+    },
+});
+
+export const enablesPaginationChunkControlState = selectorFamily<boolean, number>({
+  key: `${PREFIX}enablesPaginationChunkControlState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'enablesPaginationChunkControl',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'enablesPaginationChunkControl',
+          value: newValue as boolean,
+        })
+      );
+    },
+});
+
+export const enableCSVExportState = selectorFamily<boolean, number>({
+  key: `${PREFIX}enableCSVExportState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'enableCSVExport',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'enableCSVExport',
+          value: newValue as boolean,
+        })
+      );
+    },
+});

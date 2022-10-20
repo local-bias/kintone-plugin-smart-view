@@ -5,29 +5,30 @@ import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from 
 import ConditionForm from './condition-form';
 import ConditionDeletionButton from '../condition-deletion-button';
 import ViewName from './view-name';
+import { useConditionIndex } from '../../condition-index-provider';
 
-type ContainerProps = Readonly<{ index: number }>;
-type Props = ContainerProps & {
+type Props = {
+  index: number;
   expanded: boolean;
   onChange: () => void;
 };
 
-const Component: FCX<Props> = ({ className, index, expanded, onChange }) => (
-  <Accordion {...{ expanded, onChange, className }} variant='outlined' square>
-    <AccordionSummary>
-      設定{index + 1}
-      <Suspense fallback={null}>
+const Component: FCX<Props> = ({ className, expanded, index, onChange }) => {
+  return (
+    <Accordion {...{ expanded, onChange, className }} variant='outlined' square>
+      <AccordionSummary>
+        設定{index + 1}
         <ViewName />
-      </Suspense>
-    </AccordionSummary>
-    <AccordionDetails>
-      <ConditionForm {...{ index }} />
-    </AccordionDetails>
-    <AccordionActions>
-      <ConditionDeletionButton {...{ index }} />
-    </AccordionActions>
-  </Accordion>
-);
+      </AccordionSummary>
+      <AccordionDetails>
+        <ConditionForm {...{ index }} />
+      </AccordionDetails>
+      <AccordionActions>
+        <ConditionDeletionButton {...{ index }} />
+      </AccordionActions>
+    </Accordion>
+  );
+};
 
 const StyledComponent = styled(Component)`
   .input {
@@ -35,7 +36,8 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: FC<ContainerProps> = ({ index }) => {
+const Container: FC = () => {
+  const index = useConditionIndex();
   const [expanded, setExpanded] = useState<boolean>(index === 0);
 
   const onChange = () => setExpanded((_expanded) => !_expanded);

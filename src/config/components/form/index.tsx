@@ -1,7 +1,6 @@
 import React, { FC, FCX } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
-import { CircularProgress } from '@mui/material';
 
 import { storageState } from '../../states/plugin';
 import ConditionAdditionButton from './condition-addition-button';
@@ -9,27 +8,17 @@ import Condition from './condition';
 import { ConditionIndexProvider } from '../condition-index-provider';
 
 type Props = Readonly<{
-  storage: kintone.plugin.Storage | null;
+  conditionLength: number;
 }>;
 
-const Component: FCX<Props> = ({ className, storage }) => (
+const Component: FCX<Props> = ({ className, conditionLength }) => (
   <div {...{ className }}>
-    {!storage && (
-      <>
-        <CircularProgress />
-        <div>設定情報を取得しています</div>
-      </>
-    )}
-    {!!storage && (
-      <>
-        {storage.conditions.map((condition, index) => (
-          <ConditionIndexProvider key={index} conditionIndex={index}>
-            <Condition key={index} {...{ condition, index }} />
-          </ConditionIndexProvider>
-        ))}
-        <ConditionAdditionButton label='新しい設定' />
-      </>
-    )}
+    {new Array(conditionLength).fill('').map((_, index) => (
+      <ConditionIndexProvider key={index} conditionIndex={index}>
+        <Condition key={index} />
+      </ConditionIndexProvider>
+    ))}
+    <ConditionAdditionButton label='新しい設定' />
   </div>
 );
 
@@ -44,7 +33,9 @@ const StyledComponent = styled(Component)`
 const Container: FC = () => {
   const storage = useRecoilValue(storageState);
 
-  return <StyledComponent {...{ storage }} />;
+  const conditionLength = storage?.conditions?.length ?? 1;
+
+  return <StyledComponent conditionLength={conditionLength} />;
 };
 
 export default Container;

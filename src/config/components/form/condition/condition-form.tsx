@@ -1,35 +1,22 @@
-import React, { Suspense, FC, FCX } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { FC, FCX } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
-import produce from 'immer';
-import { IconButton, Tooltip } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 
-import { conditionState, storageState } from '../../../states/plugin';
+import { conditionState } from '../../../states/plugin';
 
-import AppFieldsInput from './app-fields-input';
-import ViewIdForm from './form-view-id';
+import ViewIdForm from '../../functional/form-view-id';
 import ImportingViewFields from '../importing-view-fields';
 
-import PaginationChunkForm from './form-pagination-chunk';
-import PaginationControlForm from './form-pagination-control';
-import OptionsForm from './form-options';
+import ViewDisplayingFieldsForm from '../../functional/form-view-fields';
+import PaginationChunkForm from '../../functional/form-pagination-chunk';
+import PaginationControlForm from '../../functional/form-pagination-control';
+import OptionsForm from '../../functional/form-options';
+import CSVExportForm from '../../functional/form-csv-export';
 
 type ContainerProps = { index: number };
-type Props = ContainerProps & {
-  onViewDisplayingFieldsChange: (i: number, value: string) => void;
-  addViewDisplayingField: (rowIndex: number) => void;
-  removeViewDisplayingField: (rowIndex: number) => void;
-};
+type Props = ContainerProps & {};
 
-const Component: FCX<Props> = ({
-  className,
-  index,
-  onViewDisplayingFieldsChange,
-  addViewDisplayingField,
-  removeViewDisplayingField,
-}) => {
+const Component: FCX<Props> = ({ className, index }) => {
   const condition = useRecoilValue(conditionState(index));
   if (!condition) {
     return null;
@@ -37,49 +24,29 @@ const Component: FCX<Props> = ({
 
   return (
     <div {...{ className }}>
-      <Suspense fallback={<div>一覧情報を取得しています...</div>}>
-        <div>
-          <h3>テーブルを表示する一覧の設定</h3>
-          <ViewIdForm />
-          <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
-          <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
-        </div>
-      </Suspense>
+      <div>
+        <h3>テーブルを表示する一覧の設定</h3>
+        <ViewIdForm />
+        <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
+        <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
+      </div>
       <div>
         <div className='titleWithButton'>
           <h3>テーブルに表示するフィールドの設定</h3>
           <ImportingViewFields conditionIndex={index} />
         </div>
-        {condition.viewDisplayingFields.map((field, i) => (
-          <div key={`${i}${field}`} className='row'>
-            <AppFieldsInput
-              value={field}
-              onChange={(code) => onViewDisplayingFieldsChange(i, code)}
-            />
-            <Tooltip title='フィールドを追加する'>
-              <IconButton size='small' onClick={() => addViewDisplayingField(i)}>
-                <AddIcon fontSize='small' />
-              </IconButton>
-            </Tooltip>
-            {condition.viewDisplayingFields.length > 1 && (
-              <Tooltip title='このフィールドを削除する'>
-                <IconButton size='small' onClick={() => removeViewDisplayingField(i)}>
-                  <DeleteIcon fontSize='small' />
-                </IconButton>
-              </Tooltip>
-            )}
-          </div>
-        ))}
+        <ViewDisplayingFieldsForm />
       </div>
 
       <div>
         <h3>ページネーションの設定</h3>
-        <PaginationControlForm condition={condition} index={index} />
-        <PaginationChunkForm condition={condition} index={index} />
+        <PaginationControlForm />
+        <PaginationChunkForm />
       </div>
       <div>
         <h3>その他のオプション</h3>
-        <OptionsForm condition={condition} index={index} />
+        <CSVExportForm />
+        <OptionsForm />
       </div>
     </div>
   );
@@ -153,41 +120,7 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC<ContainerProps> = ({ index }) => {
-  const setStorage = useSetRecoilState(storageState);
-
-  const onViewDisplayingFieldsChange = (i: number, value: string) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index].viewDisplayingFields[i] = value;
-      })
-    );
-  };
-
-  const addViewDisplayingField = (rowIndex: number) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index].viewDisplayingFields.splice(rowIndex + 1, 0, '');
-      })
-    );
-  };
-  const removeViewDisplayingField = (rowIndex: number) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index].viewDisplayingFields.splice(rowIndex, 1);
-      })
-    );
-  };
-
-  return (
-    <StyledComponent
-      {...{
-        index,
-        onViewDisplayingFieldsChange,
-        addViewDisplayingField,
-        removeViewDisplayingField,
-      }}
-    />
-  );
+  return <StyledComponent {...{ index }} />;
 };
 
 export default Container;

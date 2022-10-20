@@ -1,25 +1,29 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import produce from 'immer';
-import React, { FC } from 'react';
-import { useRecoilCallback } from 'recoil';
-import { storageState } from '../../../states/plugin';
+import React, { FC, memo } from 'react';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { conditionState, storageState } from '../../states/plugin';
+import { useConditionIndex } from '../condition-index-provider';
 
-type Props = { condition: kintone.plugin.Condition; index: number };
+const Component: FC = () => {
+  const conditionIndex = useConditionIndex();
+  const condition = useRecoilValue(conditionState(conditionIndex));
+  if (!condition) {
+    return null;
+  }
 
-const Component: FC<Props> = ({ condition, index }) => {
   const onSwitchChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean, option: keyof kintone.plugin.Condition) => {
         set(storageState, (_, _storage = _!) =>
           produce(_storage, (draft) => {
-            draft.conditions[index][option] = checked as never;
+            draft.conditions[conditionIndex][option] = checked as never;
           })
         );
       },
-    [index]
+    [conditionIndex]
   );
 
-  const setCSVExport = (checked: boolean) => onSwitchChange(checked, 'enableCSVExport');
   const setEditable = (checked: boolean) => onSwitchChange(checked, 'editable');
   const setSortable = (checked: boolean) => onSwitchChange(checked, 'sortable');
   const setIgnoreLetterCase = (checked: boolean) => onSwitchChange(checked, 'ignoresLetterCase');
@@ -27,11 +31,6 @@ const Component: FC<Props> = ({ condition, index }) => {
 
   return (
     <>
-      <FormControlLabel
-        control={<Switch color='primary' checked={condition.enableCSVExport} />}
-        onChange={(_, checked) => setCSVExport(checked)}
-        label='CSV出力機能を有効にする'
-      />
       <FormControlLabel
         control={<Switch color='primary' checked={condition.editable} />}
         onChange={(_, checked) => setEditable(checked)}
@@ -56,4 +55,4 @@ const Component: FC<Props> = ({ condition, index }) => {
   );
 };
 
-export default Component;
+export default memo(Component);
