@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, memo, FC, FCX } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { storageState } from '../../../states';
+import { storageState } from '../../../states/plugin';
 import produce from 'immer';
 import { ViewForResponse } from '@kintone/rest-api-client/lib/client/types';
 import { MenuItem, Skeleton, TextField } from '@mui/material';

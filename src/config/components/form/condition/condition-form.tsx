@@ -6,7 +6,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { storageState } from '../../../states';
+import { storageState } from '../../../states/plugin';
 
 import AppFieldsInput from './app-fields-input';
 import ViewIdForm from './view-id';

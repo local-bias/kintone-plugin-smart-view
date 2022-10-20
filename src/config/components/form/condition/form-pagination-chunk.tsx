@@ -2,7 +2,7 @@ import { MenuItem, TextField } from '@mui/material';
 import produce from 'immer';
 import React, { ChangeEventHandler, FC, memo } from 'react';
 import { useRecoilCallback } from 'recoil';
-import { storageState } from '../../../states';
+import { storageState } from '../../../states/plugin';
 
 const Component: FC<{ paginationChunk: number; index: number }> = memo(
   ({ paginationChunk, index }) => {

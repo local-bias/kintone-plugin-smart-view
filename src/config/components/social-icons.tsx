@@ -56,6 +56,7 @@ const StyledComponent = styled(Component)`
   bottom: 10px;
   display: flex;
   align-items: center;
+  z-index: 50;
   gap: 8px;
   & > button {
     color: #78909c;

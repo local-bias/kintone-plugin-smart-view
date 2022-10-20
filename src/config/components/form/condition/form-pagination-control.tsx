@@ -2,7 +2,7 @@ import { FormControlLabel, Switch } from '@mui/material';
 import produce from 'immer';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback } from 'recoil';
-import { storageState } from '../../../states';
+import { storageState } from '../../../states/plugin';
 
 const Component: FC<{ paginationControl: boolean; index: number }> = memo(
   ({ paginationControl, index }) => {

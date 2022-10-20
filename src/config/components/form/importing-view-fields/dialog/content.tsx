@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
 import { listViewsState } from '../../../../states/app-views';
-import { storageState } from '../../../../states';
+import { storageState } from '../../../../states/plugin';
 import { useSnackbar } from 'notistack';
 import produce from 'immer';
 import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';

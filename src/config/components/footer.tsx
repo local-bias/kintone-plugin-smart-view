@@ -2,13 +2,13 @@ import React, { FC, useState, FCX, useCallback } from 'react';
 import { useRecoilCallback } from 'recoil';
 import styled from '@emotion/styled';
 import { useSnackbar } from 'notistack';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 
 import { storeStorage } from '@common/plugin';
 
-import { storageState } from '../states';
+import { storageState } from '../states/plugin';
 import { kintoneClient, updateAppViews } from '@common/kintone';
 import produce from 'immer';
 import { VIEW_ROOT_ID } from '@common/statics';
@@ -27,16 +27,18 @@ const Component: FCX<Props> = ({ className, loading, onSaveButtonClick, onBackBu
       color='primary'
       disabled={loading}
       onClick={onSaveButtonClick}
-      startIcon={<SaveIcon />}
+      startIcon={loading ? <CircularProgress color='inherit' size={20} /> : <SaveIcon />}
     >
       設定を保存
     </Button>
     <Button
       variant='contained'
       color='inherit'
-      onClick={onBackButtonClick}
       disabled={loading}
-      startIcon={<SettingsBackupRestoreIcon />}
+      onClick={onBackButtonClick}
+      startIcon={
+        loading ? <CircularProgress color='inherit' size={20} /> : <SettingsBackupRestoreIcon />
+      }
     >
       プラグイン一覧へ戻る
     </Button>
@@ -45,10 +47,11 @@ const Component: FCX<Props> = ({ className, loading, onSaveButtonClick, onBackBu
 
 const StyledComponent = styled(Component)`
   position: sticky;
-  bottom: 24px;
+  bottom: 15px;
   margin-top: 20px;
   background-color: #fff;
   border-top: 1px solid #eee;
+  z-index: 30;
 
   button {
     margin: 8px;
@@ -91,7 +94,7 @@ const Container: FC = () => {
           enqueueSnackbar('設定を保存しました', {
             variant: 'success',
             action: (
-              <Button color='inherit' onClick={onBackButtonClick}>
+              <Button color='inherit' size='small' variant='outlined' onClick={onBackButtonClick}>
                 プラグイン一覧に戻る
               </Button>
             ),
