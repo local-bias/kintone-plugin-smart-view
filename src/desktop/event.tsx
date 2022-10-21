@@ -5,6 +5,7 @@ import { css } from '@emotion/css';
 
 import App from './app';
 import { VIEW_ROOT_ID } from '@common/statics';
+import { showNotification } from '@common/utilities';
 
 const events: launcher.EventTypes = ['app.record.index.show'];
 
@@ -30,19 +31,10 @@ const action: launcher.Action = async (event, pluginId) => {
     document.querySelector('.contents-gaia');
 
   if (!root) {
-    const error = document.createElement('div');
-    error.textContent = 'プラグインの一覧を表示する領域が見つかりませんでした';
-    error.classList.add(css`
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      background-color: rgb(254 202 202);
-      color: rgb(239 68 68);
-      padding: 1rem 2rem;
-      border-radius: 0.5rem;
-      border: 1px solid rgb(239 68 68);
-    `);
-    document.body.append(error);
+    showNotification({
+      title: 'プラグインでエラーが発生しました',
+      body: 'プラグインの一覧を表示する領域が見つかりませんでした',
+    });
     return event;
   }
   createRoot(root).render(<App condition={found} />);
