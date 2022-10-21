@@ -12,6 +12,8 @@ import EditableModeForm from '../../functional/form-editable';
 import SortableModeForm from '../../functional/form-sortable';
 import LetterCaseForm from '../../functional/form-letter-case';
 import KatakanaForm from '../../functional/form-katakana';
+import ZenkakuEisujiForm from '../../functional/form-zenkaku-eisuji';
+import HankakuKatakanaForm from '../../functional/form-hankaku-katakana';
 
 const Component: FCX = ({ className }) => {
   return (
@@ -42,6 +44,8 @@ const Component: FCX = ({ className }) => {
         <SortableModeForm />
         <LetterCaseForm />
         <KatakanaForm />
+        <HankakuKatakanaForm />
+        <ZenkakuEisujiForm />
       </div>
     </div>
   );

@@ -39,14 +39,18 @@ class FlexKintone extends KintoneRestAPIClient {
 /** REST APIクライアント(シングルトン) */
 export const kintoneClient = new FlexKintone();
 
-export const getAppFields = async (targetApp?: string | number) => {
+export const getAppFields = async (
+  options?: Partial<{ targetApp: string | number; preview: boolean }>
+) => {
+  const { targetApp, preview = false } = options || {};
+
   const app = targetApp || getAppId();
 
   if (!app) {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { properties } = await kintoneClient.app.getFormFields({ app });
+  const { properties } = await kintoneClient.app.getFormFields({ app, preview });
 
   return properties;
 };
@@ -61,8 +65,10 @@ export const getUserDefinedFields = async (): Promise<Properties> => {
   return filtered.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 };
 
-export const getFieldsWithoutIgnores = async (): Promise<Properties> => {
-  const fields = await getAppFields();
+export const getFieldsWithoutIgnores = async (
+  options?: Partial<{ targetApp: string | number; preview: boolean }>
+): Promise<Properties> => {
+  const fields = await getAppFields(options);
 
   const filtered = Object.entries(fields).filter(
     ([_, value]) => !IGNORE_FIELDS.includes(value.type)

@@ -17,6 +17,8 @@ declare namespace kintone {
       enablesPaginationChunkControl?: boolean;
       ignoresLetterCase?: boolean;
       ignoresKatakana?: boolean;
+      ignoresZenkakuEisuji?: boolean;
+      ignoresHankakuKatakana?: boolean;
     };
   }
 }

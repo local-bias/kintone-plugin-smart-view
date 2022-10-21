@@ -5,7 +5,11 @@ import { sortingState } from './sorting';
 import { ViewRecord } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
-import { katakana2hiragana } from '@common/utilities';
+import {
+  convertHankakuKatakanaToZenkaku,
+  convertKatakanaToHiragana,
+  convertZenkakuEisujiToHankaku,
+} from '@common/utilities';
 
 export const allViewRecordsState = atom<ViewRecord[]>({
   key: 'allViewRecordsState',
@@ -56,14 +60,29 @@ export const filteredRecordsState = selector<Record[]>({
     const text = get(searchTextState);
     const condition = get(pluginConditionState);
 
+    const {
+      ignoresLetterCase = true,
+      ignoresKatakana = true,
+      ignoresHankakuKatakana = true,
+      ignoresZenkakuEisuji = true,
+    } = condition || {};
+
     let input = text;
 
-    if (condition?.ignoresLetterCase) {
+    if (ignoresZenkakuEisuji) {
+      input = convertZenkakuEisujiToHankaku(input);
+    }
+
+    if (ignoresLetterCase) {
       input = input.toLowerCase();
     }
 
-    if (condition?.ignoresKatakana) {
-      input = katakana2hiragana(input);
+    if (ignoresHankakuKatakana) {
+      input = convertHankakuKatakanaToZenkaku(input);
+    }
+
+    if (ignoresKatakana) {
+      input = convertKatakanaToHiragana(input);
     }
 
     const words = input.split(/\s+/g);
