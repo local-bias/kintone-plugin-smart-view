@@ -1,6 +1,6 @@
 {
   "name": "kintone-plugin-smart-view",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "scripts": {
     "create-ppk": "kintone-plugin-packer --out dist/plugin-dev.zip plugin",
     "move-ppk": "node scripts/move-ppk.ts",
