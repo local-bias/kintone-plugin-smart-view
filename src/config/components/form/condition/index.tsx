@@ -1,10 +1,10 @@
-import React, { Suspense, useState, FC, FCX, memo } from 'react';
+import React, { useState, FC, FCX, memo } from 'react';
 import styled from '@emotion/styled';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
 
 import ConditionForm from './condition-form';
-import ConditionDeletionButton from '../condition-deletion-button';
-import ViewName from './view-name';
+import ConditionDeletionButton from '../../functional/condition-deletion-button';
+import ViewName from '../../ui/view-name';
 import { useConditionIndex } from '../../condition-index-provider';
 
 type Props = {
@@ -21,10 +21,10 @@ const Component: FCX<Props> = ({ className, expanded, index, onChange }) => {
         <ViewName />
       </AccordionSummary>
       <AccordionDetails>
-        <ConditionForm {...{ index }} />
+        <ConditionForm />
       </AccordionDetails>
       <AccordionActions>
-        <ConditionDeletionButton {...{ index }} />
+        <ConditionDeletionButton />
       </AccordionActions>
     </Accordion>
   );

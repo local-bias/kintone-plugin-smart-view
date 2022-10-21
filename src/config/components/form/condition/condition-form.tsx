@@ -1,8 +1,5 @@
 import React, { FC, FCX } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
-
-import { conditionState } from '../../../states/plugin';
 
 import ViewIdForm from '../../functional/form-view-id';
 import ImportingViewFields from '../importing-view-fields';
@@ -10,18 +7,13 @@ import ImportingViewFields from '../importing-view-fields';
 import ViewDisplayingFieldsForm from '../../functional/form-view-fields';
 import PaginationChunkForm from '../../functional/form-pagination-chunk';
 import PaginationControlForm from '../../functional/form-pagination-control';
-import OptionsForm from '../../functional/form-options';
 import CSVExportForm from '../../functional/form-csv-export';
+import EditableModeForm from '../../functional/form-editable';
+import SortableModeForm from '../../functional/form-sortable';
+import LetterCaseForm from '../../functional/form-letter-case';
+import KatakanaForm from '../../functional/form-katakana';
 
-type ContainerProps = { index: number };
-type Props = ContainerProps & {};
-
-const Component: FCX<Props> = ({ className, index }) => {
-  const condition = useRecoilValue(conditionState(index));
-  if (!condition) {
-    return null;
-  }
-
+const Component: FCX = ({ className }) => {
   return (
     <div {...{ className }}>
       <div>
@@ -33,7 +25,7 @@ const Component: FCX<Props> = ({ className, index }) => {
       <div>
         <div className='titleWithButton'>
           <h3>テーブルに表示するフィールドの設定</h3>
-          <ImportingViewFields conditionIndex={index} />
+          <ImportingViewFields />
         </div>
         <ViewDisplayingFieldsForm />
       </div>
@@ -46,7 +38,10 @@ const Component: FCX<Props> = ({ className, index }) => {
       <div>
         <h3>その他のオプション</h3>
         <CSVExportForm />
-        <OptionsForm />
+        <EditableModeForm />
+        <SortableModeForm />
+        <LetterCaseForm />
+        <KatakanaForm />
       </div>
     </div>
   );
@@ -119,8 +114,8 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: FC<ContainerProps> = ({ index }) => {
-  return <StyledComponent {...{ index }} />;
+const Container: FC = () => {
+  return <StyledComponent />;
 };
 
 export default Container;

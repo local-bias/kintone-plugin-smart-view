@@ -9,7 +9,7 @@ import { Loading } from '@common/components/loading';
 import { pluginIdState, storageState } from './states/plugin';
 import Footer from './components/footer';
 import Form from './components/form';
-import SocialIcons from './components/social-icons';
+import SocialIcons from './components/ui/social-icons';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
   <>

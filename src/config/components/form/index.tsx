@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 
 import { storageState } from '../../states/plugin';
-import ConditionAdditionButton from './condition-addition-button';
+import ConditionAdditionButton from '../functional/condition-addition-button';
 import Condition from './condition';
 import { ConditionIndexProvider } from '../condition-index-provider';
 

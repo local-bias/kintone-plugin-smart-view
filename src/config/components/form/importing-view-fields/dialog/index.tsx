@@ -6,13 +6,13 @@ import { CircularProgress, Dialog, DialogTitle } from '@mui/material';
 import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
 
 import Content from './content';
+import { useConditionIndex } from '../../../condition-index-provider';
 
-type ContainerProps = DeepReadonly<{ conditionIndex: number }>;
-type Props = ContainerProps &
-  DeepReadonly<{
-    shownIndex: number | null;
-    onDialogClose: () => void;
-  }>;
+type Props = DeepReadonly<{
+  conditionIndex: number;
+  shownIndex: number | null;
+  onDialogClose: () => void;
+}>;
 
 const Component: FCX<Props> = (props) => (
   <Dialog open={props.conditionIndex === props.shownIndex} onClose={props.onDialogClose}>
@@ -25,7 +25,8 @@ const Component: FCX<Props> = (props) => (
 
 const StyledComponent = styled(Component)``;
 
-const Container: FC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC = () => {
+  const conditionIndex = useConditionIndex();
   const [shownIndex, setShownIndex] = useRecoilState(listViewDialogShownIndexState);
 
   const onDialogClose = () => {

@@ -1,9 +1,9 @@
-import React, { FC, Suspense } from 'react';
+import React, { FC, memo, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
-import { customViewsState } from '../../../states/kintone';
+import { customViewsState } from '../../states/kintone';
 import { Skeleton } from '@mui/material';
-import { viewIdState } from '../../../states/plugin';
-import { useConditionIndex } from '../../condition-index-provider';
+import { viewIdState } from '../../states/plugin';
+import { useConditionIndex } from '../condition-index-provider';
 
 const Component: FC = () => {
   const conditionIndex = useConditionIndex();
@@ -27,4 +27,4 @@ const Container: FC = () => {
   );
 };
 
-export default Container;
+export default memo(Container);

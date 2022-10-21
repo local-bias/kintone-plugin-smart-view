@@ -188,3 +188,99 @@ export const enableCSVExportState = selectorFamily<boolean, number>({
       );
     },
 });
+
+export const editableState = selectorFamily<boolean, number>({
+  key: `${PREFIX}editableState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'editable',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'editable',
+          value: newValue as boolean,
+        })
+      );
+    },
+});
+
+export const sortableState = selectorFamily<boolean, number>({
+  key: `${PREFIX}sortableState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'sortable',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'sortable',
+          value: newValue as boolean,
+        })
+      );
+    },
+});
+
+export const ignoresLetterCaseState = selectorFamily<boolean, number>({
+  key: `${PREFIX}ignoresLetterCaseState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'ignoresLetterCase',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'ignoresLetterCase',
+          value: newValue as boolean,
+        })
+      );
+    },
+});
+
+export const ignoresKatakanaState = selectorFamily<boolean, number>({
+  key: `${PREFIX}ignoresKatakanaState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'ignoresKatakana',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'ignoresKatakana',
+          value: newValue as boolean,
+        })
+      );
+    },
+});
