@@ -36,8 +36,12 @@ export const getNewCondition = (): kintone.plugin.Condition => ({
   viewId: '',
   viewDisplayingFields: [''],
   enableCSVExport: false,
+  paginationChunk: 100,
+  enablesPaginationChunkControl: false,
   editable: false,
   sortable: true,
   ignoresLetterCase: true,
   ignoresKatakana: true,
+  ignoresZenkakuEisuji: true,
+  ignoresHankakuKatakana: true,
 });

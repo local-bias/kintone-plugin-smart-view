@@ -8,7 +8,11 @@ import { allViewRecordsState } from '../states/records';
 import { errorState, loadingState } from '../states/plugin';
 import { pluginConditionState } from '../states/plugin';
 import { ViewRecord } from '../static';
-import { katakana2hiragana } from '@common/utilities';
+import {
+  convertHankakuKatakanaToZenkaku,
+  convertKatakanaToHiragana,
+  convertZenkakuEisujiToHankaku,
+} from '@common/utilities';
 import { getQuickSearchString } from '@common/kintone';
 
 const Container: FC = () => {
@@ -30,9 +34,17 @@ const Container: FC = () => {
           throw new Error('アプリ情報が取得できませんでした');
         }
 
+        const {
+          viewDisplayingFields,
+          ignoresLetterCase = true,
+          ignoresKatakana = true,
+          ignoresHankakuKatakana = true,
+          ignoresZenkakuEisuji = true,
+        } = condition;
+
         const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
 
-        const targetFields = condition.viewDisplayingFields.filter((field) => !!field);
+        const targetFields = viewDisplayingFields.filter((field) => !!field);
         const fields = ['$id', ...targetFields];
 
         await getAllRecords({
@@ -43,12 +55,20 @@ const Container: FC = () => {
             const viewRecords = records.map<ViewRecord>((record) => {
               let __quickSearch = getQuickSearchString(record);
 
-              if (condition.ignoresLetterCase) {
+              if (ignoresZenkakuEisuji) {
+                __quickSearch = convertZenkakuEisujiToHankaku(__quickSearch);
+              }
+
+              if (ignoresLetterCase) {
                 __quickSearch = __quickSearch.toLowerCase();
               }
 
-              if (condition.ignoresKatakana) {
-                __quickSearch = katakana2hiragana(__quickSearch);
+              if (ignoresHankakuKatakana) {
+                __quickSearch = convertHankakuKatakanaToZenkaku(__quickSearch);
+              }
+
+              if (ignoresKatakana) {
+                __quickSearch = convertKatakanaToHiragana(__quickSearch);
               }
 
               return { record, __quickSearch };

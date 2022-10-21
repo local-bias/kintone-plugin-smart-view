@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": 2110,
+  "version": 2120,
   "type": "APP",
   "name": {
     "en": "faster search plugin",
@@ -14,8 +14,8 @@
   },
   "icon": "image/icon.png",
   "homepage_url": {
-    "ja": "https://ribbit.konomi.app/",
-    "en": "https://ribbit.konomi.app/"
+    "ja": "https://konomi.app/",
+    "en": "https://konomi.app/"
   },
   "desktop": {
     "js": ["https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/desktop.js"],

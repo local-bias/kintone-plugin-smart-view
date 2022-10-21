@@ -1,19 +1,18 @@
-import React, { FC, FCX } from 'react';
+import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
-import { listViewsState } from '../../../../states/app-views';
-import { storageState } from '../../../../states';
+import { listViewsState } from '../../../../states/kintone';
+import { storageState } from '../../../../states/plugin';
 import { useSnackbar } from 'notistack';
 import produce from 'immer';
 import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
+import { Loading } from '@common/components/loading';
+import { useConditionIndex } from '../../../condition-index-provider';
 
-type ContainerProps = DeepReadonly<{ conditionIndex: number }>;
-type Props = ContainerProps &
-  DeepReadonly<{
-    onListItemClick: (id: string) => void;
-  }>;
+type Props = DeepReadonly<{
+  onListItemClick: (id: string) => void;
+}>;
 
 const Component: FCX<Props> = (props) => {
   const listViews = useRecoilValue(listViewsState);
@@ -39,8 +38,9 @@ const Component: FCX<Props> = (props) => {
   );
 };
 
-const Container: FC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const conditionIndex = useConditionIndex();
 
   const onListItemClick = useRecoilCallback(
     ({ snapshot, set }) =>
@@ -81,7 +81,9 @@ const Container: FC<ContainerProps> = ({ conditionIndex }) => {
 
   return (
     <DialogContent>
-      <Component {...{ conditionIndex, onListItemClick }} />
+      <Suspense fallback={<Loading label='アプリ情報を取得しています' />}>
+        <Component {...{ conditionIndex, onListItemClick }} />
+      </Suspense>
     </DialogContent>
   );
 };

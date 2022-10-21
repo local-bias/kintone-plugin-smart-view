@@ -5,8 +5,8 @@ import { Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import { listViewDialogShownIndexState } from '../../../states/importing-view-fields';
+import { useConditionIndex } from '../../condition-index-provider';
 
-type ContainerProps = DeepReadonly<{ conditionIndex: number }>;
 type Props = DeepReadonly<{ onClick: () => void }>;
 
 const Component: FC<Props> = ({ onClick }) => (
@@ -15,7 +15,9 @@ const Component: FC<Props> = ({ onClick }) => (
   </Button>
 );
 
-const Container: FC<ContainerProps> = ({ conditionIndex }) => {
+const Container: FC = () => {
+  const conditionIndex = useConditionIndex();
+
   const onClick = useRecoilCallback(
     ({ set }) =>
       () => {

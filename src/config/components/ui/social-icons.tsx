@@ -51,11 +51,9 @@ const Component: FCX = ({ className }) => (
 );
 
 const StyledComponent = styled(Component)`
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
   & > button {
     color: #78909c;
