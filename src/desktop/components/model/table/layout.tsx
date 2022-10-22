@@ -1,9 +1,6 @@
-import React, { FCwC } from 'react';
 import styled from '@emotion/styled';
 
-const Component: FCwC = ({ children, className }) => <div {...{ className }}>{children}</div>;
-
-const StyledComponent = styled(Component)`
+const StyledComponent = styled.div`
   table {
     width: 100%;
     white-space: nowrap;

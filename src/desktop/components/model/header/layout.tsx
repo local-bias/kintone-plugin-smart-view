@@ -1,9 +1,6 @@
-import React, { FCwC } from 'react';
 import styled from '@emotion/styled';
 
-const Component: FCwC = ({ className, children }) => <div {...{ className }}>{children}</div>;
-
-const StyledComponent = styled(Component)`
+const StyledComponent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
