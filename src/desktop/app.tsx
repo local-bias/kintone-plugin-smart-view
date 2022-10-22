@@ -5,12 +5,12 @@ import { SnackbarProvider } from 'notistack';
 import { PluginErrorBoundary } from '@common/components/error-boundary';
 
 import { pluginConditionState } from './states/plugin';
-import Initializer from './components/initializer';
-import AppPropertiesObserver from './components/app-properties-observer';
-import Layout from './components/layout';
-import Header from './components/header';
-import Table from './components/table';
-import Footer from './components/footer';
+import Initializer from './components/functional/initializer';
+import AppPropertiesObserver from './components/functional/app-properties-observer';
+import Layout from './components/model/layout';
+import Header from './components/model/header';
+import Table from './components/model/table';
+import Footer from './components/model/footer';
 import { paginationChunkState } from './states/pagination';
 
 type Props = Readonly<{ condition: kintone.plugin.Condition }>;

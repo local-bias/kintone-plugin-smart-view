@@ -3,8 +3,8 @@ import { DeepReadonly } from 'utility-types';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { paginationIndexState } from '../../states/pagination';
-import { searchTextState } from '../../states/search-text';
+import { paginationIndexState } from '../../../states/pagination';
+import { searchTextState } from '../../../states/search-text';
 
 type Props = DeepReadonly<{
   searchText: string;

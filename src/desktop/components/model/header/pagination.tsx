@@ -2,8 +2,8 @@ import React, { FC, FCX } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { Pagination } from '@mui/material';
-import { filteredRecordsState } from '../../states/records';
-import { paginationIndexState, paginationChunkState } from '../../states/pagination';
+import { filteredRecordsState } from '../../../states/records';
+import { paginationIndexState, paginationChunkState } from '../../../states/pagination';
 import { isMobile } from '@lb-ribbit/kintone-xapp';
 
 type Props = {

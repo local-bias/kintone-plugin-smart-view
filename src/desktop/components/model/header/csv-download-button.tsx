@@ -6,8 +6,8 @@ import { Button, Tooltip } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Record } from '@kintone/rest-api-client/lib/client/types';
 
-import { filteredRecordsState } from '../../states/records';
-import { pluginConditionState } from '../../states/plugin';
+import { filteredRecordsState } from '../../../states/records';
+import { pluginConditionState } from '../../../states/plugin';
 
 const Component: FCX = ({ className }) => {
   const { enqueueSnackbar } = useSnackbar();

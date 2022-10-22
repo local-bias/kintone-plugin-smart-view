@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
 import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { HeaderCell, headerCellsState } from '../../states/header-cells';
-import { SORTABLE_FIELDS } from '../../static';
-import { Sorting, sortingState } from '../../states/sorting';
+import { HeaderCell, headerCellsState } from '../../../states/header-cells';
+import { SORTABLE_FIELDS } from '../../../static';
+import { Sorting, sortingState } from '../../../states/sorting';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { pluginConditionState } from '../../states/plugin';
-import { paginationIndexState } from '../../states/pagination';
+import { pluginConditionState } from '../../../states/plugin';
+import { paginationIndexState } from '../../../states/pagination';
 
 type Props = DeepReadonly<{
   sortable: boolean;

@@ -2,7 +2,7 @@ import React, { FCX } from 'react';
 import styled from '@emotion/styled';
 import { WindIcon } from '@common/components/icons/wind';
 import { useRecoilValue } from 'recoil';
-import { errorState } from '../../states/plugin';
+import { errorState } from '../../../states/plugin';
 import { Button } from '@mui/material';
 
 const Component: FCX = ({ className }) => {
