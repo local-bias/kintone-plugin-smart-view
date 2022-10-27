@@ -9,7 +9,7 @@ import { Loading } from '@common/components/loading';
 import { pluginIdState, storageState } from './states/plugin';
 import Footer from './components/footer';
 import Form from './components/form';
-import SocialIcons from './components/ui/social-icons';
+import Promotion from './components/ui/promotion';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
   <>
@@ -28,7 +28,7 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
         </SnackbarProvider>
       </PluginErrorBoundary>
     </RecoilRoot>
-    <SocialIcons />
+    <Promotion />
   </>
 );
 
