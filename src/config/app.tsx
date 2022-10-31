@@ -9,7 +9,7 @@ import { Loading } from '@common/components/loading';
 import { pluginIdState, storageState } from './states/plugin';
 import Footer from './components/footer';
 import Form from './components/form';
-import Promotion from './components/ui/promotion';
+import { URL_PROMOTION } from '@common/statics';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
   <>
@@ -28,7 +28,12 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
         </SnackbarProvider>
       </PluginErrorBoundary>
     </RecoilRoot>
-    <Promotion />
+    <iframe
+      title='promotion'
+      loading='lazy'
+      src={URL_PROMOTION}
+      style={{ border: '0', width: '100%', height: '64px' }}
+    />
   </>
 );
 
