@@ -8,11 +8,11 @@ import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore
 
 import { storeStorage } from '@common/plugin';
 
-import { storageState } from '../states/plugin';
 import { kintoneClient, updateAppViews } from '@common/kintone';
 import produce from 'immer';
 import { VIEW_ROOT_ID } from '@common/statics';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { storageState } from '../../../states/plugin';
 
 type Props = {
   loading: boolean;
@@ -46,6 +46,8 @@ const Component: FCX<Props> = ({ className, loading, onSaveButtonClick, onBackBu
 );
 
 const StyledComponent = styled(Component)`
+  grid-area: footer;
+
   position: sticky;
   bottom: 15px;
   margin-top: 20px;

@@ -1,31 +1,28 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { useRecoilCallback } from 'recoil';
 import { produce } from 'immer';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import { getNewCondition } from '@common/plugin';
+import { storageState } from '../../../states/plugin';
 
-import { storageState } from '../../states/plugin';
+type Props = Readonly<{ addCondition: () => void }>;
 
-type ContainerProps = Readonly<{ label: string }>;
-
-type Props = ContainerProps & Readonly<{ addCondition: () => void }>;
-
-const Component: FC<Props> = ({ addCondition, label }) => (
+const Component: FC<Props> = ({ addCondition }) => (
   <Button
     variant='outlined'
     color='primary'
     size='small'
     startIcon={<AddIcon />}
     onClick={addCondition}
-    style={{ marginTop: '16px' }}
+    style={{ margin: '16px' }}
   >
-    {label}
+    新しい設定
   </Button>
 );
 
-const Container: FC<ContainerProps> = ({ label }) => {
+const Container: FC = () => {
   const addCondition = useRecoilCallback(
     ({ set }) =>
       () => {
@@ -38,7 +35,7 @@ const Container: FC<ContainerProps> = ({ label }) => {
     []
   );
 
-  return <Component {...{ label, addCondition }} />;
+  return <Component {...{ addCondition }} />;
 };
 
-export default Container;
+export default memo(Container);

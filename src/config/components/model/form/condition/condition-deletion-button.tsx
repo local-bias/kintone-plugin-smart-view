@@ -1,18 +1,23 @@
 import React, { FC } from 'react';
 import { useRecoilCallback } from 'recoil';
 import { produce } from 'immer';
-import { IconButton } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { storageState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { storageState } from '../../../../states/plugin';
+import { useConditionIndex } from '../../../condition-index-provider';
 
 type Props = Readonly<{ onClick: () => void }>;
 
 const Component: FC<Props> = ({ onClick }) => (
-  <IconButton {...{ onClick }}>
-    <DeleteIcon fontSize='small' />
-  </IconButton>
+  <Button
+    variant='outlined'
+    color='error'
+    onClick={onClick}
+    endIcon={<DeleteIcon fontSize='small' />}
+  >
+    この設定を削除する
+  </Button>
 );
 
 const Container: FC = () => {

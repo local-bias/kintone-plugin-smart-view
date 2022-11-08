@@ -2,13 +2,13 @@ import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { DeepReadonly } from 'utility-types';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
-import { listViewsState } from '../../../../states/kintone';
-import { storageState } from '../../../../states/plugin';
+import { listViewsState } from '../../../../../states/kintone';
+import { storageState } from '../../../../../states/plugin';
 import { useSnackbar } from 'notistack';
 import produce from 'immer';
-import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
+import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 import { Loading } from '@common/components/loading';
-import { useConditionIndex } from '../../../condition-index-provider';
+import { useConditionIndex } from '../../../../condition-index-provider';
 
 type Props = DeepReadonly<{
   onListItemClick: (id: string) => void;

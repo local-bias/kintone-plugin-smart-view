@@ -2,10 +2,9 @@ import React, { FC, FCX } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 
-import { storageState } from '../../states/plugin';
-import ConditionAdditionButton from '../functional/condition-addition-button';
+import { storageState } from '../../../states/plugin';
 import Condition from './condition';
-import { ConditionIndexProvider } from '../condition-index-provider';
+import { ConditionIndexProvider } from '../../condition-index-provider';
 
 type Props = Readonly<{
   conditionLength: number;
@@ -18,7 +17,6 @@ const Component: FCX<Props> = ({ className, conditionLength }) => (
         <Condition key={index} />
       </ConditionIndexProvider>
     ))}
-    <ConditionAdditionButton label='新しい設定' />
   </div>
 );
 

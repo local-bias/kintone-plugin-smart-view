@@ -62,7 +62,16 @@ const Component: FC = () => {
             getOptionLabel={(option) => `${option.label}(${option.code})`}
             onChange={(_, field) => onFieldChange(i, field?.code ?? '')}
             renderInput={(params) => (
-              <TextField {...params} label='対象フィールド' variant='outlined' color='primary' />
+              <TextField
+                {...params}
+                label='対象フィールド'
+                InputLabelProps={{
+                  ...params.InputLabelProps,
+                  shrink: true,
+                }}
+                variant='outlined'
+                color='primary'
+              />
             )}
           />
           <Tooltip title='表示フィールドを追加する'>

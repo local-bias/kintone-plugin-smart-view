@@ -4,8 +4,8 @@ import { DeepReadonly } from 'utility-types';
 import { Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-import { listViewDialogShownIndexState } from '../../../states/importing-view-fields';
-import { useConditionIndex } from '../../condition-index-provider';
+import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
+import { useConditionIndex } from '../../../condition-index-provider';
 
 type Props = DeepReadonly<{ onClick: () => void }>;
 

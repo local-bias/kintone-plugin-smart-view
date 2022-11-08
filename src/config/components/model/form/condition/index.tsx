@@ -1,19 +1,23 @@
 import React, { FC, FCX } from 'react';
 import styled from '@emotion/styled';
 
-import ViewIdForm from '../../functional/form-view-id';
+import ViewIdForm from '../../../functional/form-view-id';
 import ImportingViewFields from '../importing-view-fields';
 
-import ViewDisplayingFieldsForm from '../../functional/form-view-fields';
-import PaginationChunkForm from '../../functional/form-pagination-chunk';
-import PaginationControlForm from '../../functional/form-pagination-control';
-import CSVExportForm from '../../functional/form-csv-export';
-import EditableModeForm from '../../functional/form-editable';
-import SortableModeForm from '../../functional/form-sortable';
-import LetterCaseForm from '../../functional/form-letter-case';
-import KatakanaForm from '../../functional/form-katakana';
-import ZenkakuEisujiForm from '../../functional/form-zenkaku-eisuji';
-import HankakuKatakanaForm from '../../functional/form-hankaku-katakana';
+import ViewDisplayingFieldsForm from '../../../functional/form-view-fields';
+import PaginationChunkForm from '../../../functional/form-pagination-chunk';
+import PaginationControlForm from '../../../functional/form-pagination-control';
+import CSVExportForm from '../../../functional/form-csv-export';
+import EditableModeForm from '../../../functional/form-editable';
+import SortableModeForm from '../../../functional/form-sortable';
+import LetterCaseForm from '../../../functional/form-letter-case';
+import KatakanaForm from '../../../functional/form-katakana';
+import ZenkakuEisujiForm from '../../../functional/form-zenkaku-eisuji';
+import HankakuKatakanaForm from '../../../functional/form-hankaku-katakana';
+import { useConditionIndex } from '../../../condition-index-provider';
+import { useRecoilValue } from 'recoil';
+import { tabIndexState } from '../../../../states/plugin';
+import DeletionButton from './condition-deletion-button';
 
 const Component: FCX = ({ className }) => {
   return (
@@ -21,8 +25,7 @@ const Component: FCX = ({ className }) => {
       <div>
         <h3>テーブルを表示する一覧の設定</h3>
         <ViewIdForm />
-        <small>選択する一覧は必ず表示形式を「カスタマイズ」に設定してください。</small>
-        <small>対象の一覧が選択肢に存在しない場合は、一度アプリを更新してください。</small>
+        <small>選択できる一覧は表示形式「カスタマイズ」のみです。</small>
       </div>
       <div>
         <div className='titleWithButton'>
@@ -47,6 +50,9 @@ const Component: FCX = ({ className }) => {
         <HankakuKatakanaForm />
         <ZenkakuEisujiForm />
       </div>
+      <div className='top-tools'>
+        <DeletionButton />
+      </div>
     </div>
   );
 };
@@ -55,10 +61,10 @@ const StyledComponent = styled(Component)`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 32px;
 
   > div {
-    border-left: 4px solid #0002;
     > *:not(h3) {
       padding-left: 16px;
     }
@@ -75,7 +81,7 @@ const StyledComponent = styled(Component)`
 
   h3 {
     font-weight: 600;
-    color: #0008;
+    color: #334155;
     margin: 0 0 12px;
     padding-left: 12px;
   }
@@ -119,7 +125,9 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC = () => {
-  return <StyledComponent />;
+  const conditionIndex = useConditionIndex();
+  const tabIndex = useRecoilValue(tabIndexState);
+  return conditionIndex === tabIndex ? <StyledComponent /> : null;
 };
 
 export default Container;

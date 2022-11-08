@@ -3,10 +3,10 @@ import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { DeepReadonly } from 'utility-types';
 import { CircularProgress, Dialog, DialogTitle } from '@mui/material';
-import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
+import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 
 import Content from './content';
-import { useConditionIndex } from '../../../condition-index-provider';
+import { useConditionIndex } from '../../../../condition-index-provider';
 
 type Props = DeepReadonly<{
   conditionIndex: number;

@@ -7,8 +7,10 @@ import { PluginErrorBoundary } from '@common/components/error-boundary';
 import { Loading } from '@common/components/loading';
 
 import { pluginIdState, storageState } from './states/plugin';
-import Footer from './components/footer';
-import Form from './components/form';
+import Layout from './components/model/layout';
+import Sidebar from './components/model/sidebar';
+import Footer from './components/model/footer';
+import Form from './components/model/form';
 import { URL_PROMOTION } from '@common/statics';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
@@ -21,10 +23,13 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
     >
       <PluginErrorBoundary>
         <SnackbarProvider maxSnack={3}>
-          <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
-            <Form />
-            <Footer />
-          </Suspense>
+          <Layout>
+            <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
+              <Sidebar />
+              <Form />
+              <Footer />
+            </Suspense>
+          </Layout>
         </SnackbarProvider>
       </PluginErrorBoundary>
     </RecoilRoot>
