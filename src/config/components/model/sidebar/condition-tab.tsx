@@ -4,23 +4,23 @@ import { useRecoilValue } from 'recoil';
 import { customViewsState } from '../../../states/kintone';
 import { viewIdState } from '../../../states/plugin';
 
-type Props = TabProps & { conditionIndex: number };
+type Props = TabProps & { index: number };
 
-const Component: FC<Props> = ({ conditionIndex, ...tabProps }) => {
+const Component: FC<Props> = ({ index, ...tabProps }) => {
   const views = useRecoilValue(customViewsState);
-  const viewId = useRecoilValue(viewIdState(conditionIndex));
+  const viewId = useRecoilValue(viewIdState(index));
 
   const found = Object.values(views).find((view) => view.id === viewId);
 
   if (!found) {
-    return <Tab label={`設定${conditionIndex + 1}`} {...tabProps} />;
+    return <Tab label={`設定${index + 1}`} {...tabProps} />;
   }
 
-  return <Tab label={`設定${conditionIndex + 1}(${found.name})`} {...tabProps} />;
+  return <Tab label={`設定${index + 1}(${found.name})`} {...tabProps} />;
 };
 
 const Container: FC<Props> = (props) => (
-  <Suspense fallback={<Tab label={`設定${props.conditionIndex + 1}`} {...props} />}>
+  <Suspense fallback={<Tab label={`設定${props.index + 1}`} {...props} />}>
     <Component {...props} />
   </Suspense>
 );

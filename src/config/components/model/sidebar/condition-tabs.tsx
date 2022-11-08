@@ -19,7 +19,7 @@ const Component: FC = () => {
   return (
     <Tabs value={tabIndex} onChange={onTabChange} orientation='vertical' variant='standard'>
       {conditions.map((condition, i) => (
-        <ConditionTab key={i} conditionIndex={i} />
+        <ConditionTab key={i} index={i} />
       ))}
     </Tabs>
   );
