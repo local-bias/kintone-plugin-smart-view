@@ -106,5 +106,5 @@ dist
 # Kintone Plugin files
 *.ppk
 dist/
-plugin/js
+plugin/**/*.js
 plugin/manifest.json
