@@ -96,23 +96,15 @@ const Container: FC = () => {
   return (
     <Suspense
       fallback={
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Skeleton width={360} height={56} />
-            <Skeleton variant='circular' width={24} height={24} />
-            <Skeleton variant='circular' width={24} height={24} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Skeleton width={360} height={56} />
-            <Skeleton variant='circular' width={24} height={24} />
-            <Skeleton variant='circular' width={24} height={24} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Skeleton width={360} height={56} />
-            <Skeleton variant='circular' width={24} height={24} />
-            <Skeleton variant='circular' width={24} height={24} />
-          </div>
-        </div>
+        <>
+          {new Array(3).fill('').map((_, i) => (
+            <div key={i} className='row'>
+              <Skeleton variant='rounded' width={350} height={56} />
+              <Skeleton variant='circular' width={24} height={24} />
+              <Skeleton variant='circular' width={24} height={24} />
+            </div>
+          ))}
+        </>
       }
     >
       <Component />

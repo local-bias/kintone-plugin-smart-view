@@ -40,7 +40,13 @@ const StyledComponent = styled(Component)`
 
 const Container: FC = () => {
   return (
-    <Suspense fallback={<Skeleton width={250} height={56} />}>
+    <Suspense
+      fallback={
+        <div>
+          <Skeleton variant='rounded' width={250} height={56} />
+        </div>
+      }
+    >
       <StyledComponent />
     </Suspense>
   );
