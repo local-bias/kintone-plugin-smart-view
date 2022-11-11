@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { DeepReadonly } from 'utility-types';
-import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/field';
 import { sanitize } from 'dompurify';
 import { useRecoilValue } from 'recoil';
 import { appPropertiesState } from '../../../states/kintone';
+import { kx } from '../../../../types/kintone.api';
 
-type ContainerProps = DeepReadonly<{ code: string; field: OneOf }>;
+type ContainerProps = DeepReadonly<{ code: string; field: kx.Field }>;
 
 const Container: FC<ContainerProps> = ({ code, field }) => {
   const properties = useRecoilValue(appPropertiesState);

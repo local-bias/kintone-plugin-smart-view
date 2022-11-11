@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 import { useSnackbar } from 'notistack';
 import { Button, Tooltip } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
-import { Record } from '@kintone/rest-api-client/lib/client/types';
 
 import { filteredRecordsState } from '../../../states/records';
 import { pluginConditionState } from '../../../states/plugin';
+import { kx } from '../../../../types/kintone.api';
 
 const Component: FCX = ({ className }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -78,7 +78,7 @@ const Container: FC = () => {
 
 export default Container;
 
-const download = (condition: kintone.plugin.Condition, records: Record[]) => {
+const download = (condition: kintone.plugin.Condition, records: kx.RecordData[]) => {
   const header = condition.viewDisplayingFields;
 
   const body = records.map((record) =>

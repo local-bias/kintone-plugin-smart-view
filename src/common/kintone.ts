@@ -1,14 +1,9 @@
-import {
-  Properties,
-  Record as KintoneRecord,
-  ViewForParameter,
-} from '@kintone/rest-api-client/lib/client/types';
-import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { kx } from '../types/kintone.api';
 
 /** kintoneアプリに初期状態で存在するフィールドタイプ */
-const DEFAULT_DEFINED_FIELDS: PickType<OneOf, 'type'>[] = [
+const DEFAULT_DEFINED_FIELDS: kx.FieldPropertyType[] = [
   'UPDATED_TIME',
   'CREATOR',
   'CREATED_TIME',
@@ -17,7 +12,7 @@ const DEFAULT_DEFINED_FIELDS: PickType<OneOf, 'type'>[] = [
   'STATUS',
 ];
 
-const IGNORE_FIELDS: PickType<OneOf, 'type'>[] = ['GROUP'];
+const IGNORE_FIELDS: kx.FieldPropertyType[] = ['GROUP'];
 
 class FlexKintone extends KintoneRestAPIClient {
   constructor(...options: ConstructorParameters<typeof KintoneRestAPIClient>) {
@@ -55,26 +50,26 @@ export const getAppFields = async (
   return properties;
 };
 
-export const getUserDefinedFields = async (): Promise<Properties> => {
+export const getUserDefinedFields = async (): Promise<kx.FieldProperties> => {
   const fields = await getAppFields();
 
   const filtered = Object.entries(fields).filter(
     ([_, value]) => !DEFAULT_DEFINED_FIELDS.includes(value.type)
   );
 
-  return filtered.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  return filtered.reduce<kx.FieldProperties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 };
 
 export const getFieldsWithoutIgnores = async (
   options?: Partial<{ targetApp: string | number; preview: boolean }>
-): Promise<Properties> => {
+): Promise<kx.FieldProperties> => {
   const fields = await getAppFields(options);
 
   const filtered = Object.entries(fields).filter(
     ([_, value]) => !IGNORE_FIELDS.includes(value.type)
   );
 
-  return filtered.reduce<Properties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  return filtered.reduce<kx.FieldProperties>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 };
 
 export const getAppLayout = async () => {
@@ -101,7 +96,7 @@ export const getAppViews = async () => {
   return views;
 };
 
-export const updateAppViews = async (views: Record<string, ViewForParameter>) => {
+export const updateAppViews = async (views: Record<string, kx.view.Parameter>) => {
   const app = getAppId();
 
   if (!app) {
@@ -111,7 +106,7 @@ export const updateAppViews = async (views: Record<string, ViewForParameter>) =>
   return kintoneClient.app.updateViews({ app, views });
 };
 
-export const getQuickSearchString = (record: KintoneRecord): string => {
+export const getQuickSearchString = (record: kx.RecordData): string => {
   const values = Object.values(record).map((field) => {
     switch (field.type) {
       case 'CREATOR':

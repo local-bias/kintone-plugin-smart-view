@@ -1,9 +1,9 @@
 import { atom } from 'recoil';
-import { Properties } from '@kintone/rest-api-client/lib/client/types';
+import { kx } from '../../types/kintone.api';
 
 const PREFIX = 'kintone';
 
-export const appPropertiesState = atom<Properties>({
+export const appPropertiesState = atom<kx.FieldProperties>({
   key: `${PREFIX}appPropertiesState`,
   default: {},
 });

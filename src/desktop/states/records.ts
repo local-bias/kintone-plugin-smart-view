@@ -4,12 +4,12 @@ import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
 import { ViewRecord } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
-import { Record } from '@kintone/rest-api-client/lib/client/types';
 import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
 } from '@common/utilities';
+import { kx } from '../../types/kintone.api';
 
 export const allViewRecordsState = atom<ViewRecord[]>({
   key: 'allViewRecordsState',
@@ -53,7 +53,7 @@ const sortedDatasState = selector<ViewRecord[]>({
   },
 });
 
-export const filteredRecordsState = selector<Record[]>({
+export const filteredRecordsState = selector<kx.RecordData[]>({
   key: 'filteredRecordsState',
   get: ({ get }) => {
     const records = get(sortedDatasState);
@@ -95,7 +95,7 @@ export const filteredRecordsState = selector<Record[]>({
   },
 });
 
-export const displayingRecordsState = selector<Record[]>({
+export const displayingRecordsState = selector<kx.RecordData[]>({
   key: 'displayingRecordsState',
   get: ({ get }) => {
     const records = get(filteredRecordsState);

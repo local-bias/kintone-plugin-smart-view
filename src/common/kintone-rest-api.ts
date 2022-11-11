@@ -1,5 +1,5 @@
-import { Record } from '@kintone/rest-api-client/lib/client/types';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { kx } from '../types/kintone.api';
 
 const END_POINT = '/k/v1/records';
 
@@ -12,16 +12,16 @@ type GetProps = Readonly<
     totalCount: boolean;
     query: string;
     onGetTotal: (total: number) => void;
-    onAdvance: (records: Record[]) => void;
+    onAdvance: (records: kx.RecordData[]) => void;
   }>
 >;
 
-type GetMethod = (props?: GetProps) => Promise<Record[]>;
+type GetMethod = (props?: GetProps) => Promise<kx.RecordData[]>;
 
 interface CursorProps {
   id: string;
   onAdvance: ((key?: any) => any) | null;
-  loadedData?: Record[];
+  loadedData?: kx.RecordData[];
 }
 
 export const getAllRecords: GetMethod = async (props = {}) => {
@@ -42,10 +42,10 @@ const getRecordsByCursorId = async ({
   id,
   onAdvance,
   loadedData = [],
-}: CursorProps): Promise<Record[]> => {
+}: CursorProps): Promise<kx.RecordData[]> => {
   const response = await kintone.api(kintone.api.url(`${END_POINT}/cursor`, true), 'GET', { id });
 
-  const newRecords: Record[] = [...loadedData, ...(response.records as Record[])];
+  const newRecords: kx.RecordData[] = [...loadedData, ...(response.records as kx.RecordData[])];
 
   if (onAdvance) {
     onAdvance(newRecords);

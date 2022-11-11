@@ -2,9 +2,9 @@ import { selector } from 'recoil';
 import { appPropertiesState } from './kintone';
 import { pluginConditionState } from './plugin';
 import { propertiesReadyState } from './kintone';
-import { OneOf } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
+import { kx } from '../../types/kintone.api';
 
-export type HeaderCell = { label: string; property: OneOf | null };
+export type HeaderCell = { label: string; property: kx.FieldProperty | null };
 
 export const headerCellsState = selector<HeaderCell[]>({
   key: 'headerCellsState',

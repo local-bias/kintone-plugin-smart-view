@@ -1,12 +1,11 @@
-import { OneOf as KintoneProperty } from '@kintone/rest-api-client/lib/KintoneFields/types/property';
-import { Record as KintoneRecord } from '@kintone/rest-api-client/lib/client/types';
+import { kx } from '../types/kintone.api';
 
 export type ViewRecord = {
-  record: KintoneRecord;
+  record: kx.RecordData;
   __quickSearch: string;
 };
 
-export const SORTABLE_FIELDS: KintoneProperty['type'][] = [
+export const SORTABLE_FIELDS: kx.FieldPropertyType[] = [
   'CALC',
   'CREATED_TIME',
   'DATE',
