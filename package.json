@@ -23,7 +23,7 @@
     "@mui/material": "5.10.13",
     "@sentry/react": "7.19.0",
     "@sentry/tracing": "7.19.0",
-    "@types/dompurify": "2.3.4",
+    "@types/dompurify": "2.4.0",
     "@types/luxon": "3.1.0",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
