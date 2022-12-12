@@ -20,7 +20,7 @@
     "@lb-ribbit/kintone-secrets": "0.2.4",
     "@lb-ribbit/kintone-xapp": "0.3.4",
     "@mui/icons-material": "5.10.16",
-    "@mui/material": "5.10.16",
+    "@mui/material": "5.10.17",
     "@sentry/react": "7.23.0",
     "@sentry/tracing": "7.23.0",
     "@types/dompurify": "2.4.0",
