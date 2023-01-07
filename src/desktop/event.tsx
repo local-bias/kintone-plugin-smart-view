@@ -19,7 +19,8 @@ const action: launcher.Action = async (event, pluginId) => {
   }
 
   document.body.classList.add(css`
-    .gaia-argoui-app-index-pager {
+    .gaia-argoui-app-index-pager,
+    .category-left-gaia {
       display: none !important;
     }
   `);
