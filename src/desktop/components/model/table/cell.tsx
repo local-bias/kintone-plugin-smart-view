@@ -4,17 +4,14 @@ import { sanitize } from 'dompurify';
 import { useRecoilValue } from 'recoil';
 import { appPropertiesState } from '../../../states/kintone';
 import { kx } from '../../../../types/kintone.api';
+import { SubtableDetails } from '../../ui/subtable-details';
 
-type ContainerProps = DeepReadonly<{ code: string; field: kx.Field }>;
+type Props = DeepReadonly<{ code: string; field: kx.Field }>;
 
-const Container: FC<ContainerProps> = ({ code, field }) => {
+const Component: FC<Props> = ({ code, field }) => {
   const properties = useRecoilValue(appPropertiesState);
-
   const found = Object.entries(properties).find(([key]) => code === key);
 
-  if (!field) {
-    return null;
-  }
   switch (field.type) {
     case 'CREATOR':
     case 'MODIFIER':
@@ -59,8 +56,6 @@ const Container: FC<ContainerProps> = ({ code, field }) => {
     case 'RICH_TEXT':
       const __html = sanitize(field.value);
       return <div dangerouslySetInnerHTML={{ __html }} />;
-    case 'SUBTABLE':
-      return <>{field.value.length}行</>;
     case 'NUMBER':
     case 'CALC':
       if (!found || ['', undefined, null].includes(field.value) || isNaN(Number(field.value))) {
@@ -96,6 +91,52 @@ const Container: FC<ContainerProps> = ({ code, field }) => {
     default:
       return <>{field.value}</>;
   }
+};
+
+const Subtable: FC<DeepReadonly<{ code: string; field: kx.field.Subtable }>> = (props) => {
+  const properties = useRecoilValue(appPropertiesState);
+  const found = Object.entries(properties).find(([key]) => props.code === key);
+  if (!found) {
+    return null;
+  }
+  const property = found[1] as kx.property.Subtable;
+  const fieldProperties = Object.values(property.fields);
+
+  return (
+    <SubtableDetails>
+      <summary>{props.field.value.length}行</summary>
+      <table>
+        <thead>
+          {fieldProperties.map((property) => (
+            <th key={property.code}>{property.label}</th>
+          ))}
+        </thead>
+        <tbody>
+          {props.field.value.map(({ value }, i) => (
+            <tr key={i}>
+              {fieldProperties.map((property) => (
+                <td key={`${i}-${property.code}`}>
+                  <Component code={props.code} field={value[property.code]} />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </SubtableDetails>
+  );
+};
+
+const Container: FC<Props> = (props) => {
+  if (!props.field) {
+    return null;
+  }
+
+  if (props.field.type === 'SUBTABLE') {
+    return <Subtable code={props.code} field={props.field} />;
+  }
+
+  return <Component {...props} />;
 };
 
 export default Container;
