@@ -1,93 +1,65 @@
 import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
-import { sanitize } from 'dompurify';
 import { useRecoilValue } from 'recoil';
-import { appPropertiesState } from '../../../states/kintone';
+import { DeepReadonly } from 'utility-types';
 import { kx } from '../../../../types/kintone.api';
+import { appPropertiesState } from '../../../states/kintone';
 import { SubtableDetails } from '../../ui/subtable-details';
+
+import CalcCell from './cell-calc';
+import CategoryCell from './cell-category';
+import MultiSelectCell from './cell-multi-select';
+import CheckBoxCell from './cell-checkbox';
+import DateCell from './cell-date';
+import FileCell from './cell-file';
+import MuiliLineTextCell from './cell-multi-line-text';
+import NumberCell from './cell-number';
+import RichTextCell from './cell-rich-text';
+import SingleLineTextCell from './cell-single-line-text';
+import UserCell from './cell-user';
+import DateTimeCell from './cell-date-time';
+import EntityCell from './cell-entity';
 
 type Props = DeepReadonly<{ code: string; field: kx.Field }>;
 
-const Component: FC<Props> = ({ code, field }) => {
-  const properties = useRecoilValue(appPropertiesState);
-  const found = Object.entries(properties).find(([key]) => code === key);
+const FieldCell: FC<Props> = (props) => {
+  const { field, code } = props;
+  if (!field) {
+    return null;
+  }
 
   switch (field.type) {
+    case 'CALC':
+      return <CalcCell code={code} field={field} />;
+    case 'CATEGORY':
+      return <CategoryCell field={field} />;
+    case 'CHECK_BOX':
+      return <CheckBoxCell field={field} />;
     case 'CREATOR':
     case 'MODIFIER':
-      return <>{field.value.name}</>;
-    case 'CHECK_BOX':
-    case 'MULTI_SELECT':
-    case 'CATEGORY':
-      return (
-        <>
-          {field.value.map((value, i) => (
-            <div key={i}>{value}</div>
-          ))}
-        </>
-      );
+      return <UserCell field={field} />;
+    case 'SINGLE_LINE_TEXT':
+      return <SingleLineTextCell field={field} />;
     case 'MULTI_LINE_TEXT':
-      return (
-        <>
-          {field.value.split(/\r?\n/g).map((text, i) => (
-            <div key={i}>{text}</div>
-          ))}
-        </>
-      );
+      return <MuiliLineTextCell field={field} />;
+    case 'MULTI_SELECT':
+      return <MultiSelectCell field={field} />;
+    case 'NUMBER':
+      return <NumberCell code={code} field={field} />;
+    case 'RICH_TEXT':
+      return <RichTextCell field={field} />;
+    case 'DATE':
+      return <DateCell field={field} />;
+    case 'DATETIME':
+    case 'CREATED_TIME':
+    case 'UPDATED_TIME':
+      return <DateTimeCell field={field} />;
     case 'USER_SELECT':
     case 'ORGANIZATION_SELECT':
     case 'GROUP_SELECT':
     case 'STATUS_ASSIGNEE':
-      return (
-        <>
-          {field.value.map((value, i) => (
-            <div key={i}>{value.name}</div>
-          ))}
-        </>
-      );
+      return <EntityCell field={field} />;
     case 'FILE':
-      return (
-        <>
-          {field.value.map((value, i) => (
-            <div key={i}>{value.name}</div>
-          ))}
-        </>
-      );
-    case 'RICH_TEXT':
-      const __html = sanitize(field.value);
-      return <div dangerouslySetInnerHTML={{ __html }} />;
-    case 'NUMBER':
-    case 'CALC':
-      if (!found || ['', undefined, null].includes(field.value) || isNaN(Number(field.value))) {
-        return <>{field.value}</>;
-      }
-      const property: any = found[1];
-
-      const casted = Number(field.value);
-      const scaled = property?.displayScale
-        ? Math.round(casted * Math.pow(10, Number(property.displayScale))) /
-          Math.pow(10, Number(property.displayScale))
-        : casted;
-      const separated = property?.digit ? Number(scaled).toLocaleString() : scaled;
-
-      if (property?.unit) {
-        if (property.unitPosition === 'BEFORE') {
-          return <>{`${property.unit}${separated}`}</>;
-        } else {
-          return <>{`${separated}${property.unit}`}</>;
-        }
-      }
-
-      return <>{separated}</>;
-
-    case 'DATE':
-      return <>{field.value ? new Date(field.value).toLocaleDateString() : ''}</>;
-
-    case 'DATETIME':
-    case 'CREATED_TIME':
-    case 'UPDATED_TIME':
-      return <>{field.value ? new Date(field.value).toLocaleString() : ''}</>;
-
+      return <FileCell field={field} />;
     default:
       return <>{field.value}</>;
   }
@@ -116,7 +88,7 @@ const Subtable: FC<DeepReadonly<{ code: string; field: kx.field.Subtable }>> = (
             <tr key={i}>
               {fieldProperties.map((property) => (
                 <td key={`${i}-${property.code}`}>
-                  <Component code={props.code} field={value[property.code]} />
+                  <FieldCell code={props.code} field={value[property.code]} />
                 </td>
               ))}
             </tr>
@@ -128,15 +100,16 @@ const Subtable: FC<DeepReadonly<{ code: string; field: kx.field.Subtable }>> = (
 };
 
 const Container: FC<Props> = (props) => {
-  if (!props.field) {
+  const { field, code } = props;
+  if (!field) {
     return null;
   }
 
-  if (props.field.type === 'SUBTABLE') {
-    return <Subtable code={props.code} field={props.field} />;
-  }
-
-  return <Component {...props} />;
+  return field.type === 'SUBTABLE' ? (
+    <Subtable code={code} field={field} />
+  ) : (
+    <FieldCell {...props} />
+  );
 };
 
 export default Container;
