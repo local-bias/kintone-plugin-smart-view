@@ -1,17 +1,21 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["esnext", "dom"],
-    "outDir": "dist",
-    "allowJs": true,
-    "esModuleInterop": true,
+    "lib": ["dom", "ESNext"],
+    "jsx": "react",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
     "moduleResolution": "node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    // "importsNotUsedAsValues": "error",
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "jsx": "react",
-    "strict": true,
     "paths": {
       "@common/*": ["./src/common/*"]
     }
