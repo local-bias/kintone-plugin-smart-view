@@ -3,7 +3,7 @@ module.exports = {
   manifest: {
     base: {
       manifest_version: 1,
-      version: '2.15.0',
+      version: '2.15.1',
       type: 'APP',
       name: {
         en: 'faster search plugin',
