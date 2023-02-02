@@ -11,6 +11,7 @@ import Layout from './components/model/layout';
 import Sidebar from './components/model/sidebar';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
+import Promotion from './components/model/promotion';
 import { URL_PROMOTION } from '@common/statics';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
@@ -27,6 +28,7 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
             <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
               <Sidebar />
               <Form />
+              <Promotion />
               <Footer />
             </Suspense>
           </Layout>

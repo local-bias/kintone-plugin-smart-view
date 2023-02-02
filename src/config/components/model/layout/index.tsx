@@ -9,11 +9,11 @@ const Component = styled.div`
     'footer footer' auto/
     300px 1fr;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1520px) {
     grid-template:
-      'sidebar form' minmax(600px, 1fr)
-      'footer footer' auto/
-      300px 1fr;
+      'sidebar form promotion' minmax(600px, 1fr)
+      'footer footer footer' auto/
+      300px 1fr 300px;
   }
 `;
 
