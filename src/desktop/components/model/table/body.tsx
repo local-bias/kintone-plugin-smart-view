@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 import { useRecoilValue } from 'recoil';
 import { displayingRecordsState } from '../../../states/records';
 import { pluginConditionState } from '../../../states/plugin';
@@ -8,9 +8,12 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Cell from './cell';
 import { getQueryString } from '@common/cybozu';
 import { isMobile } from '@lb-ribbit/kintone-xapp';
-import { kx } from '../../../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
-type Props = DeepReadonly<{ records: kx.RecordData[]; condition: kintone.plugin.Condition }>;
+type Props = DeepReadonly<{
+  records: kintoneAPI.RecordData[];
+  condition: kintone.plugin.Condition;
+}>;
 
 const Component: FC<Props> = ({ records, condition }) => (
   <tbody>

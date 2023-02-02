@@ -1,11 +1,11 @@
 import { kintoneClient } from '@common/kintone';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import { selector } from 'recoil';
-import { kx } from '../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 const PREFIX = 'kintone';
 
-export const allAppViewsState = selector<Record<string, kx.view.Response>>({
+export const allAppViewsState = selector<Record<string, kintoneAPI.view.Response>>({
   key: `${PREFIX}allAppViewsState`,
   get: async () => {
     const app = getAppId();
@@ -25,7 +25,7 @@ export const customViewsState = selector({
 
     const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'CUSTOM');
 
-    return filtered.reduce<Record<string, kx.view.Response>>(
+    return filtered.reduce<Record<string, kintoneAPI.view.Response>>(
       (acc, [name, view]) => ({ ...acc, [name]: view }),
       {}
     );
@@ -39,7 +39,7 @@ export const listViewsState = selector({
 
     const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'LIST');
 
-    return filtered.reduce<Record<string, kx.view.Response>>(
+    return filtered.reduce<Record<string, kintoneAPI.view.Response>>(
       (acc, [name, view]) => ({ ...acc, [name]: view }),
       {}
     );

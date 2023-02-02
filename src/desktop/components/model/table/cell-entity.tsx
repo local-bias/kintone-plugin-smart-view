@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
-import { kx } from '../../../../types/kintone.api';
+import type { DeepReadonly } from 'utility-types';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 type Props = DeepReadonly<{
   field:
-    | kx.field.UserSelect
-    | kx.field.GroupSelect
-    | kx.field.OrganizationSelect
-    | kx.field.StatusAssignee;
+    | kintoneAPI.field.UserSelect
+    | kintoneAPI.field.GroupSelect
+    | kintoneAPI.field.OrganizationSelect
+    | kintoneAPI.field.StatusAssignee;
 }>;
 
 const Component: FC<Props> = ({ field }) => {

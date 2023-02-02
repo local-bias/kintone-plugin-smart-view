@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useRecoilCallback } from 'recoil';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 import { Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 

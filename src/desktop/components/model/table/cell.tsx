@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
-import { DeepReadonly } from 'utility-types';
-import { kx } from '../../../../types/kintone.api';
+import type { DeepReadonly } from 'utility-types';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 import { appPropertiesState } from '../../../states/kintone';
 import { SubtableDetails } from '../../ui/subtable-details';
 
@@ -19,7 +19,7 @@ import UserCell from './cell-user';
 import DateTimeCell from './cell-date-time';
 import EntityCell from './cell-entity';
 
-type Props = DeepReadonly<{ code: string; field: kx.Field }>;
+type Props = DeepReadonly<{ code: string; field: kintoneAPI.Field }>;
 
 const FieldCell: FC<Props> = (props) => {
   const { field, code } = props;
@@ -65,13 +65,13 @@ const FieldCell: FC<Props> = (props) => {
   }
 };
 
-const Subtable: FC<DeepReadonly<{ code: string; field: kx.field.Subtable }>> = (props) => {
+const Subtable: FC<DeepReadonly<{ code: string; field: kintoneAPI.field.Subtable }>> = (props) => {
   const properties = useRecoilValue(appPropertiesState);
   const found = Object.entries(properties).find(([key]) => props.code === key);
   if (!found) {
     return null;
   }
-  const property = found[1] as kx.property.Subtable;
+  const property = found[1] as kintoneAPI.property.Subtable;
   const fieldProperties = Object.values(property.fields);
 
   return (

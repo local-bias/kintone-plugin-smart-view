@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ChangeEventHandler, FC, FCX } from 'react';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilCallback, useRecoilValue } from 'recoil';

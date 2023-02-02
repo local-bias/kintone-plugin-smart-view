@@ -1,7 +1,7 @@
 import React, { Suspense, FC, FCX } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 import { CircularProgress, Dialog, DialogTitle } from '@mui/material';
 import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 

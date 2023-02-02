@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
-import { kx } from '../../../../types/kintone.api';
+import type { DeepReadonly } from 'utility-types';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 type Props = DeepReadonly<{
-  field: kx.field.DateTime | kx.field.CreatedTime | kx.field.UpdatedTime;
+  field: kintoneAPI.field.DateTime | kintoneAPI.field.CreatedTime | kintoneAPI.field.UpdatedTime;
 }>;
 
 const Component: FC<Props> = ({ field }) => {

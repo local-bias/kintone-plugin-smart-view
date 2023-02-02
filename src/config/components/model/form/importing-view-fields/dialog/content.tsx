@@ -1,6 +1,6 @@
 import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
 import { listViewsState } from '../../../../../states/kintone';
 import { storageState } from '../../../../../states/plugin';

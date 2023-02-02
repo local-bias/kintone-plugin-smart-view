@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { kx } from '../../../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
-type Props = { field: kx.field.MultiLineText };
+type Props = { field: kintoneAPI.field.MultiLineText };
 
 const Component: FC<Props> = (props) => {
   return (

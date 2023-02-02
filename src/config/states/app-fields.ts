@@ -1,10 +1,10 @@
 import { selector } from 'recoil';
 import { getFieldsWithoutIgnores } from '@common/kintone';
-import { kx } from '../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 const PREFIX = 'kintone';
 
-export const appFieldsState = selector<kx.FieldProperty[]>({
+export const appFieldsState = selector<kintoneAPI.FieldProperty[]>({
   key: `${PREFIX}appFieldsState`,
   get: async () => {
     const properties = await getFieldsWithoutIgnores({ preview: true });

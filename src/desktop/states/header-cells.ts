@@ -2,9 +2,9 @@ import { selector } from 'recoil';
 import { appPropertiesState } from './kintone';
 import { pluginConditionState } from './plugin';
 import { propertiesReadyState } from './kintone';
-import { kx } from '../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
-export type HeaderCell = { label: string; property: kx.FieldProperty | null };
+export type HeaderCell = { label: string; property: kintoneAPI.FieldProperty | null };
 
 export const headerCellsState = selector<HeaderCell[]>({
   key: 'headerCellsState',

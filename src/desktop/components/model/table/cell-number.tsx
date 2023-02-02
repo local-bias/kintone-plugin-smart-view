@@ -1,10 +1,10 @@
 import { Skeleton } from '@mui/material';
 import React, { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
-import { kx } from '../../../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 import { appPropertiesState } from '../../../states/kintone';
 
-type Props = { field: kx.field.Number; code: string };
+type Props = { field: kintoneAPI.field.Number; code: string };
 
 const Component: FC<Props> = ({ field, code }) => {
   const properties = useRecoilValue(appPropertiesState);
@@ -13,7 +13,7 @@ const Component: FC<Props> = ({ field, code }) => {
   if (!found || ['', undefined, null].includes(field.value) || isNaN(Number(field.value))) {
     return <>{field.value}</>;
   }
-  const property = found[1] as kx.property.Number;
+  const property = found[1] as kintoneAPI.property.Number;
 
   const casted = Number(field.value);
   const scaled = property?.displayScale

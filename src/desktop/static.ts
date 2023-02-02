@@ -1,11 +1,11 @@
-import { kx } from '../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 export type ViewRecord = {
-  record: kx.RecordData;
+  record: kintoneAPI.RecordData;
   __quickSearch: string;
 };
 
-export const SORTABLE_FIELDS: kx.FieldPropertyType[] = [
+export const SORTABLE_FIELDS: kintoneAPI.FieldPropertyType[] = [
   'CALC',
   'CREATED_TIME',
   'DATE',

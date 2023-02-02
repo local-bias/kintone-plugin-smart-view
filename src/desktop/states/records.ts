@@ -2,14 +2,14 @@ import { atom, selector } from 'recoil';
 import { pluginConditionState } from './plugin';
 import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
-import { ViewRecord } from '../static';
+import type { ViewRecord } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
 import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
 } from '@common/utilities';
-import { kx } from '../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 export const allViewRecordsState = atom<ViewRecord[]>({
   key: 'allViewRecordsState',
@@ -53,7 +53,7 @@ const sortedDatasState = selector<ViewRecord[]>({
   },
 });
 
-export const filteredRecordsState = selector<kx.RecordData[]>({
+export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
   key: 'filteredRecordsState',
   get: ({ get }) => {
     const records = get(sortedDatasState);
@@ -95,7 +95,7 @@ export const filteredRecordsState = selector<kx.RecordData[]>({
   },
 });
 
-export const displayingRecordsState = selector<kx.RecordData[]>({
+export const displayingRecordsState = selector<kintoneAPI.RecordData[]>({
   key: 'displayingRecordsState',
   get: ({ get }) => {
     const records = get(filteredRecordsState);

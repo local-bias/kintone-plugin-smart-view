@@ -7,7 +7,7 @@ import { getAllRecords } from '@common/kintone-rest-api';
 import { allViewRecordsState } from '../../states/records';
 import { errorState, loadingState } from '../../states/plugin';
 import { pluginConditionState } from '../../states/plugin';
-import { ViewRecord } from '../../static';
+import type { ViewRecord } from '../../static';
 import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,

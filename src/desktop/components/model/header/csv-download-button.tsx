@@ -7,7 +7,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 
 import { filteredRecordsState } from '../../../states/records';
 import { pluginConditionState } from '../../../states/plugin';
-import { kx } from '../../../../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 const Component: FCX = ({ className }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -78,7 +78,7 @@ const Container: FC = () => {
 
 export default Container;
 
-const download = (condition: kintone.plugin.Condition, records: kx.RecordData[]) => {
+const download = (condition: kintone.plugin.Condition, records: kintoneAPI.RecordData[]) => {
   const header = condition.viewDisplayingFields;
 
   const body = records.map((record) =>

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { HeaderCell, headerCellsState } from '../../../states/header-cells';
 import { SORTABLE_FIELDS } from '../../../static';

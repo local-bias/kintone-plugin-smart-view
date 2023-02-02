@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { DeepReadonly } from 'utility-types';
-import { kx } from '../../../../types/kintone.api';
+import type { DeepReadonly } from 'utility-types';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
-type Props = DeepReadonly<{ field: kx.field.Creator | kx.field.Modifier }>;
+type Props = DeepReadonly<{ field: kintoneAPI.field.Creator | kintoneAPI.field.Modifier }>;
 
 const Component: FC<Props> = ({ field }) => {
   return <>{field.value.name}</>;

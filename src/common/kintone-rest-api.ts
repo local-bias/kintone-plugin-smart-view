@@ -1,5 +1,5 @@
 import { getAppId } from '@lb-ribbit/kintone-xapp';
-import { kx } from '../types/kintone.api';
+import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 const END_POINT = '/k/v1/records';
 
@@ -12,16 +12,16 @@ type GetProps = Readonly<
     totalCount: boolean;
     query: string;
     onGetTotal: (total: number) => void;
-    onAdvance: (records: kx.RecordData[]) => void;
+    onAdvance: (records: kintoneAPI.RecordData[]) => void;
   }>
 >;
 
-type GetMethod = (props?: GetProps) => Promise<kx.RecordData[]>;
+type GetMethod = (props?: GetProps) => Promise<kintoneAPI.RecordData[]>;
 
 interface CursorProps {
   id: string;
   onAdvance: ((key?: any) => any) | null;
-  loadedData?: kx.RecordData[];
+  loadedData?: kintoneAPI.RecordData[];
 }
 
 export const getAllRecords: GetMethod = async (props = {}) => {
@@ -42,10 +42,13 @@ const getRecordsByCursorId = async ({
   id,
   onAdvance,
   loadedData = [],
-}: CursorProps): Promise<kx.RecordData[]> => {
+}: CursorProps): Promise<kintoneAPI.RecordData[]> => {
   const response = await kintone.api(kintone.api.url(`${END_POINT}/cursor`, true), 'GET', { id });
 
-  const newRecords: kx.RecordData[] = [...loadedData, ...(response.records as kx.RecordData[])];
+  const newRecords: kintoneAPI.RecordData[] = [
+    ...loadedData,
+    ...(response.records as kintoneAPI.RecordData[]),
+  ];
 
   if (onAdvance) {
     onAdvance(newRecords);

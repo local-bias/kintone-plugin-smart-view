@@ -1,6 +1,6 @@
 import React, { FCX } from 'react';
 import styled from '@emotion/styled';
-import { DeepReadonly } from 'utility-types';
+import type { DeepReadonly } from 'utility-types';
 
 type Props = DeepReadonly<{ label: string }>;
 
