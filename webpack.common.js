@@ -20,10 +20,7 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: 'esbuild-loader',
-        options: {
-          loader: 'tsx',
-          target: 'ESNext',
-        },
+        options: { target: 'ESNext' },
       },
     ],
   },
