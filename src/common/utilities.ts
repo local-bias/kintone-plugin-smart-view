@@ -128,7 +128,7 @@ export const showNotification = (options: { title: string; body: string }) => {
     background-color: #fffa;
     backdrop-filter: blur(16px);
     border-left: 3px solid #e74c3c;
-    broder-radius: 4px;
+    border-radius: 4px;
     overflow: hidden;
     font-family: 'Yu Gothic', 'メイリオ', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
     box-shadow: 0 4px 12px -3px #0004;
