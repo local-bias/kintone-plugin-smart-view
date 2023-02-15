@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  target: ['web', 'es2020'],
+  target: ['web', 'es2022'],
   entry: {
     desktop: './src/desktop/index.ts',
     config: './src/config/index.ts',
