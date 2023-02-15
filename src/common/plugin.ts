@@ -14,18 +14,6 @@ export const restoreStorage = (id: string): kintone.plugin.Storage => {
 };
 
 /**
- * アプリにプラグインの設定情報を保存します
- */
-export const storeStorage = (target: Record<string, any>, callback?: () => void) => {
-  const converted = Object.entries(target).reduce(
-    (acc, [key, value]) => ({ ...acc, [key]: JSON.stringify(value) }),
-    {}
-  );
-
-  kintone.plugin.app.setConfig(converted, callback);
-};
-
-/**
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): kintone.plugin.Storage => ({
