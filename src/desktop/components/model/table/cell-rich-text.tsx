@@ -1,7 +1,7 @@
 import { sanitize } from 'dompurify';
 import React, { FC } from 'react';
 import type { DeepReadonly } from 'utility-types';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 type Props = DeepReadonly<{ field: kintoneAPI.field.RichText }>;
 

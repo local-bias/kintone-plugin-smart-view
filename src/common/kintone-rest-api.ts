@@ -1,5 +1,5 @@
 import { getAppId } from '@lb-ribbit/kintone-xapp';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const END_POINT = '/k/v1/records';
 

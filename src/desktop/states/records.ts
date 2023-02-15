@@ -9,7 +9,7 @@ import {
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
 } from '@common/utilities';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 export const allViewRecordsState = atom<ViewRecord[]>({
   key: 'allViewRecordsState',

@@ -1,6 +1,6 @@
 import { selector } from 'recoil';
 import { getFieldsWithoutIgnores } from '@common/kintone';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'kintone';
 

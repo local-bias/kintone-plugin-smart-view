@@ -8,7 +8,7 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Cell from './cell';
 import { getQueryString } from '@common/cybozu';
 import { isMobile } from '@lb-ribbit/kintone-xapp';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 type Props = DeepReadonly<{
   records: kintoneAPI.RecordData[];

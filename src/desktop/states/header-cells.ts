@@ -2,7 +2,7 @@ import { selector } from 'recoil';
 import { appPropertiesState } from './kintone';
 import { pluginConditionState } from './plugin';
 import { propertiesReadyState } from './kintone';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 export type HeaderCell = { label: string; property: kintoneAPI.FieldProperty | null };
 

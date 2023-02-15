@@ -1,7 +1,7 @@
 import { Skeleton } from '@mui/material';
 import React, { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 import { appPropertiesState } from '../../../states/kintone';
 
 type Props = { field: kintoneAPI.field.Number; code: string };

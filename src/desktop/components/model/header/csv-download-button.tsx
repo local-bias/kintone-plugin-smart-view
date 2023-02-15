@@ -7,7 +7,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 
 import { filteredRecordsState } from '../../../states/records';
 import { pluginConditionState } from '../../../states/plugin';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const Component: FCX = ({ className }) => {
   const { enqueueSnackbar } = useSnackbar();

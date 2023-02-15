@@ -1,7 +1,7 @@
 import { kintoneClient } from '@common/kintone';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import { selector } from 'recoil';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'kintone';
 

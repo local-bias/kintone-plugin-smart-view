@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
 import type { DeepReadonly } from 'utility-types';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 import { appPropertiesState } from '../../../states/kintone';
 import { SubtableDetails } from '../../ui/subtable-details';
 

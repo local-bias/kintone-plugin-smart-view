@@ -447,15 +447,15 @@
     "@kintone/plugin-packer" "^6.0.23"
     mkdirp "^1.0.4"
 
+"@konomi-app/kintone-utilities@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@konomi-app/kintone-utilities/-/kintone-utilities-0.7.0.tgz#57c782a09587c431b1f79b8aaf348c51309c6f14"
+  dependencies:
+    "@kintone/rest-api-client" "^3.3.1"
+
 "@lb-ribbit/kintone-secrets@0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-secrets/-/kintone-secrets-0.3.0.tgz#ccb62ec48ded2ba85256a9987576fe1b0795c628"
-
-"@lb-ribbit/kintone-utilities@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-utilities/-/kintone-utilities-0.5.3.tgz#f66d7f29204c06e45daffc007da7d274ebfaa281"
-  dependencies:
-    "@kintone/rest-api-client" "^3.3.1"
 
 "@lb-ribbit/kintone-xapp@0.4.0":
   version "0.4.0"
