@@ -1,6 +1,6 @@
 import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
-import type { kintoneAPI } from '@lb-ribbit/kintone-utilities';
+import { getFieldValueAsString, kintoneAPI } from '@lb-ribbit/kintone-utilities';
 
 /** kintoneアプリに初期状態で存在するフィールドタイプ */
 const DEFAULT_DEFINED_FIELDS: kintoneAPI.FieldPropertyType[] = [
@@ -113,33 +113,9 @@ export const updateAppViews = async (views: Record<string, kintoneAPI.view.Param
 };
 
 export const getQuickSearchString = (record: kintoneAPI.RecordData): string => {
-  const values = Object.values(record).map((field) => {
-    switch (field.type) {
-      case 'CREATOR':
-      case 'MODIFIER':
-        return field.value.name;
+  const separator = '_';
 
-      case 'CHECK_BOX':
-      case 'MULTI_SELECT':
-      case 'CATEGORY':
-        return field.value.join('');
+  const values = Object.values(record).map((field) => getFieldValueAsString(field, { separator }));
 
-      case 'USER_SELECT':
-      case 'ORGANIZATION_SELECT':
-      case 'GROUP_SELECT':
-      case 'STATUS_ASSIGNEE':
-        return field.value.map(({ name }) => name).join('');
-
-      case 'FILE':
-        return field.value.map(({ name }) => name).join('');
-
-      case 'SUBTABLE':
-        return field.value.map(({ value }) => getQuickSearchString(value)).join('');
-
-      default:
-        return field.value || '';
-    }
-  });
-
-  return values.join('');
+  return values.join(separator);
 };
