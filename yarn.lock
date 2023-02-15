@@ -183,7 +183,7 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@emotion/sheet/-/sheet-1.2.1.tgz#0767e0305230e894897cadb6c8df2c51e61a6c2c"
 
-"@emotion/styled@11.10.5":
+"@emotion/styled@11.10.5", "@emotion/styled@^11.10.5":
   version "11.10.5"
   resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-11.10.5.tgz#1fe7bf941b0909802cb826457e362444e7e96a79"
   dependencies:
@@ -459,6 +459,16 @@
   dependencies:
     "@kintone/rest-api-client" "^3.3.1"
 
+"@konomi-app/kintone-utility-component@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@konomi-app/kintone-utility-component/-/kintone-utility-component-0.6.0.tgz#999cac8750f8fe64b3c1e3002af462bb5edce38a"
+  dependencies:
+    "@emotion/styled" "^11.10.5"
+    "@mui/icons-material" "^5.11.0"
+    "@mui/material" "^5.11.8"
+    react "^18.2.0"
+    react-dom "^18.2.0"
+
 "@lb-ribbit/kintone-secrets@0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@lb-ribbit/kintone-secrets/-/kintone-secrets-0.3.0.tgz#ccb62ec48ded2ba85256a9987576fe1b0795c628"
@@ -487,13 +497,13 @@
   version "5.11.9"
   resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-5.11.9.tgz#0d3b20c2ef7704537c38597f9ecfc1894fe7c367"
 
-"@mui/icons-material@5.11.9":
+"@mui/icons-material@5.11.9", "@mui/icons-material@^5.11.0":
   version "5.11.9"
   resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.11.9.tgz#db26c106d0d977ae1fc0c2d20ba2e829a8174c05"
   dependencies:
     "@babel/runtime" "^7.20.13"
 
-"@mui/material@5.11.9":
+"@mui/material@5.11.9", "@mui/material@^5.11.8":
   version "5.11.9"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.11.9.tgz#fd5b81551f50e4acea2d80feed33728710386f28"
   dependencies:
@@ -3321,7 +3331,7 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-react-dom@18.2.0:
+react-dom@18.2.0, react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
   dependencies:
@@ -3345,7 +3355,7 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@18.2.0:
+react@18.2.0, react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   dependencies:

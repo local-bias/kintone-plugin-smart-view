@@ -5,13 +5,12 @@ import { SnackbarProvider } from 'notistack';
 import { restoreStorage } from '@common/plugin';
 import { PluginErrorBoundary } from '@common/components/error-boundary';
 import { Loading } from '@common/components/loading';
+import { PluginLayout, PluginBanner } from '@konomi-app/kintone-utility-component';
 
 import { pluginIdState, storageState } from './states/plugin';
-import Layout from './components/model/layout';
 import Sidebar from './components/model/sidebar';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
-import Promotion from './components/model/promotion';
 import { URL_PROMOTION } from '@common/statics';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
@@ -24,14 +23,14 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
     >
       <PluginErrorBoundary>
         <SnackbarProvider maxSnack={3}>
-          <Layout>
+          <PluginLayout>
             <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
               <Sidebar />
               <Form />
-              <Promotion />
+              <PluginBanner url='https://promotion.konomi.app/kintone-plugin/sidebar' />
               <Footer />
             </Suspense>
-          </Layout>
+          </PluginLayout>
         </SnackbarProvider>
       </PluginErrorBoundary>
     </RecoilRoot>
