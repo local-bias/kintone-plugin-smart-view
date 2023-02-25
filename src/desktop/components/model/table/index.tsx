@@ -1,4 +1,4 @@
-import React, { Suspense, FC } from 'react';
+import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { existsRecordState, isFetchCompleteState } from '../../../states/records';

@@ -1,5 +1,4 @@
 import React, { FC, Suspense } from 'react';
-import type { DeepReadonly } from 'utility-types';
 import { useRecoilValue } from 'recoil';
 import { displayingRecordsState, isFetchCompleteState } from '../../../states/records';
 import { loadingState, pluginConditionState } from '../../../states/plugin';
