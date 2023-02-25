@@ -11,6 +11,8 @@ import {
 } from '@common/utilities';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
+const PREFIX = 'records';
+
 export const allViewRecordsState = atom<ViewRecord[]>({
   key: 'allViewRecordsState',
   default: [],
@@ -104,6 +106,11 @@ export const displayingRecordsState = selector<kintoneAPI.RecordData[]>({
 
     return records.slice((index - 1) * chunk, index * chunk);
   },
+});
+
+export const isFetchCompleteState = atom<boolean>({
+  key: `${PREFIX}isFetchCompleteState`,
+  default: false,
 });
 
 export const existsRecordState = selector({

@@ -4,7 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { getAllRecords } from '@common/kintone-rest-api';
 
-import { allViewRecordsState } from '../../states/records';
+import { allViewRecordsState, isFetchCompleteState } from '../../states/records';
 import { errorState, loadingState } from '../../states/plugin';
 import { pluginConditionState } from '../../states/plugin';
 import type { ViewRecord } from '../../static';
@@ -20,6 +20,7 @@ const Container: FC = () => {
   const setLoading = useSetRecoilState(loadingState);
   const condition = useRecoilValue(pluginConditionState);
   const setError = useSetRecoilState(errorState);
+  const setFetchComplete = useSetRecoilState(isFetchCompleteState);
 
   useEffect(() => {
     (async () => {
@@ -76,6 +77,7 @@ const Container: FC = () => {
             setAllRecords(viewRecords);
           },
         });
+        setFetchComplete(true);
       } catch (error: any) {
         if (error?.code === 'GAIA_TM12') {
           setError(
