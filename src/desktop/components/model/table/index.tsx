@@ -19,9 +19,7 @@ const Table: FC = () => {
   }
   return (
     <table>
-      <Suspense fallback={null}>
-        <Head />
-      </Suspense>
+      <Head />
       <Body />
     </table>
   );
