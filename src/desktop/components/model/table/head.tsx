@@ -7,7 +7,7 @@ import { Sorting, sortingState } from '../../../states/sorting';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { pluginConditionState } from '../../../states/plugin';
+import { errorState, pluginConditionState } from '../../../states/plugin';
 import { paginationIndexState } from '../../../states/pagination';
 import { Skeleton } from '@mui/material';
 
@@ -86,6 +86,12 @@ const PlaceHolder: FC = () => {
 };
 
 const Container: FC = () => {
+  const error = useRecoilValue(errorState);
+
+  if (error) {
+    return null;
+  }
+
   return (
     <thead>
       <tr>
