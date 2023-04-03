@@ -36,7 +36,7 @@
     "dompurify": "3.0.1",
     "dotenv": "16.0.3",
     "esbuild-loader": "3.0.1",
-    "eslint": "8.36.0",
+    "eslint": "8.37.0",
     "fork-ts-checker-webpack-plugin": "8.0.0",
     "immer": "9.0.21",
     "luxon": "3.3.0",
