@@ -47,14 +47,14 @@ const Component: FCX = ({ className }) => {
         <CSVExportForm />
         <EditableModeForm />
         <SortableModeForm />
-        <LetterCaseForm />
-        <KatakanaForm />
-        <HankakuKatakanaForm />
-        <ZenkakuEisujiForm />
       </section>
       <details>
         <summary>高度なオプション</summary>
         <section>
+          <LetterCaseForm />
+          <KatakanaForm />
+          <HankakuKatakanaForm />
+          <ZenkakuEisujiForm />
           <CursorAPIForm />
           <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
         </section>
