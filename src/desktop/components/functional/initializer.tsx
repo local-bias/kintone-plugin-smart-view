@@ -1,20 +1,16 @@
-import { useEffect, FC } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-
-import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
-import { getAllRecords } from '@common/kintone-rest-api';
-
-import { allViewRecordsState, isFetchCompleteState } from '../../states/records';
-import { errorState, loadingState } from '../../states/plugin';
-import { pluginConditionState } from '../../states/plugin';
-import type { ViewRecord } from '../../static';
+import { getQuickSearchString } from '@common/kintone';
 import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
 } from '@common/utilities';
-import { getQuickSearchString } from '@common/kintone';
-import { getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { getAllRecords, getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
+import { FC, useEffect } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { errorState, loadingState, pluginConditionState } from '../../states/plugin';
+import { allViewRecordsState, isFetchCompleteState } from '../../states/records';
+import type { ViewRecord } from '../../static';
 
 const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);
@@ -76,11 +72,18 @@ const Container: FC = () => {
         };
 
         if (disableCursorAPI) {
-          console.info('IDを使って全レコードを取得するAPIを使用します。');
           await getAllRecordsWithId({ app, condition: query, fields, onStep });
         } else {
-          console.info('カーソルを使って全レコードを取得するAPIを使用します。');
-          await getAllRecords({ app, query, fields, onStep });
+          try {
+            await getAllRecords({ app, query, fields, onStep });
+          } catch (error: any) {
+            if (error?.code === 'GAIA_TM12') {
+              console.warn('カーソルAPIの上限に達したため、IDを使用したAPIで取得します。');
+              await getAllRecordsWithId({ app, condition: query, fields, onStep });
+            } else {
+              throw error;
+            }
+          }
         }
 
         setFetchComplete(true);
