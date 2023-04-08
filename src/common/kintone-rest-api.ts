@@ -5,6 +5,8 @@ const END_POINT = '/k/v1/records';
 
 const LIMIT_GET = 500;
 
+type OnStep = (records: kintoneAPI.RecordData[]) => void;
+
 type GetProps = Readonly<
   Partial<{
     app: number;
@@ -12,7 +14,7 @@ type GetProps = Readonly<
     totalCount: boolean;
     query: string;
     onGetTotal: (total: number) => void;
-    onAdvance: (records: kintoneAPI.RecordData[]) => void;
+    onStep: OnStep;
   }>
 >;
 
@@ -20,12 +22,12 @@ type GetMethod = (props?: GetProps) => Promise<kintoneAPI.RecordData[]>;
 
 interface CursorProps {
   id: string;
-  onAdvance: ((key?: any) => any) | null;
+  onStep: OnStep | null;
   loadedData?: kintoneAPI.RecordData[];
 }
 
 export const getAllRecords: GetMethod = async (props = {}) => {
-  const { app = getAppId(), fields = [], query = '', onGetTotal = null, onAdvance = null } = props;
+  const { app = getAppId(), fields = [], query = '', onGetTotal = null, onStep = null } = props;
 
   const param = { app, fields, size: LIMIT_GET, query };
 
@@ -35,12 +37,12 @@ export const getAllRecords: GetMethod = async (props = {}) => {
     onGetTotal(cursor.totalCount);
   }
 
-  return getRecordsByCursorId({ id: cursor.id, onAdvance });
+  return getRecordsByCursorId({ id: cursor.id, onStep });
 };
 
 const getRecordsByCursorId = async ({
   id,
-  onAdvance,
+  onStep,
   loadedData = [],
 }: CursorProps): Promise<kintoneAPI.RecordData[]> => {
   const response = await kintone.api(kintone.api.url(`${END_POINT}/cursor`, true), 'GET', { id });
@@ -50,11 +52,9 @@ const getRecordsByCursorId = async ({
     ...(response.records as kintoneAPI.RecordData[]),
   ];
 
-  if (onAdvance) {
-    onAdvance(newRecords);
+  if (onStep) {
+    onStep(newRecords);
   }
 
-  return response.next
-    ? getRecordsByCursorId({ id, onAdvance, loadedData: newRecords })
-    : newRecords;
+  return response.next ? getRecordsByCursorId({ id, onStep, loadedData: newRecords }) : newRecords;
 };

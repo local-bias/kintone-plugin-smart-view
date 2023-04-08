@@ -14,33 +14,35 @@ import LetterCaseForm from '../../../functional/form-letter-case';
 import KatakanaForm from '../../../functional/form-katakana';
 import ZenkakuEisujiForm from '../../../functional/form-zenkaku-eisuji';
 import HankakuKatakanaForm from '../../../functional/form-hankaku-katakana';
+import CursorAPIForm from '../../../functional/form-cursor-api';
 import { useConditionIndex } from '../../../condition-index-provider';
 import { useRecoilValue } from 'recoil';
 import { tabIndexState } from '../../../../states/plugin';
 import DeletionButton from './condition-deletion-button';
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 
 const Component: FCX = ({ className }) => {
   return (
     <div {...{ className }}>
-      <div>
+      <section>
         <h3>テーブルを表示する一覧の設定</h3>
         <ViewIdForm />
         <small>選択できる一覧は表示形式「カスタマイズ」のみです。</small>
-      </div>
-      <div>
+      </section>
+      <section>
         <div className='titleWithButton'>
           <h3>テーブルに表示するフィールドの設定</h3>
           <ImportingViewFields />
         </div>
         <ViewDisplayingFieldsForm />
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h3>ページネーションの設定</h3>
         <PaginationControlForm />
         <PaginationChunkForm />
-      </div>
-      <div>
+      </section>
+      <section>
         <h3>その他のオプション</h3>
         <CSVExportForm />
         <EditableModeForm />
@@ -49,7 +51,14 @@ const Component: FCX = ({ className }) => {
         <KatakanaForm />
         <HankakuKatakanaForm />
         <ZenkakuEisujiForm />
-      </div>
+      </section>
+      <details>
+        <summary>高度なオプション</summary>
+        <section>
+          <CursorAPIForm />
+          <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
+        </section>
+      </details>
       <div className='top-tools'>
         <DeletionButton />
       </div>
@@ -64,7 +73,7 @@ const StyledComponent = styled(Component)`
   align-items: flex-start;
   gap: 32px;
 
-  > div {
+  section {
     > *:not(h3) {
       padding-left: 16px;
     }
@@ -79,11 +88,16 @@ const StyledComponent = styled(Component)`
     color: #f70;
   }
 
-  h3 {
+  h3,
+  details summary {
     font-weight: 600;
     color: #334155;
     margin: 0 0 12px;
     padding-left: 12px;
+  }
+
+  details summary {
+    cursor: pointer;
   }
 
   .MuiTextField-root {

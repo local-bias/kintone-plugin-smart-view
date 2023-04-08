@@ -19,6 +19,7 @@ declare namespace kintone {
       ignoresKatakana?: boolean;
       ignoresZenkakuEisuji?: boolean;
       ignoresHankakuKatakana?: boolean;
+      disableCursorAPI?: boolean;
     };
   }
 }

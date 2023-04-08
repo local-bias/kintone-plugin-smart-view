@@ -14,6 +14,7 @@ import {
   convertZenkakuEisujiToHankaku,
 } from '@common/utilities';
 import { getQuickSearchString } from '@common/kintone';
+import { getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);
@@ -41,6 +42,7 @@ const Container: FC = () => {
           ignoresKatakana = true,
           ignoresHankakuKatakana = true,
           ignoresZenkakuEisuji = true,
+          disableCursorAPI = false,
         } = condition;
 
         const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
@@ -48,35 +50,39 @@ const Container: FC = () => {
         const targetFields = viewDisplayingFields.filter((field) => !!field);
         const fields = ['$id', ...targetFields];
 
-        await getAllRecords({
-          app,
-          query,
-          fields,
-          onAdvance: (records) => {
-            const viewRecords = records.map<ViewRecord>((record) => {
-              let __quickSearch = getQuickSearchString(record);
+        const onStep = (records: kintoneAPI.RecordData[]) => {
+          const viewRecords = records.map<ViewRecord>((record) => {
+            let __quickSearch = getQuickSearchString(record);
 
-              if (ignoresZenkakuEisuji) {
-                __quickSearch = convertZenkakuEisujiToHankaku(__quickSearch);
-              }
+            if (ignoresZenkakuEisuji) {
+              __quickSearch = convertZenkakuEisujiToHankaku(__quickSearch);
+            }
 
-              if (ignoresLetterCase) {
-                __quickSearch = __quickSearch.toLowerCase();
-              }
+            if (ignoresLetterCase) {
+              __quickSearch = __quickSearch.toLowerCase();
+            }
 
-              if (ignoresHankakuKatakana) {
-                __quickSearch = convertHankakuKatakanaToZenkaku(__quickSearch);
-              }
+            if (ignoresHankakuKatakana) {
+              __quickSearch = convertHankakuKatakanaToZenkaku(__quickSearch);
+            }
 
-              if (ignoresKatakana) {
-                __quickSearch = convertKatakanaToHiragana(__quickSearch);
-              }
+            if (ignoresKatakana) {
+              __quickSearch = convertKatakanaToHiragana(__quickSearch);
+            }
 
-              return { record, __quickSearch };
-            });
-            setAllRecords(viewRecords);
-          },
-        });
+            return { record, __quickSearch };
+          });
+          setAllRecords(viewRecords);
+        };
+
+        if (disableCursorAPI) {
+          console.info('IDを使って全レコードを取得するAPIを使用します。');
+          await getAllRecordsWithId({ app, condition: query, fields, onStep });
+        } else {
+          console.info('カーソルを使って全レコードを取得するAPIを使用します。');
+          await getAllRecords({ app, query, fields, onStep });
+        }
+
         setFetchComplete(true);
       } catch (error: any) {
         if (error?.code === 'GAIA_TM12') {

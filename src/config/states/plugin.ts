@@ -345,3 +345,27 @@ export const ignoresHankakuKatakanaState = selectorFamily<boolean, number>({
       );
     },
 });
+
+export const disableCursorAPIState = selectorFamily<boolean, number>({
+  key: `${PREFIX}disableCursorAPIState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'disableCursorAPI',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'disableCursorAPI',
+          value: newValue as boolean,
+        })
+      );
+    },
+});
