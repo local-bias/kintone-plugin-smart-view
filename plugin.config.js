@@ -1,4 +1,9 @@
-/** @type {import('./src/types/plugin-config').PluginConfig} */
+//@ts-check
+const HP = 'https://konomi.app/';
+const CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest';
+const COMMON_CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest';
+
+/** @type {import('@konomi-app/kintone-utilities/dist/types/kintone.config')} */
 module.exports = {
   manifest: {
     base: {
@@ -16,21 +21,12 @@ module.exports = {
         zh: '此插件用自定义视图替换默认视图并实现更快的搜索',
       },
       icon: 'image/icon.png',
-      homepage_url: {
-        ja: 'https://konomi.app/',
-        en: 'https://konomi.app/',
-      },
-      desktop: {
-        js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/desktop.js'],
-        css: [],
-      },
-      mobile: {
-        js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/desktop.js'],
-        css: [],
-      },
+      homepage_url: { ja: HP, en: HP },
+      desktop: { js: [`${COMMON_CDN}/dist/desktop.js`], css: [] },
+      mobile: { js: [`${COMMON_CDN}/dist/desktop.js`], css: [] },
       config: {
         html: 'html/config.html',
-        js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/config.js'],
+        js: [`${COMMON_CDN}/dist/config.js`],
         css: [],
         required_params: [],
       },
@@ -41,21 +37,9 @@ module.exports = {
       config: { js: ['config.js'] },
     },
     prod: {
-      desktop: {
-        js: [
-          'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest/cdn/desktop.js',
-        ],
-      },
-      mobile: {
-        js: [
-          'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest/cdn/desktop.js',
-        ],
-      },
-      config: {
-        js: [
-          'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest/cdn/config.js',
-        ],
-      },
+      desktop: { js: [`${CDN}/cdn/desktop.js`] },
+      mobile: { js: [`${CDN}/cdn/desktop.js`] },
+      config: { js: [`${CDN}/cdn/config.js`] },
     },
   },
 };
