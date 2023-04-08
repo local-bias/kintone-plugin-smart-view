@@ -1,6 +1,6 @@
 {
   "name": "kintone-plugin-smart-view",
-  "version": "2.18.0",
+  "version": "2.19.0",
   "scripts": {
     "build": "ts-node scripts/marge-json.ts prod && webpack --config webpack.prod.js",
     "dev": "ts-node scripts/marge-json.ts dev && concurrently \"yarn:dev:*\"",
