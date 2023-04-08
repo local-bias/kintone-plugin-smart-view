@@ -8,6 +8,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import { filteredRecordsState } from '../../../states/records';
 import { pluginConditionState } from '../../../states/plugin';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
+import { appPropertiesState } from '../../../states/kintone';
 
 const Component: FCX = ({ className }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -31,8 +32,8 @@ const Component: FCX = ({ className }) => {
             });
             return;
           }
-
-          download(condition, records);
+          const fieldProperties = await snapshot.getPromise(appPropertiesState);
+          download(condition, records, fieldProperties);
 
           enqueueSnackbar('CSVを出力しました', { variant: 'success' });
         } catch (error) {
@@ -78,11 +79,19 @@ const Container: FC = () => {
 
 export default Container;
 
-const download = (condition: kintone.plugin.Condition, records: kintoneAPI.RecordData[]) => {
-  const header = condition.viewDisplayingFields;
+const download = (
+  condition: kintone.plugin.Condition,
+  records: kintoneAPI.RecordData[],
+  fieldProperties: kintoneAPI.FieldProperties
+) => {
+  const targetFieldCodes = condition.viewDisplayingFields;
+
+  const header = targetFieldCodes.map(
+    (fieldCode) => fieldProperties[fieldCode]?.label ?? fieldCode
+  );
 
   const body = records.map((record) =>
-    header.map((key) => {
+    targetFieldCodes.map((key) => {
       const field = record[key];
       if (!field) {
         return '';
