@@ -18,7 +18,7 @@
     "@kintone/rest-api-client": "3.3.9",
     "@kintone/webpack-plugin-kintone-plugin": "6.0.32",
     "@konomi-app/kbuild": "^1.4.1",
-    "@konomi-app/kintone-utilities": "^1.14.2",
+    "@konomi-app/kintone-utilities": "^1.18.1",
     "@konomi-app/kintone-utility-component": "^0.7.2",
     "@lb-ribbit/kintone-secrets": "0.3.0",
     "@lb-ribbit/kintone-xapp": "0.4.0",
