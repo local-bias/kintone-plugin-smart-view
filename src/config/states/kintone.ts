@@ -1,7 +1,6 @@
-import { kintoneClient } from '@common/kintone';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import { selector } from 'recoil';
-import type { kintoneAPI } from '@konomi-app/kintone-utilities';
+import { getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'kintone';
 
@@ -13,7 +12,7 @@ export const allAppViewsState = selector<Record<string, kintoneAPI.view.Response
       throw new Error('アプリのフィールド情報が取得できませんでした');
     }
 
-    const { views } = await kintoneClient.app.getViews({ app, preview: true });
+    const { views } = await getViews({ app, preview: true });
     return views;
   },
 });

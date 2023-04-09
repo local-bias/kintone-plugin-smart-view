@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { storeStorage } from '@konomi-app/kintone-utilities';
+import { getViews, storeStorage } from '@konomi-app/kintone-utilities';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
@@ -9,7 +9,7 @@ import { useSnackbar } from 'notistack';
 import React, { FC, FCX, useCallback, useState } from 'react';
 import { useRecoilCallback } from 'recoil';
 
-import { kintoneClient, updateAppViews } from '@common/kintone';
+import { updateAppViews } from '@common/kintone';
 import { VIEW_ROOT_ID } from '@common/statics';
 import { storageState } from '../../../states/plugin';
 
@@ -90,7 +90,7 @@ const Container: FC = () => {
           if (!app) {
             throw new Error('アプリのフィールド情報が取得できませんでした');
           }
-          const { views } = await kintoneClient.app.getViews({ app, preview: true });
+          const { views } = await getViews({ app, preview: true });
 
           const newViews = produce(views, (draft) => {
             for (const condition of storage?.conditions || []) {

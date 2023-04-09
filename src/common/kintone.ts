@@ -1,6 +1,12 @@
-import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
-import { getFieldValueAsString, kintoneAPI } from '@konomi-app/kintone-utilities';
+import {
+  getFieldValueAsString,
+  getFormFields,
+  getFormLayout,
+  getViews,
+  kintoneAPI,
+  updateViews,
+} from '@konomi-app/kintone-utilities';
 
 /** kintoneアプリに初期状態で存在するフィールドタイプ */
 const DEFAULT_DEFINED_FIELDS: kintoneAPI.FieldPropertyType[] = [
@@ -14,26 +20,6 @@ const DEFAULT_DEFINED_FIELDS: kintoneAPI.FieldPropertyType[] = [
 
 const IGNORE_FIELDS: kintoneAPI.FieldPropertyType[] = ['GROUP'];
 
-class FlexKintone extends KintoneRestAPIClient {
-  constructor(...options: ConstructorParameters<typeof KintoneRestAPIClient>) {
-    const url = kintone.api.url('/k/v1/app', true);
-    const found = url.match(/k\/guest\/([0-9]+)\//);
-
-    if (found && found.length > 1) {
-      super({
-        guestSpaceId: found[1],
-        ...(options[0] || {}),
-      });
-      return;
-    }
-
-    super(...options);
-  }
-}
-
-/** REST APIクライアント(シングルトン) */
-export const kintoneClient = new FlexKintone();
-
 export const getAppFields = async (
   options?: Partial<{ targetApp: string | number; preview: boolean }>
 ) => {
@@ -45,7 +31,7 @@ export const getAppFields = async (
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { properties } = await kintoneClient.app.getFormFields({ app, preview });
+  const { properties } = await getFormFields({ app, preview });
 
   return properties;
 };
@@ -85,7 +71,7 @@ export const getAppLayout = async () => {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { layout } = await kintoneClient.app.getFormLayout({ app });
+  const { layout } = await getFormLayout({ app });
 
   return layout;
 };
@@ -97,7 +83,7 @@ export const getAppViews = async () => {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { views } = await kintoneClient.app.getViews({ app });
+  const { views } = await getViews({ app });
 
   return views;
 };
@@ -109,7 +95,7 @@ export const updateAppViews = async (views: Record<string, kintoneAPI.view.Param
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  return kintoneClient.app.updateViews({ app, views });
+  return updateViews({ app, views });
 };
 
 export const getQuickSearchString = (record: kintoneAPI.RecordData): string => {
