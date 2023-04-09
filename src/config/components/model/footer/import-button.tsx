@@ -32,7 +32,7 @@ const Component: FC = () => {
             return;
           }
           const [file] = Array.from(files);
-          const fileEvent = await onFileLoad(file);
+          const fileEvent = await onFileLoad(file, 'UTF-8');
           const text = (fileEvent.target?.result ?? '') as string;
           set(storageState, JSON.parse(text));
           enqueueSnackbar('設定情報をインポートしました', { variant: 'success' });
