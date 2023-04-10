@@ -576,69 +576,6 @@
     unbzip2-stream "1.4.3"
     yargs "17.7.1"
 
-"@sentry-internal/tracing@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.47.0.tgz#45e92eb4c8d049d93bd4fab961eaa38a4fb680f3"
-  dependencies:
-    "@sentry/core" "7.47.0"
-    "@sentry/types" "7.47.0"
-    "@sentry/utils" "7.47.0"
-    tslib "^1.9.3"
-
-"@sentry/browser@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.47.0.tgz#c0d10f348d1fb9336c3ef8fa2f6638f26d4c17a8"
-  dependencies:
-    "@sentry-internal/tracing" "7.47.0"
-    "@sentry/core" "7.47.0"
-    "@sentry/replay" "7.47.0"
-    "@sentry/types" "7.47.0"
-    "@sentry/utils" "7.47.0"
-    tslib "^1.9.3"
-
-"@sentry/core@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.47.0.tgz#6a723d96f64009a9c1b9bc44e259956b7eca0a3f"
-  dependencies:
-    "@sentry/types" "7.47.0"
-    "@sentry/utils" "7.47.0"
-    tslib "^1.9.3"
-
-"@sentry/react@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/react/-/react-7.47.0.tgz#9b0b937465a4e7fc6c3bde90ef9d0be2ef708b78"
-  dependencies:
-    "@sentry/browser" "7.47.0"
-    "@sentry/types" "7.47.0"
-    "@sentry/utils" "7.47.0"
-    hoist-non-react-statics "^3.3.2"
-    tslib "^1.9.3"
-
-"@sentry/replay@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.47.0.tgz#d2fc8fd3be2360950497426035d1ba0bd8a97b8f"
-  dependencies:
-    "@sentry/core" "7.47.0"
-    "@sentry/types" "7.47.0"
-    "@sentry/utils" "7.47.0"
-
-"@sentry/tracing@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.47.0.tgz#5f665cec7ab1703e3d0250da9284a9d8dc2eb604"
-  dependencies:
-    "@sentry-internal/tracing" "7.47.0"
-
-"@sentry/types@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.47.0.tgz#fd07dbec11a26ae861532a9abe75bd31663ca09b"
-
-"@sentry/utils@7.47.0":
-  version "7.47.0"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.47.0.tgz#e62fdede15e45387b40c9fa135feba48f0960826"
-  dependencies:
-    "@sentry/types" "7.47.0"
-    tslib "^1.9.3"
-
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"
@@ -2309,7 +2246,7 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.3.1:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   dependencies:
@@ -3308,6 +3245,12 @@ react-dom@18.2.0, react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-error-boundary@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-4.0.3.tgz#f811497c06d53ea1206817ee82c6e5c6a27becd9"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -3851,7 +3794,7 @@ tsconfig-paths@^3.14.1:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^1.8.1, tslib@^1.9.3:
+tslib@^1.8.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
 

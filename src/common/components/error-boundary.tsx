@@ -2,13 +2,9 @@ import React, { FC, FCX } from 'react';
 import styled from '@emotion/styled';
 import { Button } from '@mui/material';
 import { URL_HOMEPAGE } from '@common/statics';
-import { ErrorBoundary as SentryBoundary } from '@sentry/react';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 
-const Component: FCX<{ error: Error; resetError: () => void }> = ({
-  className,
-  error,
-  resetError,
-}) => (
+const Component: FCX<FallbackProps> = ({ className, error, resetErrorBoundary }) => (
   <div {...{ className }}>
     <svg height='512' viewBox='0 0 510 510' width='512' xmlns='http://www.w3.org/2000/svg'>
       <g>
@@ -63,7 +59,7 @@ const Component: FCX<{ error: Error; resetError: () => void }> = ({
         <a href={URL_HOMEPAGE}>開発者HP</a>
         <p className='error'>{error.message}</p>
       </div>
-      <Button variant='contained' color='primary' size='large' onClick={resetError}>
+      <Button variant='contained' color='primary' size='large' onClick={resetErrorBoundary}>
         リトライ
       </Button>
     </div>
@@ -111,9 +107,7 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <SentryBoundary fallback={(errorProps) => <StyledComponent {...errorProps} />}>
-    {children}
-  </SentryBoundary>
+  <ErrorBoundary FallbackComponent={StyledComponent}>{children}</ErrorBoundary>
 );
 
 export const PluginErrorBoundary = Container;
