@@ -79,12 +79,14 @@ const StyledComponent = styled.div`
             text-align: right;
           }
 
-          a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            svg {
-              font-size: 18px;
+          &:nth-of-type(1) {
+            a {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              svg {
+                font-size: 18px;
+              }
             }
           }
         }
