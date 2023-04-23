@@ -3,7 +3,7 @@ import React, { FC, memo, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { viewDisplayingFieldsState } from '../../states/plugin';
 import { useConditionIndex } from '../condition-index-provider';

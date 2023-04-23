@@ -4,7 +4,7 @@ import { getAppId } from '@lb-ribbit/kintone-xapp';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import { Button, CircularProgress } from '@mui/material';
-import produce from 'immer';
+import { produce } from 'immer';
 import { useSnackbar } from 'notistack';
 import React, { FC, FCX, useCallback, useState } from 'react';
 import { useRecoilCallback } from 'recoil';

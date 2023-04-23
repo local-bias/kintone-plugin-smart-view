@@ -5,7 +5,7 @@ import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/ma
 import { listViewsState } from '../../../../../states/kintone';
 import { storageState } from '../../../../../states/plugin';
 import { useSnackbar } from 'notistack';
-import produce from 'immer';
+import { produce } from 'immer';
 import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 import { Loading } from '@common/components/loading';
 import { useConditionIndex } from '../../../../condition-index-provider';
