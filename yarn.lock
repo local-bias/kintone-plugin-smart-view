@@ -603,9 +603,10 @@
     "@emotion/css" "^11.10.6"
     "@kintone/rest-api-client" "^3.3.6"
 
-"@konomi-app/kintone-utility-component@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@konomi-app/kintone-utility-component/-/kintone-utility-component-0.7.2.tgz#5985b119a37a3e70d2fc8b4b2873e6f7034a06e7"
+"@konomi-app/kintone-utility-component@^0.8.0":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@konomi-app/kintone-utility-component/-/kintone-utility-component-0.8.3.tgz#d66af11687e9ead224aec67fcd62b18e6f4c4ddc"
+  integrity sha512-gk6enC9//5/r5mTC1IN5xVn8JEhfb7Kfibdhqinh5PkCcuzgpFXNftFNDdRDaGj0GZNID4OcyTLtMchlr66fUA==
   dependencies:
     "@emotion/styled" "^11.10.6"
     "@mui/icons-material" "^5.11.11"
