@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { conditionsState, tabIndexState } from '../../../states/plugin';
 import ConditionTab from './condition-tab';
+import { PluginConditionTabs } from '@konomi-app/kintone-utility-component';
 
 const Component: FC = () => {
   const tabIndex = useRecoilValue(tabIndexState);
@@ -17,11 +18,11 @@ const Component: FC = () => {
   );
 
   return (
-    <Tabs value={tabIndex} onChange={onTabChange} orientation='vertical' variant='standard'>
+    <PluginConditionTabs value={tabIndex} onChange={onTabChange}>
       {conditions.map((condition, i) => (
         <ConditionTab key={i} index={i} />
       ))}
-    </Tabs>
+    </PluginConditionTabs>
   );
 };
 
