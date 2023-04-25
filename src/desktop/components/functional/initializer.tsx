@@ -73,14 +73,32 @@ const Container: FC = () => {
         };
 
         if (disableCursorAPI) {
-          await getAllRecordsWithId({ app, condition: query, fields, onStep });
+          await getAllRecordsWithId({
+            app,
+            condition: query,
+            fields,
+            onStep,
+            debug: process?.env?.NODE_ENV === 'development',
+          });
         } else {
           try {
-            await getAllRecords({ app, query, fields, onStep });
+            await getAllRecords({
+              app,
+              query,
+              fields,
+              onStep,
+              debug: process?.env?.NODE_ENV === 'development',
+            });
           } catch (error: any) {
             if (error?.code === 'GAIA_TM12') {
               console.warn('カーソルAPIの上限に達したため、IDを使用したAPIで取得します。');
-              await getAllRecordsWithId({ app, condition: query, fields, onStep });
+              await getAllRecordsWithId({
+                app,
+                condition: query,
+                fields,
+                onStep,
+                debug: process?.env?.NODE_ENV === 'development',
+              });
             } else {
               throw error;
             }
