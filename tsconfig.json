@@ -11,12 +11,11 @@
     "esModuleInterop": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "paths": {
-      "@common/*": ["./src/common/*"]
+      "@/*": ["./src/*"]
     }
   },
   "typeRoots": ["src/types", "node_modules/@types"],

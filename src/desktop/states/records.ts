@@ -8,7 +8,7 @@ import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
-} from '@common/utilities';
+} from '@/common/utilities';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'records';

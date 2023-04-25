@@ -2,16 +2,16 @@ import React, { Suspense, FC } from 'react';
 import { RecoilRoot } from 'recoil';
 import { SnackbarProvider } from 'notistack';
 
-import { restoreStorage } from '@common/plugin';
-import { PluginErrorBoundary } from '@common/components/error-boundary';
-import { Loading } from '@common/components/loading';
+import { restoreStorage } from '@/common/plugin';
+import { PluginErrorBoundary } from '@/common/components/error-boundary';
+import { Loading } from '@/common/components/loading';
 import { PluginLayout, PluginBanner } from '@konomi-app/kintone-utility-component';
 
 import { pluginIdState, storageState } from './states/plugin';
 import Sidebar from './components/model/sidebar';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
-import { URL_PROMOTION } from '@common/statics';
+import { URL_PROMOTION } from '@/common/statics';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
   <>

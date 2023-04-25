@@ -2,7 +2,7 @@ import React, { FC, memo, useState } from 'react';
 import { useRecoilCallback } from 'recoil';
 import { IconButton, Tooltip } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import { PLUGIN_NAME } from '@common/statics';
+import { PLUGIN_NAME } from '@/common/statics';
 import { storageState } from '../../../states/plugin';
 import { useSnackbar } from 'notistack';
 

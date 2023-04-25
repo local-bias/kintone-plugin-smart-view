@@ -1,9 +1,9 @@
-import { getQuickSearchString } from '@common/kintone';
+import { getQuickSearchString } from '@/common/kintone';
 import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
-} from '@common/utilities';
+} from '@/common/utilities';
 import { getAllRecords, getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { FC, useEffect } from 'react';
@@ -46,7 +46,8 @@ const Container: FC = () => {
         const targetFields = viewDisplayingFields.filter((field) => !!field);
         const fields = ['$id', ...targetFields];
 
-        const onStep = (records: kintoneAPI.RecordData[]) => {
+        const onStep = (params: { records: kintoneAPI.RecordData[] }) => {
+          const { records } = params;
           const viewRecords = records.map<ViewRecord>((record) => {
             let __quickSearch = getQuickSearchString(record);
 

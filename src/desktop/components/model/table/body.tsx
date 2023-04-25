@@ -5,7 +5,7 @@ import { loadingState, pluginConditionState } from '../../../states/plugin';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 import Cell from './cell';
-import { getQueryString } from '@common/cybozu';
+import { getQueryString } from '@/common/cybozu';
 import { isMobile } from '@lb-ribbit/kintone-xapp';
 import { Skeleton } from '@mui/material';
 

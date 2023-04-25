@@ -9,8 +9,8 @@ import { useSnackbar } from 'notistack';
 import React, { FC, FCX, useCallback, useState } from 'react';
 import { useRecoilCallback } from 'recoil';
 
-import { updateAppViews } from '@common/kintone';
-import { VIEW_ROOT_ID } from '@common/statics';
+import { updateAppViews } from '@/common/kintone';
+import { VIEW_ROOT_ID } from '@/common/statics';
 import { storageState } from '../../../states/plugin';
 
 import ExportButton from './export-button';

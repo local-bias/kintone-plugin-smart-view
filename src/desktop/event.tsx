@@ -1,11 +1,11 @@
 import React from 'react';
-import { restoreStorage } from '@common/plugin';
+import { restoreStorage } from '@/common/plugin';
 import { createRoot } from 'react-dom/client';
 import { css } from '@emotion/css';
 
 import App from './app';
-import { VIEW_ROOT_ID } from '@common/statics';
-import { showNotification } from '@common/utilities';
+import { VIEW_ROOT_ID } from '@/common/statics';
+import { showNotification } from '@/common/utilities';
 
 const events: launcher.EventTypes = ['app.record.index.show'];
 

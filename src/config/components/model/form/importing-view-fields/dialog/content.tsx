@@ -7,7 +7,7 @@ import { storageState } from '../../../../../states/plugin';
 import { useSnackbar } from 'notistack';
 import { produce } from 'immer';
 import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
-import { Loading } from '@common/components/loading';
+import { Loading } from '@/common/components/loading';
 import { useConditionIndex } from '../../../../condition-index-provider';
 
 type Props = DeepReadonly<{
