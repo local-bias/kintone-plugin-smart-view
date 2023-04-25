@@ -2,9 +2,10 @@
 const HP = 'https://konomi.app/';
 const CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest';
 const COMMON_CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest';
+const localhost = 'https://127.0.0.1:5500';
 
 /** @type {import('@konomi-app/kintone-utilities/dist/types/kintone.config')} */
-module.exports = {
+export default {
   manifest: {
     base: {
       manifest_version: 1,
@@ -32,14 +33,19 @@ module.exports = {
       },
     },
     dev: {
-      desktop: { js: ['desktop.js'] },
-      mobile: { js: ['desktop.js'] },
-      config: { js: ['config.js'] },
+      desktop: { js: [`${localhost}/dist/dev/desktop/index.js`] },
+      mobile: { js: [`${localhost}/dist/dev/desktop/index.js`] },
+      config: { js: [`${localhost}/dist/dev/config/index.js`] },
     },
     prod: {
       desktop: { js: [`${CDN}/cdn/desktop.js`] },
       mobile: { js: [`${CDN}/cdn/desktop.js`] },
       config: { js: [`${CDN}/cdn/config.js`] },
+    },
+    standalone: {
+      desktop: { js: ['desktop.js'] },
+      mobile: { js: ['desktop.js'] },
+      config: { js: ['config.js'] },
     },
   },
 };
