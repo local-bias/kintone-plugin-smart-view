@@ -3499,7 +3499,7 @@ tar-stream@^2.1.4:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-terser-webpack-plugin@5.3.7, terser-webpack-plugin@^5.3.7:
+terser-webpack-plugin@^5.3.7:
   version "5.3.7"
   resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.3.7.tgz#ef760632d24991760f339fe9290deb936ad1ffc7"
   dependencies:
