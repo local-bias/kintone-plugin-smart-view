@@ -36,7 +36,7 @@
     "dompurify": "3.0.3",
     "dotenv": "16.0.3",
     "eslint": "8.40.0",
-    "immer": "10.0.1",
+    "immer": "10.0.2",
     "luxon": "3.3.0",
     "notistack": "3.0.1",
     "react": "18.2.0",
