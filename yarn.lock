@@ -3423,8 +3423,9 @@ react-dom@18.2.0, react-dom@^18.2.0:
     scheduler "^0.23.0"
 
 react-error-boundary@^4.0.8:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-4.0.8.tgz#8c76f0d95852a2421c03a2a6559a76dadc5de3a6"
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-4.0.9.tgz#602f560e397ee25d7604cb5cb216351afc4be752"
+  integrity sha512-f6DcHVdTDZmc9ixmRmuLDZpkdghYR/HKZdUzMLHD58s4cR2C4R6y4ktYztCosM6pyeK4/C8IofwqxgID25W6kw==
   dependencies:
     "@babel/runtime" "^7.12.5"
 
@@ -3502,6 +3503,7 @@ redent@^3.0.0:
 regenerator-runtime@^0.13.11:
   version "0.13.11"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 regexp.prototype.flags@^1.4.3:
   version "1.5.0"
