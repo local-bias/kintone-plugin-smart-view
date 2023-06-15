@@ -33,4 +33,5 @@ export const getNewCondition = (): kintone.plugin.Condition => ({
   ignoresZenkakuEisuji: true,
   ignoresHankakuKatakana: true,
   disableCursorAPI: false,
+  openDetailInNewTab: false,
 });

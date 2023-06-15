@@ -22,6 +22,7 @@ const Component: FC = () => {
               href={`${location.pathname}show${isMobile() ? '?' : '#'}record=${
                 record.$id.value
               }&l.view=${condition.viewId}&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
+              {...(condition.openDetailInNewTab ? { target: '_blank' } : {})}
             >
               <InsertDriveFileIcon />
             </a>

@@ -19,7 +19,7 @@ import { useConditionIndex } from '../../../condition-index-provider';
 import { useRecoilValue } from 'recoil';
 import { tabIndexState } from '../../../../states/plugin';
 import DeletionButton from './condition-deletion-button';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import OpenDetailInNewTabForm from '../../../functional/form-new-tab';
 
 const Component: FCX = ({ className }) => {
   return (
@@ -51,6 +51,7 @@ const Component: FCX = ({ className }) => {
       <details>
         <summary>高度なオプション</summary>
         <section>
+          <OpenDetailInNewTabForm />
           <LetterCaseForm />
           <KatakanaForm />
           <HankakuKatakanaForm />

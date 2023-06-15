@@ -369,3 +369,27 @@ export const disableCursorAPIState = selectorFamily<boolean, number>({
       );
     },
 });
+
+export const openDetailInNewTabState = selectorFamily<boolean, number>({
+  key: `${PREFIX}openDetailInNewTabState`,
+  get:
+    (conditionIndex) =>
+    ({ get }) => {
+      return getConditionField(get(storageState), {
+        conditionIndex,
+        key: 'openDetailInNewTab',
+        defaultValue: false,
+      });
+    },
+  set:
+    (conditionIndex) =>
+    ({ set }, newValue) => {
+      set(storageState, (current) =>
+        updated(current, {
+          conditionIndex,
+          key: 'openDetailInNewTab',
+          value: newValue as boolean,
+        })
+      );
+    },
+});

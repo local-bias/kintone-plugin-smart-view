@@ -20,6 +20,7 @@ declare namespace kintone {
       ignoresZenkakuEisuji?: boolean;
       ignoresHankakuKatakana?: boolean;
       disableCursorAPI?: boolean;
+      openDetailInNewTab?: boolean;
     };
   }
 }
