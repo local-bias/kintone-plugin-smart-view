@@ -6,41 +6,43 @@ import { css } from '@emotion/css';
 import App from './app';
 import { VIEW_ROOT_ID } from '@/common/statics';
 import { showNotification } from '@/common/utilities';
+import { KintoneEventListener } from '@konomi-app/kintone-utilities';
 
-const events: launcher.EventTypes = ['app.record.index.show'];
-
-const action: launcher.Action = async (event, pluginId) => {
-  const config = restoreStorage(pluginId);
-
-  const found = config.conditions.find((condition) => Number(condition.viewId) === event.viewId);
-
-  if (!found) {
-    return event;
-  }
-
-  document.body.classList.add(css`
-    .gaia-argoui-app-index-pager,
-    .category-left-gaia {
-      display: none !important;
+export default (listener: KintoneEventListener) => {
+  listener.add(['app.record.index.show'], async (event, { pluginId }) => {
+    if (!pluginId) {
+      return event;
     }
-  `);
+    const config = restoreStorage(pluginId);
 
-  const root =
-    document.querySelector(`#${VIEW_ROOT_ID}`) ||
-    document.querySelector('.gaia-app-indexview-customview-html') ||
-    document.querySelector('.gaia-mobile-app-customview') ||
-    document.querySelector('.contents-gaia');
+    const found = config.conditions.find((condition) => Number(condition.viewId) === event.viewId);
 
-  if (!root) {
-    showNotification({
-      title: 'プラグインでエラーが発生しました',
-      body: 'プラグインの一覧を表示する領域が見つかりませんでした',
-    });
+    if (!found) {
+      return event;
+    }
+
+    document.body.classList.add(css`
+      .gaia-argoui-app-index-pager,
+      .category-left-gaia {
+        display: none !important;
+      }
+    `);
+
+    const root =
+      document.querySelector(`#${VIEW_ROOT_ID}`) ||
+      document.querySelector('.gaia-app-indexview-customview-html') ||
+      document.querySelector('.gaia-mobile-app-customview') ||
+      document.querySelector('.contents-gaia');
+
+    if (!root) {
+      showNotification({
+        title: 'プラグインでエラーが発生しました',
+        body: 'プラグインの一覧を表示する領域が見つかりませんでした',
+      });
+      return event;
+    }
+    createRoot(root).render(<App condition={found} />);
+
     return event;
-  }
-  createRoot(root).render(<App condition={found} />);
-
-  return event;
+  });
 };
-
-export default { events, action };
