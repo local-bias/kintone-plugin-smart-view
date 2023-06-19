@@ -35,7 +35,7 @@
     "concurrently": "^8.2.0",
     "dompurify": "3.0.3",
     "dotenv": "16.3.1",
-    "eslint": "8.42.0",
+    "eslint": "8.43.0",
     "immer": "10.0.2",
     "luxon": "3.3.0",
     "notistack": "3.0.1",
