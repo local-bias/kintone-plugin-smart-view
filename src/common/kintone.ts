@@ -1,5 +1,6 @@
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import {
+  detectGuestSpaceId,
   getFieldValueAsString,
   getFormFields,
   getFormLayout,
@@ -18,6 +19,8 @@ const DEFAULT_DEFINED_FIELDS: kintoneAPI.FieldPropertyType[] = [
   'STATUS',
 ];
 
+const guestSpaceId = detectGuestSpaceId() ?? undefined;
+
 const IGNORE_FIELDS: kintoneAPI.FieldPropertyType[] = ['GROUP'];
 
 export const getAppFields = async (
@@ -31,7 +34,12 @@ export const getAppFields = async (
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { properties } = await getFormFields({ app, preview });
+  const { properties } = await getFormFields({
+    app,
+    guestSpaceId,
+    preview,
+    debug: process.env.NODE_ENV === 'development',
+  });
 
   return properties;
 };
@@ -71,7 +79,11 @@ export const getAppLayout = async () => {
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { layout } = await getFormLayout({ app });
+  const { layout } = await getFormLayout({
+    app,
+    guestSpaceId,
+    debug: process.env.NODE_ENV === 'development',
+  });
 
   return layout;
 };
@@ -95,7 +107,7 @@ export const updateAppViews = async (views: Record<string, kintoneAPI.view.Param
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  return updateViews({ app, views });
+  return updateViews({ app, views, guestSpaceId, debug: process.env.NODE_ENV === 'development' });
 };
 
 export const getQuickSearchString = (record: kintoneAPI.RecordData): string => {

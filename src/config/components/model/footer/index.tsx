@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { getViews, storeStorage } from '@konomi-app/kintone-utilities';
+import { detectGuestSpaceId, getViews, storeStorage } from '@konomi-app/kintone-utilities';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
@@ -90,7 +90,12 @@ const Container: FC = () => {
           if (!app) {
             throw new Error('アプリのフィールド情報が取得できませんでした');
           }
-          const { views } = await getViews({ app, preview: true });
+          const { views } = await getViews({
+            app,
+            preview: true,
+            guestSpaceId: detectGuestSpaceId() ?? undefined,
+            debug: process.env.NODE_ENV === 'development',
+          });
 
           const newViews = produce(views, (draft) => {
             for (const condition of storage?.conditions || []) {

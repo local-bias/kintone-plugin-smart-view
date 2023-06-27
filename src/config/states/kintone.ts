@@ -1,6 +1,6 @@
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import { selector } from 'recoil';
-import { getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { detectGuestSpaceId, getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'kintone';
 
@@ -12,7 +12,12 @@ export const allAppViewsState = selector<Record<string, kintoneAPI.view.Response
       throw new Error('アプリのフィールド情報が取得できませんでした');
     }
 
-    const { views } = await getViews({ app, preview: true });
+    const { views } = await getViews({
+      app,
+      preview: true,
+      guestSpaceId: detectGuestSpaceId() ?? undefined,
+      debug: process.env.NODE_ENV === 'development',
+    });
     return views;
   },
 });

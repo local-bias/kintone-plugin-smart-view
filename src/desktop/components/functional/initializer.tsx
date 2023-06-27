@@ -4,13 +4,20 @@ import {
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
 } from '@/common/utilities';
-import { getAllRecords, getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
+import {
+  detectGuestSpaceId,
+  getAllRecords,
+  getAllRecordsWithId,
+  kintoneAPI,
+} from '@konomi-app/kintone-utilities';
 import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { FC, useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { errorState, loadingState, pluginConditionState } from '../../states/plugin';
 import { allViewRecordsState, isFetchCompleteState } from '../../states/records';
 import type { ViewRecord } from '../../static';
+
+const guestSpaceId = detectGuestSpaceId() ?? undefined;
 
 const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);
@@ -78,6 +85,7 @@ const Container: FC = () => {
             condition: query,
             fields,
             onStep,
+            guestSpaceId,
             debug: process?.env?.NODE_ENV === 'development',
           });
         } else {
@@ -87,6 +95,7 @@ const Container: FC = () => {
               query,
               fields,
               onStep,
+              guestSpaceId,
               debug: process?.env?.NODE_ENV === 'development',
             });
           } catch (error: any) {
