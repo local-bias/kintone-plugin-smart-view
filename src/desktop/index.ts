@@ -2,6 +2,7 @@ import { PLUGIN_NAME } from '@/common/statics';
 import event from './event';
 import { KintoneEventListener } from '@konomi-app/kintone-utilities';
 import { pushPluginName } from '@/common/local-storage';
+import '@/common/global';
 
 ((pluginId) => {
   try {

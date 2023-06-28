@@ -1,5 +1,7 @@
+import { GUEST_SPACE_ID } from '@/common/global';
+import { VIEW_ROOT_ID } from '@/common/statics';
 import styled from '@emotion/styled';
-import { detectGuestSpaceId, getViews, storeStorage } from '@konomi-app/kintone-utilities';
+import { getViews, storeStorage, updateViews } from '@konomi-app/kintone-utilities';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
@@ -8,11 +10,7 @@ import { produce } from 'immer';
 import { useSnackbar } from 'notistack';
 import React, { FC, FCX, useCallback, useState } from 'react';
 import { useRecoilCallback } from 'recoil';
-
-import { updateAppViews } from '@/common/kintone';
-import { VIEW_ROOT_ID } from '@/common/statics';
 import { storageState } from '../../../states/plugin';
-
 import ExportButton from './export-button';
 import ImportButton from './import-button';
 import ResetButton from './reset-button';
@@ -93,7 +91,7 @@ const Container: FC = () => {
           const { views } = await getViews({
             app,
             preview: true,
-            guestSpaceId: detectGuestSpaceId() ?? undefined,
+            guestSpaceId: GUEST_SPACE_ID,
             debug: process.env.NODE_ENV === 'development',
           });
 
@@ -108,7 +106,12 @@ const Container: FC = () => {
             }
           });
 
-          await updateAppViews(newViews);
+          await updateViews({
+            app,
+            views: newViews,
+            guestSpaceId: GUEST_SPACE_ID,
+            debug: process.env.NODE_ENV === 'development',
+          });
 
           storeStorage(storage!, () => true);
           enqueueSnackbar('設定を保存しました', {

@@ -4,6 +4,7 @@ import { propertiesReadyState } from '../../states/kintone';
 
 import { getFieldsWithoutIgnores } from '@/common/kintone';
 import { appPropertiesState } from '../../states/kintone';
+import { GUEST_SPACE_ID } from '@/common/global';
 
 const Container: FC = () => {
   const setReady = useSetRecoilState(propertiesReadyState);
@@ -11,7 +12,7 @@ const Container: FC = () => {
 
   useEffect(() => {
     (async () => {
-      setAppProperties(await getFieldsWithoutIgnores());
+      setAppProperties(await getFieldsWithoutIgnores({ guestSpaceId: GUEST_SPACE_ID }));
       setReady(true);
     })();
   }, []);

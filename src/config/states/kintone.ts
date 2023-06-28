@@ -1,6 +1,7 @@
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import { selector } from 'recoil';
-import { detectGuestSpaceId, getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { GUEST_SPACE_ID } from '@/common/global';
 
 const PREFIX = 'kintone';
 
@@ -15,7 +16,7 @@ export const allAppViewsState = selector<Record<string, kintoneAPI.view.Response
     const { views } = await getViews({
       app,
       preview: true,
-      guestSpaceId: detectGuestSpaceId() ?? undefined,
+      guestSpaceId: GUEST_SPACE_ID,
       debug: process.env.NODE_ENV === 'development',
     });
     return views;
