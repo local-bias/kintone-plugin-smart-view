@@ -1,26 +1,17 @@
-import React, { Suspense, FC } from 'react';
-import { RecoilRoot } from 'recoil';
-import { SnackbarProvider } from 'notistack';
-
-import { restoreStorage } from '@/common/plugin';
 import { PluginErrorBoundary } from '@/common/components/error-boundary';
 import { Loading } from '@/common/components/loading';
-import { PluginLayout, PluginBanner } from '@konomi-app/kintone-utility-component';
-
-import { pluginIdState, storageState } from './states/plugin';
-import Sidebar from './components/model/sidebar';
+import { URL_PROMOTION } from '@/common/statics';
+import { PluginBanner, PluginLayout } from '@konomi-app/kintone-utility-component';
+import { SnackbarProvider } from 'notistack';
+import React, { FC, Suspense } from 'react';
+import { RecoilRoot } from 'recoil';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
-import { URL_PROMOTION } from '@/common/statics';
+import Sidebar from './components/model/sidebar';
 
-const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
+const Component: FC = () => (
   <>
-    <RecoilRoot
-      initializeState={({ set }) => {
-        set(pluginIdState, pluginId);
-        set(storageState, restoreStorage(pluginId));
-      }}
-    >
+    <RecoilRoot>
       <PluginErrorBoundary>
         <SnackbarProvider maxSnack={3}>
           <PluginLayout>

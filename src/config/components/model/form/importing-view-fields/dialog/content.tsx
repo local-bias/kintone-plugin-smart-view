@@ -46,10 +46,9 @@ const Container: FC = () => {
     ({ snapshot, set }) =>
       async (id: string) => {
         try {
-          const storage = await snapshot.getPromise(storageState);
           const viewsSnapshot = await snapshot.getPromise(listViewsState);
 
-          if (!storage || !viewsSnapshot) {
+          if (!viewsSnapshot) {
             return;
           }
 
@@ -62,9 +61,6 @@ const Container: FC = () => {
 
           set(storageState, (_storage) =>
             produce(_storage, (draft) => {
-              if (!draft) {
-                return;
-              }
               const condition = draft.conditions[conditionIndex];
 
               if (selectedView.type === 'LIST') {

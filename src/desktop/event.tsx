@@ -7,13 +7,11 @@ import App from './app';
 import { VIEW_ROOT_ID } from '@/common/statics';
 import { showNotification } from '@/common/utilities';
 import { KintoneEventListener } from '@konomi-app/kintone-utilities';
+import { PLUGIN_ID } from '@/common/global';
 
 export default (listener: KintoneEventListener) => {
-  listener.add(['app.record.index.show'], async (event, { pluginId }) => {
-    if (!pluginId) {
-      return event;
-    }
-    const config = restoreStorage(pluginId);
+  listener.add(['app.record.index.show'], async (event) => {
+    const config = restoreStorage(PLUGIN_ID);
 
     const found = config.conditions.find((condition) => Number(condition.viewId) === event.viewId);
 

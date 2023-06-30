@@ -113,7 +113,7 @@ const Container: FC = () => {
             debug: process.env.NODE_ENV === 'development',
           });
 
-          storeStorage(storage!, () => true);
+          storeStorage(storage, () => true);
           enqueueSnackbar('設定を保存しました', {
             variant: 'success',
             action: (
