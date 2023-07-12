@@ -1,5 +1,10 @@
 import React, { FC, FCX } from 'react';
 import styled from '@emotion/styled';
+import {
+  PluginFormSection,
+  PluginFormTitle,
+  PluginFormDescription,
+} from '@konomi-app/kintone-utility-component';
 
 import ViewIdForm from '../../../functional/form-view-id';
 import ImportingViewFields from '../importing-view-fields';
@@ -24,42 +29,77 @@ import OpenDetailInNewTabForm from '../../../functional/form-new-tab';
 const Component: FCX = ({ className }) => {
   return (
     <div {...{ className }}>
-      <section>
-        <h3>テーブルを表示する一覧の設定</h3>
+      <PluginFormSection>
+        <PluginFormTitle>テーブルを表示する一覧の設定</PluginFormTitle>
+        <PluginFormDescription>検索機能を実装する一覧を選択してください。</PluginFormDescription>
+        <PluginFormDescription last>
+          選択できる一覧は表示形式「カスタマイズ」のみです。
+        </PluginFormDescription>
         <ViewIdForm />
-        <small>選択できる一覧は表示形式「カスタマイズ」のみです。</small>
-      </section>
-      <section>
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>テーブルに表示するフィールドの設定</PluginFormTitle>
+        <PluginFormDescription>一覧に表示するフィールドを設定します。</PluginFormDescription>
+        <PluginFormDescription last>
+          検索フォームに入力された値が検索対象とするのは、この設定で選択したフィールドのみです。
+        </PluginFormDescription>
         <div className='titleWithButton'>
-          <h3>テーブルに表示するフィールドの設定</h3>
           <ImportingViewFields />
         </div>
-        <ViewDisplayingFieldsForm />
-      </section>
 
-      <section>
-        <h3>ページネーションの設定</h3>
+        <ViewDisplayingFieldsForm />
+      </PluginFormSection>
+
+      <PluginFormSection>
+        <PluginFormTitle>ページネーションの設定</PluginFormTitle>
+        <PluginFormDescription>
+          1ページあたりの表示レコード数を変更することができます。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          スペックの低い環境では、表示レコード数を減らすことで動作が軽くなる場合があります。
+        </PluginFormDescription>
+        <div style={{ marginBottom: '16px' }}>
+          <PaginationChunkForm />
+        </div>
+        <PluginFormDescription last>
+          この設定を有効にした場合、1ページあたりの表示レコード数を変更することのできるフォームが表示されます。
+        </PluginFormDescription>
         <PaginationControlForm />
-        <PaginationChunkForm />
-      </section>
-      <section>
-        <h3>その他のオプション</h3>
-        <CSVExportForm />
-        <EditableModeForm />
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>並び替えの設定</PluginFormTitle>
+        <PluginFormDescription>
+          この設定を有効にした場合、一覧のヘッダーをクリックすることで、レコードを昇順・降順にソートすることができます。
+        </PluginFormDescription>
         <SortableModeForm />
-      </section>
-      <details>
-        <summary>高度なオプション</summary>
-        <section>
-          <OpenDetailInNewTabForm />
-          <LetterCaseForm />
-          <KatakanaForm />
-          <HankakuKatakanaForm />
-          <ZenkakuEisujiForm />
-          <CursorAPIForm />
-          <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
-        </section>
-      </details>
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>CSVエクスポートの設定</PluginFormTitle>
+        <PluginFormDescription>
+          この設定を有効にした場合、一覧にCSVエクスポートボタンが表示されます。
+        </PluginFormDescription>
+        <PluginFormDescription>
+          エクスポートされる一覧は、検索フォームに入力された値によって絞り込まれます。
+        </PluginFormDescription>
+        <PluginFormDescription>
+          kintone標準のCSVエクスポート機能と互換性がない点に注意してください。
+        </PluginFormDescription>
+        <CSVExportForm />
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>編集機能の設定</PluginFormTitle>
+        <EditableModeForm />
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>高度なオプション</PluginFormTitle>
+        <OpenDetailInNewTabForm />
+        <LetterCaseForm />
+        <KatakanaForm />
+        <HankakuKatakanaForm />
+        <ZenkakuEisujiForm />
+        <CursorAPIForm />
+        <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
+      </PluginFormSection>
       <div className='top-tools'>
         <DeletionButton />
       </div>
@@ -69,10 +109,6 @@ const Component: FCX = ({ className }) => {
 
 const StyledComponent = styled(Component)`
   padding: 0 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 32px;
 
   section {
     > *:not(h3) {
