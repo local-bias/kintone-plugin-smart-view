@@ -106,22 +106,42 @@ const Container: FC = () => {
             }
           });
 
-          await updateViews({
-            app,
-            views: newViews,
-            guestSpaceId: GUEST_SPACE_ID,
-            debug: process.env.NODE_ENV === 'development',
-          });
+          let warning: string = '';
+          try {
+            await updateViews({
+              app,
+              views: newViews,
+              guestSpaceId: GUEST_SPACE_ID,
+              debug: process.env.NODE_ENV === 'development',
+            });
+          } catch (error: any) {
+            console.error(error);
+            if (error?.code === 'CB_NO02') {
+              warning =
+                '設定を更新しましたが、システム管理権限がないため、一覧の更新がスキップされました。';
+            }
+          }
 
           storeStorage(storage, () => true);
-          enqueueSnackbar('設定を保存しました', {
-            variant: 'success',
-            action: (
-              <Button color='inherit' size='small' variant='outlined' onClick={onBackButtonClick}>
-                プラグイン一覧に戻る
-              </Button>
-            ),
-          });
+          if (warning) {
+            enqueueSnackbar(warning, {
+              variant: 'warning',
+              action: (
+                <Button color='inherit' size='small' variant='outlined' onClick={onBackButtonClick}>
+                  プラグイン一覧に戻る
+                </Button>
+              ),
+            });
+          } else {
+            enqueueSnackbar('設定を保存しました', {
+              variant: 'success',
+              action: (
+                <Button color='inherit' size='small' variant='outlined' onClick={onBackButtonClick}>
+                  プラグイン一覧に戻る
+                </Button>
+              ),
+            });
+          }
         } finally {
           setLoading(false);
         }
