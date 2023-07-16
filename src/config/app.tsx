@@ -1,7 +1,7 @@
 import { PluginErrorBoundary } from '@/common/components/error-boundary';
-import { Loading } from '@/common/components/loading';
 import { URL_PROMOTION } from '@/common/statics';
 import { PluginBanner, PluginLayout } from '@konomi-app/kintone-utility-component';
+import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { SnackbarProvider } from 'notistack';
 import React, { FC, Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
@@ -15,7 +15,7 @@ const Component: FC = () => (
       <PluginErrorBoundary>
         <SnackbarProvider maxSnack={3}>
           <PluginLayout>
-            <Suspense fallback={<Loading label='設定情報を取得しています...' />}>
+            <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
               <Sidebar />
               <Form />
               <PluginBanner url='https://promotion.konomi.app/kintone-plugin/sidebar' />

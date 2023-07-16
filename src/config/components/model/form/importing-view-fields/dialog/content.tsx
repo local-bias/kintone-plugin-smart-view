@@ -1,13 +1,13 @@
+import { LoaderWithLabel } from '@konomi-app/ui-react';
+import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
+import { produce } from 'immer';
+import { useSnackbar } from 'notistack';
 import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import type { DeepReadonly } from 'utility-types';
-import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
+import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 import { listViewsState } from '../../../../../states/kintone';
 import { storageState } from '../../../../../states/plugin';
-import { useSnackbar } from 'notistack';
-import { produce } from 'immer';
-import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
-import { Loading } from '@/common/components/loading';
 import { useConditionIndex } from '../../../../condition-index-provider';
 
 type Props = DeepReadonly<{
@@ -77,7 +77,7 @@ const Container: FC = () => {
 
   return (
     <DialogContent>
-      <Suspense fallback={<Loading label='アプリ情報を取得しています' />}>
+      <Suspense fallback={<LoaderWithLabel label='アプリ情報を取得しています' />}>
         <Component {...{ conditionIndex, onListItemClick }} />
       </Suspense>
     </DialogContent>
