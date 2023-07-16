@@ -1,5 +1,5 @@
-import { PluginErrorBoundary } from '@/common/components/error-boundary';
-import { URL_PROMOTION } from '@/common/statics';
+import { PluginErrorBoundary } from '@/lib/components/error-boundary';
+import { URL_PROMOTION } from '@/lib/statics';
 import { PluginBanner, PluginContent, PluginLayout } from '@konomi-app/kintone-utility-component';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { SnackbarProvider } from 'notistack';

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { RecoilRoot } from 'recoil';
 import { SnackbarProvider } from 'notistack';
 
-import { PluginErrorBoundary } from '@/common/components/error-boundary';
+import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 
 import { pluginConditionState } from './states/plugin';
 import Initializer from './components/functional/initializer';

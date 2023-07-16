@@ -1,9 +1,9 @@
-import { getQuickSearchString } from '@/common/kintone';
+import { getQuickSearchString } from '@/lib/kintone';
 import {
   convertHankakuKatakanaToZenkaku,
   convertKatakanaToHiragana,
   convertZenkakuEisujiToHankaku,
-} from '@/common/utilities';
+} from '@/lib/utilities';
 import { getAllRecords, getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { FC, useEffect } from 'react';
@@ -11,7 +11,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { errorState, loadingState, pluginConditionState } from '../../states/plugin';
 import { allViewRecordsState, isFetchCompleteState } from '../../states/records';
 import type { ViewRecord } from '../../static';
-import { GUEST_SPACE_ID } from '@/common/global';
+import { GUEST_SPACE_ID } from '@/lib/global';
 
 const Container: FC = () => {
   const setAllRecords = useSetRecoilState(allViewRecordsState);

@@ -1,6 +1,6 @@
-import '@/common/global';
-import { pushPluginName } from '@/common/local-storage';
-import { PLUGIN_NAME } from '@/common/statics';
+import '@/lib/global';
+import { pushPluginName } from '@/lib/local-storage';
+import { PLUGIN_NAME } from '@/lib/statics';
 import { KintoneEventListener } from '@konomi-app/kintone-utilities';
 import event from './event';
 

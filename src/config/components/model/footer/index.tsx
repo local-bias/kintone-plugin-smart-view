@@ -14,9 +14,9 @@ import ImportButton from './import-button';
 import ResetButton from './reset-button';
 import { PluginFooter } from '@konomi-app/kintone-utility-component';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
-import { GUEST_SPACE_ID } from '@/common/global';
+import { GUEST_SPACE_ID } from '@/lib/global';
 import { produce } from 'immer';
-import { VIEW_ROOT_ID } from '@/common/statics';
+import { VIEW_ROOT_ID } from '@/lib/statics';
 
 type Props = {
   onSaveButtonClick: () => void;

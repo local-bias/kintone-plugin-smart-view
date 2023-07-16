@@ -1,13 +1,13 @@
 import React from 'react';
-import { restoreStorage } from '@/common/plugin';
+import { restoreStorage } from '@/lib/plugin';
 import { createRoot } from 'react-dom/client';
 import { css } from '@emotion/css';
 
 import App from './app';
-import { VIEW_ROOT_ID } from '@/common/statics';
-import { showNotification } from '@/common/utilities';
+import { VIEW_ROOT_ID } from '@/lib/statics';
+import { showNotification } from '@/lib/utilities';
 import { KintoneEventListener } from '@konomi-app/kintone-utilities';
-import { PLUGIN_ID } from '@/common/global';
+import { PLUGIN_ID } from '@/lib/global';
 
 export default (listener: KintoneEventListener) => {
   listener.add(['app.record.index.show'], async (event) => {

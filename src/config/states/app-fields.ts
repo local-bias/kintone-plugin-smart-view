@@ -1,7 +1,7 @@
 import { selector } from 'recoil';
-import { getFieldsWithoutIgnores } from '@/common/kintone';
+import { getFieldsWithoutIgnores } from '@/lib/kintone';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
-import { GUEST_SPACE_ID } from '@/common/global';
+import { GUEST_SPACE_ID } from '@/lib/global';
 
 const PREFIX = 'kintone';
 
