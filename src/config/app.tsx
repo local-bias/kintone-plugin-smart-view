@@ -1,6 +1,6 @@
 import { PluginErrorBoundary } from '@/common/components/error-boundary';
 import { URL_PROMOTION } from '@/common/statics';
-import { PluginBanner, PluginLayout } from '@konomi-app/kintone-utility-component';
+import { PluginBanner, PluginContent, PluginLayout } from '@konomi-app/kintone-utility-component';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { SnackbarProvider } from 'notistack';
 import React, { FC, Suspense } from 'react';
@@ -10,18 +10,20 @@ import Form from './components/model/form';
 import Sidebar from './components/model/sidebar';
 
 const Component: FC = () => (
-  <>
+  <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
     <RecoilRoot>
       <PluginErrorBoundary>
-        <SnackbarProvider maxSnack={3}>
-          <PluginLayout>
-            <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
+        <SnackbarProvider maxSnack={1}>
+          <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
+            <PluginLayout>
               <Sidebar />
-              <Form />
+              <PluginContent>
+                <Form />
+              </PluginContent>
               <PluginBanner url='https://promotion.konomi.app/kintone-plugin/sidebar' />
               <Footer />
-            </Suspense>
-          </PluginLayout>
+            </PluginLayout>
+          </Suspense>
         </SnackbarProvider>
       </PluginErrorBoundary>
     </RecoilRoot>
@@ -31,7 +33,7 @@ const Component: FC = () => (
       src={URL_PROMOTION}
       style={{ border: '0', width: '100%', height: '64px' }}
     />
-  </>
+  </Suspense>
 );
 
 export default Component;
