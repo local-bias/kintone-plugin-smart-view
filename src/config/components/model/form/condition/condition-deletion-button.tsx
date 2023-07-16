@@ -11,6 +11,7 @@ type Props = Readonly<{ onClick: () => void }>;
 
 const Component: FC<Props> = ({ onClick }) => (
   <Button
+    sx={{ marginTop: '36px' }}
     variant='outlined'
     color='error'
     onClick={onClick}
