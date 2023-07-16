@@ -1,71 +1,65 @@
-import { GUEST_SPACE_ID } from '@/common/global';
-import { VIEW_ROOT_ID } from '@/common/statics';
 import styled from '@emotion/styled';
 import { getViews, storeStorage, updateViews } from '@konomi-app/kintone-utilities';
-import { getAppId } from '@lb-ribbit/kintone-xapp';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import { Button, CircularProgress } from '@mui/material';
-import { produce } from 'immer';
 import { useSnackbar } from 'notistack';
-import React, { FC, FCX, useCallback, useState } from 'react';
-import { useRecoilCallback } from 'recoil';
-import { storageState } from '../../../states/plugin';
+import React, { FC, FCX, useCallback } from 'react';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
+
+import { loadingState, storageState } from '../../../states/plugin';
+
 import ExportButton from './export-button';
 import ImportButton from './import-button';
 import ResetButton from './reset-button';
+import { PluginFooter } from '@konomi-app/kintone-utility-component';
+import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { GUEST_SPACE_ID } from '@/common/global';
+import { produce } from 'immer';
+import { VIEW_ROOT_ID } from '@/common/statics';
 
 type Props = {
-  loading: boolean;
   onSaveButtonClick: () => void;
   onBackButtonClick: () => void;
 };
 
-const Component: FCX<Props> = ({ className, loading, onSaveButtonClick, onBackButtonClick }) => (
-  <div {...{ className }}>
-    <div>
-      <Button
-        variant='contained'
-        color='primary'
-        disabled={loading}
-        onClick={onSaveButtonClick}
-        startIcon={loading ? <CircularProgress color='inherit' size={20} /> : <SaveIcon />}
-      >
-        設定を保存
-      </Button>
-      <Button
-        variant='contained'
-        color='inherit'
-        disabled={loading}
-        onClick={onBackButtonClick}
-        startIcon={
-          loading ? <CircularProgress color='inherit' size={20} /> : <SettingsBackupRestoreIcon />
-        }
-      >
-        プラグイン一覧へ戻る
-      </Button>
-    </div>
-    <div>
-      <ExportButton />
-      <ImportButton />
-      <ResetButton />
-    </div>
-  </div>
-);
+const Component: FCX<Props> = ({ className, onSaveButtonClick, onBackButtonClick }) => {
+  const loading = useRecoilValue(loadingState);
+
+  return (
+    <PluginFooter {...{ className }}>
+      <div>
+        <Button
+          variant='contained'
+          color='primary'
+          disabled={loading}
+          onClick={onSaveButtonClick}
+          startIcon={loading ? <CircularProgress color='inherit' size={20} /> : <SaveIcon />}
+        >
+          設定を保存
+        </Button>
+        <Button
+          variant='contained'
+          color='inherit'
+          disabled={loading}
+          onClick={onBackButtonClick}
+          startIcon={
+            loading ? <CircularProgress color='inherit' size={20} /> : <SettingsBackupRestoreIcon />
+          }
+        >
+          プラグイン一覧へ戻る
+        </Button>
+      </div>
+      <div>
+        <ExportButton />
+        <ImportButton />
+        <ResetButton />
+      </div>
+    </PluginFooter>
+  );
+};
 
 const StyledComponent = styled(Component)`
-  grid-area: footer;
-
-  display: flex;
-  justify-content: space-between;
-
-  position: sticky;
-  bottom: 15px;
-  margin-top: 20px;
-  background-color: #fff;
-  border-top: 1px solid #eee;
-  z-index: 30;
-
   button {
     margin: 8px;
   }
@@ -73,15 +67,14 @@ const StyledComponent = styled(Component)`
 
 const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
 
   const onBackButtonClick = useCallback(() => history.back(), []);
 
   const onSaveButtonClick = useRecoilCallback(
-    ({ snapshot }) =>
+    ({ reset, set, snapshot }) =>
       async () => {
         try {
-          setLoading(true);
+          set(loadingState, true);
           const storage = await snapshot.getPromise(storageState);
 
           const app = getAppId();
@@ -143,13 +136,13 @@ const Container: FC = () => {
             });
           }
         } finally {
-          setLoading(false);
+          reset(loadingState);
         }
       },
     []
   );
 
-  return <StyledComponent {...{ loading, onSaveButtonClick, onBackButtonClick }} />;
+  return <StyledComponent {...{ onSaveButtonClick, onBackButtonClick }} />;
 };
 
 export default Container;
