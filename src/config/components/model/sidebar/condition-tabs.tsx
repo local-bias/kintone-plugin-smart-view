@@ -1,4 +1,3 @@
-import { Tabs } from '@mui/material';
 import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { conditionsState, tabIndexState } from '../../../states/plugin';
