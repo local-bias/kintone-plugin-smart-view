@@ -1,28 +1,13 @@
-import React, { FC, FCX, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { produce } from 'immer';
-import { Button } from '@mui/material';
 import { storageState, tabIndexState } from '../../../states/plugin';
-import styled from '@emotion/styled';
-
-type Props = Readonly<{ onClick: () => void }>;
-
-const Component: FCX<Props> = ({ className, onClick }) => (
-  <div className={className}>
-    <Button variant='outlined' color='error' onClick={onClick}>
-      この設定を削除
-    </Button>
-  </div>
-);
-
-const StyledComponent = styled(Component)`
-  margin-top: 16px;
-  display: flex;
-  justify-content: flex-end;
-`;
+import { PluginConditionDeleteButton } from '@konomi-app/kintone-utility-component';
+import { useSnackbar } from 'notistack';
 
 const Container: FC = () => {
   const index = useRecoilValue(tabIndexState);
+  const { enqueueSnackbar } = useSnackbar();
 
   const onClick = useRecoilCallback(
     ({ set }) =>
@@ -33,11 +18,12 @@ const Container: FC = () => {
           })
         );
         set(tabIndexState, (i) => (i === 0 ? i : i - 1));
+        enqueueSnackbar('プラグイン設定を削除しました', { variant: 'success' });
       },
     [index]
   );
 
-  return <StyledComponent {...{ onClick }} />;
+  return <PluginConditionDeleteButton {...{ onClick }} />;
 };
 
 export default memo(Container);
