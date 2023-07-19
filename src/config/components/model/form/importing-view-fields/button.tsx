@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
-import { useConditionIndex } from '../../../condition-index-provider';
+import { tabIndexState } from '@/config/states/plugin';
 
 type Props = DeepReadonly<{ onClick: () => void }>;
 
@@ -16,14 +16,13 @@ const Component: FC<Props> = ({ onClick }) => (
 );
 
 const Container: FC = () => {
-  const conditionIndex = useConditionIndex();
-
   const onClick = useRecoilCallback(
-    ({ set }) =>
-      () => {
+    ({ set, snapshot }) =>
+      async () => {
+        const conditionIndex = await snapshot.getPromise(tabIndexState);
         set(listViewDialogShownIndexState, conditionIndex);
       },
-    [conditionIndex]
+    []
   );
 
   return <Component {...{ onClick }} />;

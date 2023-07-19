@@ -5,55 +5,74 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { produce } from 'immer';
 
-import { viewDisplayingFieldsState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
-import { appFieldsState } from '../../states/app-fields';
+import { viewDisplayingFieldsState } from '../../../states/plugin';
+import { appFieldsState } from '../../../states/app-fields';
+import styled from '@emotion/styled';
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+
+  > *:not(button) {
+    margin: 0 8px;
+  }
+  > button {
+    margin-right: 8px;
+  }
+
+  > svg {
+    fill: #999;
+  }
+`;
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const selectedFields = useRecoilValue(viewDisplayingFieldsState(conditionIndex));
+  const selectedFields = useRecoilValue(viewDisplayingFieldsState);
   const fields = useRecoilValue(appFieldsState);
 
   const onFieldChange = useRecoilCallback(
     ({ set }) =>
       (rowIndex: number, value: string) => {
-        set(viewDisplayingFieldsState(conditionIndex), (current) =>
+        set(viewDisplayingFieldsState, (current) =>
           produce(current, (draft) => {
             draft[rowIndex] = value;
           })
         );
       },
-    [conditionIndex]
+    []
   );
 
   const addField = useRecoilCallback(
     ({ set }) =>
       (rowIndex: number) => {
-        set(viewDisplayingFieldsState(conditionIndex), (current) =>
+        set(viewDisplayingFieldsState, (current) =>
           produce(current, (draft) => {
             draft.splice(rowIndex + 1, 0, '');
           })
         );
       },
-    [conditionIndex]
+    []
   );
 
   const removeField = useRecoilCallback(
     ({ set }) =>
       (rowIndex: number) => {
-        set(viewDisplayingFieldsState(conditionIndex), (current) =>
+        set(viewDisplayingFieldsState, (current) =>
           produce(current, (draft) => {
             draft.splice(rowIndex, 1);
           })
         );
       },
-    [conditionIndex]
+    []
   );
 
   return (
     <>
       {selectedFields.map((value, i) => (
-        <div key={i} className='row'>
+        <Row key={i}>
           <Autocomplete
             value={fields.find((field) => field.code === value) ?? null}
             sx={{ width: '350px' }}
@@ -86,7 +105,7 @@ const Component: FC = () => {
               </IconButton>
             </Tooltip>
           )}
-        </div>
+        </Row>
       ))}
     </>
   );
@@ -98,11 +117,11 @@ const Container: FC = () => {
       fallback={
         <>
           {new Array(3).fill('').map((_, i) => (
-            <div key={i} className='row'>
+            <Row key={i}>
               <Skeleton variant='rounded' width={350} height={56} />
               <Skeleton variant='circular' width={24} height={24} />
               <Skeleton variant='circular' width={24} height={24} />
-            </div>
+            </Row>
           ))}
         </>
       }

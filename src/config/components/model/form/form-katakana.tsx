@@ -1,19 +1,17 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { ignoresKatakanaState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { ignoresKatakanaState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(ignoresKatakanaState(conditionIndex));
+  const enables = useRecoilValue(ignoresKatakanaState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(ignoresKatakanaState(conditionIndex), checked);
+        set(ignoresKatakanaState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (

@@ -1,26 +1,24 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { ignoresZenkakuEisujiState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { enablesPaginationChunkControlState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(ignoresZenkakuEisujiState(conditionIndex));
+  const enables = useRecoilValue(enablesPaginationChunkControlState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(ignoresZenkakuEisujiState(conditionIndex), checked);
+        set(enablesPaginationChunkControlState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (
     <FormControlLabel
       control={<Switch color='primary' checked={enables} />}
       onChange={(_, checked) => onChange(checked)}
-      label='絞り込みの際、全角英数字と半角英数字を区別しない'
+      label='一覧から表示件数を変更可能にする'
     />
   );
 };

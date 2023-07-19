@@ -3,12 +3,10 @@ import { useRecoilValue } from 'recoil';
 import { customViewsState } from '../../states/kintone';
 import { Skeleton } from '@mui/material';
 import { viewIdState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
   const views = useRecoilValue(customViewsState);
-  const viewId = useRecoilValue(viewIdState(conditionIndex));
+  const viewId = useRecoilValue(viewIdState);
 
   const found = Object.values(views).find((view) => view.id === viewId);
 

@@ -1,26 +1,24 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { disableCursorAPIState, ignoresKatakanaState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { enableCSVExportState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(disableCursorAPIState(conditionIndex));
+  const enables = useRecoilValue(enableCSVExportState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(disableCursorAPIState(conditionIndex), checked);
+        set(enableCSVExportState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (
     <FormControlLabel
       control={<Switch color='primary' checked={enables} />}
       onChange={(_, checked) => onChange(checked)}
-      label='レコード取得時、カーソルAPIを使用しない'
+      label='CSV出力機能を有効にする'
     />
   );
 };

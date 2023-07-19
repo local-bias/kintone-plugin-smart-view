@@ -1,12 +1,12 @@
 import React, { Suspense, FC, FCX } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import type { DeepReadonly } from 'utility-types';
 import { CircularProgress, Dialog, DialogTitle } from '@mui/material';
 import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 
 import Content from './content';
-import { useConditionIndex } from '../../../../condition-index-provider';
+import { tabIndexState } from '@/config/states/plugin';
 
 type Props = DeepReadonly<{
   conditionIndex: number;
@@ -26,7 +26,7 @@ const Component: FCX<Props> = (props) => (
 const StyledComponent = styled(Component)``;
 
 const Container: FC = () => {
-  const conditionIndex = useConditionIndex();
+  const conditionIndex = useRecoilValue(tabIndexState);
   const [shownIndex, setShownIndex] = useRecoilState(listViewDialogShownIndexState);
 
   const onDialogClose = () => {

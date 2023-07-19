@@ -1,7 +1,7 @@
 import { PLUGIN_ID } from '@/lib/global';
 import { restoreStorage } from '@/lib/plugin';
 import { produce } from 'immer';
-import { atom, selector, selectorFamily } from 'recoil';
+import { atom, selector } from 'recoil';
 
 const PREFIX = 'plugin';
 
@@ -57,333 +57,305 @@ export const conditionsState = selector<kintone.plugin.Condition[]>({
   },
 });
 
-export const conditionState = selectorFamily<kintone.plugin.Condition | null, number>({
+export const conditionState = selector<kintone.plugin.Condition | null>({
   key: `${PREFIX}conditionState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      const storage = get(storageState);
-      return storage.conditions[conditionIndex] ?? null;
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        produce(current, (draft) => {
-          draft.conditions[conditionIndex] = newValue as kintone.plugin.Condition;
-        })
-      );
-    },
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    const storage = get(storageState);
+    return storage.conditions[conditionIndex] ?? null;
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      produce(current, (draft) => {
+        draft.conditions[conditionIndex] = newValue as kintone.plugin.Condition;
+      })
+    );
+  },
 });
 
-export const viewIdState = selectorFamily<string, number>({
+export const viewIdState = selector<string>({
   key: `${PREFIX}viewIdState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'viewId',
+      defaultValue: '',
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'viewId',
-        defaultValue: '',
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'viewId',
-          value: newValue as string,
-        })
-      );
-    },
+        value: newValue as string,
+      })
+    );
+  },
 });
 
-export const viewDisplayingFieldsState = selectorFamily<string[], number>({
+export const viewDisplayingFieldsState = selector<string[]>({
   key: `${PREFIX}viewDisplayingFieldsState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'viewDisplayingFields',
+      defaultValue: [''],
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'viewDisplayingFields',
-        defaultValue: [''],
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'viewDisplayingFields',
-          value: newValue as string[],
-        })
-      );
-    },
+        value: newValue as string[],
+      })
+    );
+  },
 });
 
-export const paginationChunkState = selectorFamily<number, number>({
+export const paginationChunkState = selector<number>({
   key: `${PREFIX}paginationChunkState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'paginationChunk',
+      defaultValue: 100,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'paginationChunk',
-        defaultValue: 100,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'paginationChunk',
-          value: newValue as number,
-        })
-      );
-    },
+        value: newValue as number,
+      })
+    );
+  },
 });
 
-export const enablesPaginationChunkControlState = selectorFamily<boolean, number>({
+export const enablesPaginationChunkControlState = selector<boolean>({
   key: `${PREFIX}enablesPaginationChunkControlState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'enablesPaginationChunkControl',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'enablesPaginationChunkControl',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'enablesPaginationChunkControl',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const enableCSVExportState = selectorFamily<boolean, number>({
+export const enableCSVExportState = selector<boolean>({
   key: `${PREFIX}enableCSVExportState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'enableCSVExport',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'enableCSVExport',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'enableCSVExport',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const editableState = selectorFamily<boolean, number>({
+export const editableState = selector<boolean>({
   key: `${PREFIX}editableState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'editable',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'editable',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'editable',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const sortableState = selectorFamily<boolean, number>({
+export const sortableState = selector<boolean>({
   key: `${PREFIX}sortableState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'sortable',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'sortable',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'sortable',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const ignoresLetterCaseState = selectorFamily<boolean, number>({
+export const ignoresLetterCaseState = selector<boolean>({
   key: `${PREFIX}ignoresLetterCaseState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'ignoresLetterCase',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'ignoresLetterCase',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'ignoresLetterCase',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const ignoresKatakanaState = selectorFamily<boolean, number>({
+export const ignoresKatakanaState = selector<boolean>({
   key: `${PREFIX}ignoresKatakanaState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'ignoresKatakana',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'ignoresKatakana',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'ignoresKatakana',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const ignoresZenkakuEisujiState = selectorFamily<boolean, number>({
+export const ignoresZenkakuEisujiState = selector<boolean>({
   key: `${PREFIX}ignoresZenkakuEisujiState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'ignoresZenkakuEisuji',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'ignoresZenkakuEisuji',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'ignoresZenkakuEisuji',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const ignoresHankakuKatakanaState = selectorFamily<boolean, number>({
+export const ignoresHankakuKatakanaState = selector<boolean>({
   key: `${PREFIX}ignoresHankakuKatakanaState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'ignoresHankakuKatakana',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'ignoresHankakuKatakana',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'ignoresHankakuKatakana',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const disableCursorAPIState = selectorFamily<boolean, number>({
+export const disableCursorAPIState = selector<boolean>({
   key: `${PREFIX}disableCursorAPIState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'disableCursorAPI',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'disableCursorAPI',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'disableCursorAPI',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });
 
-export const openDetailInNewTabState = selectorFamily<boolean, number>({
+export const openDetailInNewTabState = selector<boolean>({
   key: `${PREFIX}openDetailInNewTabState`,
-  get:
-    (conditionIndex) =>
-    ({ get }) => {
-      return getConditionField(get(storageState), {
+  get: ({ get }) => {
+    const conditionIndex = get(tabIndexState);
+    return getConditionField(get(storageState), {
+      conditionIndex,
+      key: 'openDetailInNewTab',
+      defaultValue: false,
+    });
+  },
+  set: ({ get, set }, newValue) => {
+    const conditionIndex = get(tabIndexState);
+    set(storageState, (current) =>
+      updated(current, {
         conditionIndex,
         key: 'openDetailInNewTab',
-        defaultValue: false,
-      });
-    },
-  set:
-    (conditionIndex) =>
-    ({ set }, newValue) => {
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key: 'openDetailInNewTab',
-          value: newValue as boolean,
-        })
-      );
-    },
+        value: newValue as boolean,
+      })
+    );
+  },
 });

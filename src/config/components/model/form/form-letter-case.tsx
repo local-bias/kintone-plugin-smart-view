@@ -1,26 +1,24 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { enablesPaginationChunkControlState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { ignoresLetterCaseState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(enablesPaginationChunkControlState(conditionIndex));
+  const enables = useRecoilValue(ignoresLetterCaseState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(enablesPaginationChunkControlState(conditionIndex), checked);
+        set(ignoresLetterCaseState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (
     <FormControlLabel
       control={<Switch color='primary' checked={enables} />}
       onChange={(_, checked) => onChange(checked)}
-      label='一覧から表示件数を変更可能にする'
+      label='絞り込みの際、アルファベットの大文字と小文字を区別しない'
     />
   );
 };

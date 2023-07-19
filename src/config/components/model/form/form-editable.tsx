@@ -1,19 +1,17 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { editableState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { editableState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(editableState(conditionIndex));
+  const enables = useRecoilValue(editableState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(editableState(conditionIndex), checked);
+        set(editableState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (

@@ -7,8 +7,7 @@ import { useRecoilCallback, useRecoilValue } from 'recoil';
 import type { DeepReadonly } from 'utility-types';
 import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
 import { listViewsState } from '../../../../../states/kintone';
-import { storageState } from '../../../../../states/plugin';
-import { useConditionIndex } from '../../../../condition-index-provider';
+import { storageState, tabIndexState } from '../../../../../states/plugin';
 
 type Props = DeepReadonly<{
   onListItemClick: (id: string) => void;
@@ -40,12 +39,12 @@ const Component: FCX<Props> = (props) => {
 
 const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const conditionIndex = useConditionIndex();
 
   const onListItemClick = useRecoilCallback(
     ({ snapshot, set }) =>
       async (id: string) => {
         try {
+          const conditionIndex = await snapshot.getPromise(tabIndexState);
           const viewsSnapshot = await snapshot.getPromise(listViewsState);
 
           if (!viewsSnapshot) {
@@ -78,7 +77,7 @@ const Container: FC = () => {
   return (
     <DialogContent>
       <Suspense fallback={<LoaderWithLabel label='アプリ情報を取得しています' />}>
-        <Component {...{ conditionIndex, onListItemClick }} />
+        <Component {...{ onListItemClick }} />
       </Suspense>
     </DialogContent>
   );

@@ -1,26 +1,24 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { enableCSVExportState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { sortableState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(enableCSVExportState(conditionIndex));
+  const enables = useRecoilValue(sortableState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(enableCSVExportState(conditionIndex), checked);
+        set(sortableState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (
     <FormControlLabel
       control={<Switch color='primary' checked={enables} />}
       onChange={(_, checked) => onChange(checked)}
-      label='CSV出力機能を有効にする'
+      label='並び替えを有効にする'
     />
   );
 };

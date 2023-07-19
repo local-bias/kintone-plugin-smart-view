@@ -1,22 +1,20 @@
 import React, { ChangeEventHandler, FC, FCX, memo, Suspense } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { viewIdState } from '../../states/plugin';
+import { viewIdState } from '../../../states/plugin';
 import { MenuItem, Skeleton, TextField } from '@mui/material';
-import { customViewsState } from '../../states/kintone';
-import { useConditionIndex } from '../condition-index-provider';
+import { customViewsState } from '../../../states/kintone';
 
 const Component: FCX = ({ className }) => {
-  const conditionIndex = useConditionIndex();
   const views = useRecoilValue(customViewsState);
-  const viewId = useRecoilValue(viewIdState(conditionIndex));
+  const viewId = useRecoilValue(viewIdState);
 
   const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
     ({ set }) =>
       (e) => {
-        set(viewIdState(conditionIndex), e.target.value);
+        set(viewIdState, e.target.value);
       },
-    [conditionIndex]
+    []
   );
 
   return (

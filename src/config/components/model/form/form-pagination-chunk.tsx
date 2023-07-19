@@ -1,19 +1,17 @@
 import { MenuItem, TextField } from '@mui/material';
 import React, { ChangeEventHandler, FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { paginationChunkState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { paginationChunkState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const paginationChunk = useRecoilValue(paginationChunkState(conditionIndex));
+  const paginationChunk = useRecoilValue(paginationChunkState);
 
   const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
     ({ set }) =>
       (e) => {
-        set(paginationChunkState(conditionIndex), Number(e.target.value));
+        set(paginationChunkState, Number(e.target.value));
       },
-    [conditionIndex]
+    []
   );
 
   return (

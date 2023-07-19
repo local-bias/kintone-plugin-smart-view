@@ -1,26 +1,24 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { openDetailInNewTabState } from '../../states/plugin';
-import { useConditionIndex } from '../condition-index-provider';
+import { ignoresHankakuKatakanaState } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const conditionIndex = useConditionIndex();
-  const enables = useRecoilValue(openDetailInNewTabState(conditionIndex));
+  const enables = useRecoilValue(ignoresHankakuKatakanaState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (checked: boolean) => {
-        set(openDetailInNewTabState(conditionIndex), checked);
+        set(ignoresHankakuKatakanaState, checked);
       },
-    [conditionIndex]
+    []
   );
 
   return (
     <FormControlLabel
       control={<Switch color='primary' checked={enables} />}
       onChange={(_, checked) => onChange(checked)}
-      label='レコードの詳細画面を新しいタブで開く'
+      label='絞り込みの際、半角カナと全角カナを区別しない'
     />
   );
 };
