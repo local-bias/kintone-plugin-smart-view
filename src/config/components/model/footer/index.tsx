@@ -135,6 +135,8 @@ const Container: FC = () => {
               ),
             });
           }
+        } catch (error: any) {
+          enqueueSnackbar(error?.message ?? '不明なエラーが発生しました', { variant: 'error' });
         } finally {
           reset(loadingState);
         }
