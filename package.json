@@ -1,6 +1,6 @@
 {
   "name": "kintone-plugin-smart-view",
-  "version": "2.23.1",
+  "version": "2.24.0",
   "scripts": {
     "init": "node scripts/marge-json.mjs dev && kintone-plugin-packer --out dist/plugin-dev.zip plugin && node scripts/rename-ppk.mjs",
     "build": "node scripts/marge-json.mjs prod && kbuild prod plugin --prod-root cdn && kintone-plugin-packer --out dist/plugin.zip --ppk dist/private.ppk plugin",

@@ -9,7 +9,7 @@ export default {
   manifest: {
     base: {
       manifest_version: 1,
-      version: '2.23.1',
+      version: '2.24.0',
       type: 'APP',
       name: {
         en: 'faster search plugin',
