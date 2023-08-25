@@ -4,8 +4,9 @@ const CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@la
 const COMMON_CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest';
 const localhost = 'https://127.0.0.1:5500';
 
-/** @type {import('@konomi-app/kintone-utilities/dist/types/kintone.config')} */
+/** @type {import('@konomi-app/kintone-utilities').PluginConfig} */
 export default {
+  version: 1,
   manifest: {
     base: {
       manifest_version: 1,
