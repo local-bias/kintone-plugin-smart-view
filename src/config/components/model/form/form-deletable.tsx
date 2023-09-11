@@ -6,7 +6,7 @@ const Component: FC = () => {
     <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
       <FormControlLabel
         control={<Switch color='primary' defaultChecked disabled />}
-        label='一覧でのレコード編集機能を有効にする'
+        label='一覧でのレコード削除機能を有効にする'
       />
     </Tooltip>
   );

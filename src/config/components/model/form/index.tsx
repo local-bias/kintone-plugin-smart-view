@@ -12,6 +12,7 @@ import PaginationChunkForm from './form-pagination-chunk';
 import PaginationControlForm from './form-pagination-control';
 import CSVExportForm from './form-csv-export';
 import EditableModeForm from './form-editable';
+import DeletableModeForm from './form-deletable';
 import SortableModeForm from './form-sortable';
 import LetterCaseForm from './form-letter-case';
 import KatakanaForm from './form-katakana';
@@ -20,6 +21,7 @@ import HankakuKatakanaForm from './form-hankaku-katakana';
 import CursorAPIForm from './form-cursor-api';
 import DeletionButton from './condition-deletion-button';
 import OpenDetailInNewTabForm from './form-new-tab';
+import { OptionalText } from '../../ui/optional-text';
 
 const Component: FCX = ({ className }) => {
   return (
@@ -85,8 +87,20 @@ const Component: FCX = ({ className }) => {
         <CSVExportForm />
       </PluginFormSection>
       <PluginFormSection>
-        <PluginFormTitle>編集機能の設定</PluginFormTitle>
+        <PluginFormTitle>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            一覧でのレコード編集機能の設定<OptionalText>プラス</OptionalText>
+          </div>
+        </PluginFormTitle>
         <EditableModeForm />
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            一覧でのレコード削除機能の設定<OptionalText>プラス</OptionalText>
+          </div>
+        </PluginFormTitle>
+        <DeletableModeForm />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>高度なオプション</PluginFormTitle>
