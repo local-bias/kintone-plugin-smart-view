@@ -2,7 +2,7 @@
 const HP = 'https://konomi.app';
 const CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest';
 const COMMON_CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest';
-const localhost = 'https://127.0.0.1:5500';
+const localhost = 'https://127.0.0.1:4689';
 
 /** @type {import('@konomi-app/kintone-utilities').PluginConfig} */
 export default {
