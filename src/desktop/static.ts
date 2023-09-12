@@ -16,4 +16,5 @@ export const SORTABLE_FIELDS: kintoneAPI.FieldPropertyType[] = [
   'SINGLE_LINE_TEXT',
   'TIME',
   'UPDATED_TIME',
+  'DROP_DOWN',
 ];

@@ -33,8 +33,8 @@ const sortedDatasState = selector<ViewRecord[]>({
       const recordA = dataA.record;
       const recordB = dataB.record;
 
-      const a = (recordA[sorting.field]?.value || '') as string;
-      const b = (recordB[sorting.field]?.value || '') as string;
+      const a = (recordA[sorting.field]?.value ?? '') as string;
+      const b = (recordB[sorting.field]?.value ?? '') as string;
 
       const fieldType = recordA[sorting.field]?.type;
 
