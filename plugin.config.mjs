@@ -1,7 +1,6 @@
 //@ts-check
 const HP = 'https://konomi.app';
-const CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-smart-view@latest';
-const COMMON_CDN = 'https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest';
+const common = 'https://kintone-plugin.konomi.app/common';
 const localhost = 'https://127.0.0.1:4689';
 
 /** @type {import('@konomi-app/kintone-utilities').PluginConfig} */
@@ -10,7 +9,7 @@ export default {
   manifest: {
     base: {
       manifest_version: 1,
-      version: '2.24.0',
+      version: '2.25.0',
       type: 'APP',
       name: {
         en: 'faster search plugin',
@@ -24,11 +23,11 @@ export default {
       },
       icon: 'icon.png',
       homepage_url: { ja: HP, en: HP },
-      desktop: { js: [`${COMMON_CDN}/dist/desktop.js`], css: [] },
-      mobile: { js: [`${COMMON_CDN}/dist/desktop.js`], css: [] },
+      desktop: { js: [`${common}/desktop.js`], css: [] },
+      mobile: { js: [`${common}/desktop.js`], css: [] },
       config: {
         html: 'config.html',
-        js: [`${COMMON_CDN}/dist/config.js`],
+        js: [`${common}/config.js`],
         css: [],
         required_params: [],
       },
@@ -39,9 +38,9 @@ export default {
       config: { js: [`${localhost}/dist/dev/config/index.js`] },
     },
     prod: {
-      desktop: { js: [`${CDN}/cdn/desktop.js`] },
-      mobile: { js: [`${CDN}/cdn/desktop.js`] },
-      config: { js: [`${CDN}/cdn/config.js`] },
+      desktop: { js: [`desktop.js`] },
+      mobile: { js: [`desktop.js`] },
+      config: { js: [`config.js`] },
     },
     standalone: {
       desktop: { js: ['desktop.js'] },
