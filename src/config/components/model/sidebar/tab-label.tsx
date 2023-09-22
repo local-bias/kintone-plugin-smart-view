@@ -20,7 +20,13 @@ const Component: FC<Props> = ({ index }) => {
 };
 
 const Container: FC<Props> = (props) => (
-  <Suspense fallback={<Skeleton variant='text' width={100} />}>
+  <Suspense
+    fallback={
+      <div style={{ display: 'flex' }}>
+        設定{props.index + 1}(<Skeleton variant='text' width={80} />)
+      </div>
+    }
+  >
     <Component {...props} />
   </Suspense>
 );
