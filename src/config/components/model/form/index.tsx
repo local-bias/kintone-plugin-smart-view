@@ -9,19 +9,22 @@ import ViewIdForm from './form-view-id';
 import ImportingViewFields from './importing-view-fields';
 import ViewDisplayingFieldsForm from './form-view-fields';
 import PaginationChunkForm from './form-pagination-chunk';
-import PaginationControlForm from './form-pagination-control';
-import CSVExportForm from './form-csv-export';
 import EditableModeForm from './form-editable';
 import DeletableModeForm from './form-deletable';
-import SortableModeForm from './form-sortable';
-import LetterCaseForm from './form-letter-case';
-import KatakanaForm from './form-katakana';
-import ZenkakuEisujiForm from './form-zenkaku-eisuji';
-import HankakuKatakanaForm from './form-hankaku-katakana';
-import CursorAPIForm from './form-cursor-api';
 import DeletionButton from './condition-deletion-button';
-import OpenDetailInNewTabForm from './form-new-tab';
 import { OptionalText } from '../../ui/optional-text';
+import { FormSwitch } from '@/lib/components/form-switch';
+import {
+  disableCursorAPIState,
+  enableCSVExportState,
+  enablesPaginationChunkControlState,
+  ignoresHankakuKatakanaState,
+  ignoresKatakanaState,
+  ignoresLetterCaseState,
+  ignoresZenkakuEisujiState,
+  openDetailInNewTabState,
+  sortableState,
+} from '@/config/states/plugin';
 
 const Component: FCX = ({ className }) => {
   return (
@@ -64,14 +67,17 @@ const Component: FCX = ({ className }) => {
         <PluginFormDescription last>
           この設定を有効にした場合、1ページあたりの表示レコード数を変更することのできるフォームが表示されます。
         </PluginFormDescription>
-        <PaginationControlForm />
+        <FormSwitch
+          state={enablesPaginationChunkControlState}
+          label='一覧から表示件数を変更可能にする'
+        />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>並び替えの設定</PluginFormTitle>
-        <PluginFormDescription>
+        <PluginFormDescription last>
           この設定を有効にした場合、一覧のヘッダーをクリックすることで、レコードを昇順・降順にソートすることができます。
         </PluginFormDescription>
-        <SortableModeForm />
+        <FormSwitch state={sortableState} label='並び替えを有効にする' />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>CSVエクスポートの設定</PluginFormTitle>
@@ -81,10 +87,10 @@ const Component: FCX = ({ className }) => {
         <PluginFormDescription>
           エクスポートされる一覧は、検索フォームに入力された値によって絞り込まれます。
         </PluginFormDescription>
-        <PluginFormDescription>
+        <PluginFormDescription last>
           kintone標準のCSVエクスポート機能と互換性がない点に注意してください。
         </PluginFormDescription>
-        <CSVExportForm />
+        <FormSwitch state={enableCSVExportState} label='CSV出力機能を有効にする' />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>
@@ -105,12 +111,30 @@ const Component: FCX = ({ className }) => {
       <PluginFormSection>
         <PluginFormTitle>高度なオプション</PluginFormTitle>
         <div className='advanced-options'>
-          <OpenDetailInNewTabForm />
-          <LetterCaseForm />
-          <KatakanaForm />
-          <HankakuKatakanaForm />
-          <ZenkakuEisujiForm />
-          <CursorAPIForm />
+          <FormSwitch
+            state={openDetailInNewTabState}
+            label='レコードの詳細画面を新しいタブで開く'
+          />
+          <FormSwitch
+            state={ignoresLetterCaseState}
+            label='絞り込みの際、アルファベットの大文字と小文字を区別しない'
+          />
+          <FormSwitch
+            state={ignoresKatakanaState}
+            label='絞り込みの際、カタカナとひらがなを区別しない'
+          />
+          <FormSwitch
+            state={ignoresHankakuKatakanaState}
+            label='絞り込みの際、半角カナと全角カナを区別しない'
+          />
+          <FormSwitch
+            state={ignoresZenkakuEisujiState}
+            label='絞り込みの際、全角英数字と半角英数字を区別しない'
+          />
+          <FormSwitch
+            state={disableCursorAPIState}
+            label='レコード取得時、カーソルAPIを使用しない'
+          />
         </div>
         <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
       </PluginFormSection>
