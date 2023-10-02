@@ -34,7 +34,7 @@
     "@typescript-eslint/eslint-plugin": "6.7.2",
     "@typescript-eslint/parser": "6.7.2",
     "concurrently": "^8.2.1",
-    "dompurify": "3.0.5",
+    "dompurify": "3.0.6",
     "dotenv": "16.3.1",
     "eslint": "8.50.0",
     "immer": "10.0.2",
