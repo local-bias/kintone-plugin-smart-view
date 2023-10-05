@@ -13,7 +13,7 @@ import Table from './components/model/table';
 import Footer from './components/model/footer';
 import { paginationChunkState } from './states/pagination';
 
-type Props = Readonly<{ condition: kintone.plugin.Condition }>;
+type Props = Readonly<{ condition: kintone.plugin.LatestCondition }>;
 
 const Component: FC<Props> = ({ condition }) => (
   <RecoilRoot

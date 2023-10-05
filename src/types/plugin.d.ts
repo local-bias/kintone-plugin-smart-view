@@ -1,13 +1,17 @@
 declare namespace kintone {
   namespace plugin {
-    /**
-     * プラグインがアプリ単位で保存する設定情報
-     */
-    type Storage = {
-      conditions: Condition[];
+    type LatestStorage = StorageV1;
+    type LatestCondition = ConditionV1;
+
+    type Storage = StorageV1; // | StorageV2 | StorageV3 | ...
+    type Condition = ConditionV1; // | ConditionV2 | ConditionV3 | ...
+
+    type StorageV1 = {
+      version: 1;
+      conditions: ConditionV1[];
     };
 
-    type Condition = {
+    type ConditionV1 = {
       viewId: string;
       viewDisplayingFields: string[];
       enableCSVExport: boolean;

@@ -80,7 +80,7 @@ const Container: FC = () => {
 export default Container;
 
 const download = (
-  condition: kintone.plugin.Condition,
+  condition: kintone.plugin.LatestCondition,
   records: kintoneAPI.RecordData[],
   fieldProperties: kintoneAPI.FieldProperties
 ) => {

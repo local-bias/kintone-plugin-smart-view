@@ -1,15 +1,14 @@
 import React from 'react';
-import { restoreStorage } from '@/lib/plugin';
 import { createRoot } from 'react-dom/client';
 import { css } from '@emotion/css';
 import App from './app';
 import { VIEW_ROOT_ID } from '@/lib/statics';
 import { showNotification } from '@/lib/utilities';
-import { PLUGIN_ID } from '@/lib/global';
 import { listener } from '@/lib/listener';
+import { restorePluginConfig } from '@/lib/plugin';
 
 listener.add(['app.record.index.show'], async (event) => {
-  const config = restoreStorage(PLUGIN_ID);
+  const config = restorePluginConfig();
 
   const found = config.conditions.find((condition) => Number(condition.viewId) === event.viewId);
 
