@@ -1,4 +1,5 @@
 import '@/lib/global';
-import main from './main';
+import { updateVersion } from '@/lib/local-storage';
+updateVersion();
 
-main();
+import './main';
