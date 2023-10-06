@@ -1,6 +1,4 @@
-import { LOCAL_STORAGE_PREFIX, PLUGIN_KEY, PLUGIN_VERSION } from './statics';
-
-const LOCAL_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}${PLUGIN_KEY}`;
+import { LOCAL_STORAGE_KEY, PLUGIN_VERSION } from './statics';
 
 export const updateVersion = () => {
   const currentVersion = PLUGIN_VERSION;
