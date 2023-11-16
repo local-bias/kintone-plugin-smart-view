@@ -33,19 +33,28 @@ export default {
       },
     },
     dev: {
-      desktop: { js: [`${localhost}/dist/dev/desktop/index.js`] },
-      mobile: { js: [`${localhost}/dist/dev/desktop/index.js`] },
-      config: { js: [`${localhost}/dist/dev/config/index.js`] },
+      desktop: {
+        js: [`${localhost}/dist/dev/desktop/index.js`],
+        css: [`${localhost}/dist/dev/desktop.css`],
+      },
+      mobile: {
+        js: [`${localhost}/dist/dev/desktop/index.js`],
+        css: [`${localhost}/dist/dev/desktop.css`],
+      },
+      config: {
+        js: [`${localhost}/dist/dev/config/index.js`],
+        css: [`${localhost}/dist/dev/config.css`],
+      },
     },
     prod: {
-      desktop: { js: [`desktop.js`] },
-      mobile: { js: [`desktop.js`] },
-      config: { js: [`config.js`] },
+      desktop: { js: [`desktop.js`], css: [`desktop.css`] },
+      mobile: { js: [`desktop.js`], css: [`desktop.css`] },
+      config: { js: [`config.js`], css: [`config.css`] },
     },
     standalone: {
-      desktop: { js: ['desktop.js'] },
-      mobile: { js: ['desktop.js'] },
-      config: { js: ['config.js'] },
+      desktop: { js: [`desktop.js`], css: [`desktop.css`] },
+      mobile: { js: [`desktop.js`], css: [`desktop.css`] },
+      config: { js: [`config.js`], css: [`config.css`] },
     },
   },
 };
