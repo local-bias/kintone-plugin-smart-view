@@ -1,6 +1,6 @@
 import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 import { URL_PROMOTION } from '@/lib/statics';
-import { PluginBanner, PluginContent, PluginLayout } from '@konomi-app/kintone-utility-component';
+import { PluginBanner, PluginContent, PluginLayout } from '@konomi-app/kintone-utilities-react';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { SnackbarProvider } from 'notistack';
 import React, { FC, Suspense } from 'react';
@@ -20,9 +20,11 @@ const Component: FC = () => (
             <PluginLayout>
               <Sidebar />
               <PluginContent>
-                <Form />
+                <PluginErrorBoundary>
+                  <Form />
+                </PluginErrorBoundary>
               </PluginContent>
-              <PluginBanner url='https://promotion.konomi.app/kintone-plugin/sidebar' />
+              <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
               <Footer />
             </PluginLayout>
           </Suspense>

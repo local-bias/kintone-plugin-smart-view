@@ -12,13 +12,15 @@ import Header from './components/model/header';
 import Table from './components/model/table';
 import Footer from './components/model/footer';
 import { paginationChunkState } from './states/pagination';
+import { searchTextState } from './states/search-text';
 
-type Props = Readonly<{ condition: kintone.plugin.LatestCondition }>;
+type Props = Readonly<{ condition: Plugin.Condition; initSearchText: string }>;
 
-const Component: FC<Props> = ({ condition }) => (
+const Component: FC<Props> = ({ condition, initSearchText }) => (
   <RecoilRoot
     initializeState={({ set }) => {
       set(pluginConditionState, condition);
+      set(searchTextState, initSearchText);
       set(paginationChunkState, condition.paginationChunk || 100);
     }}
   >

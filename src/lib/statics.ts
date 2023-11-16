@@ -13,3 +13,5 @@ export const URL_PROMOTION = 'https://promotion.konomi.app/kintone-plugin';
 export const URL_PLUGIN_LIST = 'https://ribbit.konomi.app/kintone-plugin/';
 
 export const VIEW_ROOT_ID = 'ribbit-smart-view-root';
+
+export const URL_SEARCH_PARAMS_TEXT = 'sv_searchtext';

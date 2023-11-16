@@ -71,20 +71,20 @@ const StyledComponent = styled(Component)`
 const Container: FC = () => {
   const condition = useRecoilValue(pluginConditionState)!;
 
-  if (condition.enableCSVExport) {
-    return <StyledComponent />;
+  if (condition.isCsvDownloadButtonHidden) {
+    return null;
   }
-  return null;
+  return <StyledComponent />;
 };
 
 export default Container;
 
 const download = (
-  condition: kintone.plugin.LatestCondition,
+  condition: Plugin.Condition,
   records: kintoneAPI.RecordData[],
   fieldProperties: kintoneAPI.FieldProperties
 ) => {
-  const targetFieldCodes = condition.viewDisplayingFields;
+  const targetFieldCodes = condition.viewFields.map(({ fieldCode }) => fieldCode);
 
   const header = targetFieldCodes.map(
     (fieldCode) => fieldProperties[fieldCode]?.label ?? fieldCode

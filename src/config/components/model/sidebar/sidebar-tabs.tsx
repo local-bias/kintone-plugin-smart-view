@@ -1,13 +1,13 @@
 import { Tab } from '@mui/material';
 import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { conditionsState, tabIndexState } from '../../../states/plugin';
-import { PluginConditionTabs } from '@konomi-app/kintone-utility-component';
+import { conditionLengthState, tabIndexState } from '../../../states/plugin';
+import { PluginConditionTabs } from '@konomi-app/kintone-utilities-react';
 import TabLabel from './tab-label';
 
 const Component: FC = () => {
   const tabIndex = useRecoilValue(tabIndexState);
-  const conditions = useRecoilValue(conditionsState);
+  const length = useRecoilValue(conditionLengthState);
 
   const onTabChange = useRecoilCallback(
     ({ set }) =>
@@ -19,7 +19,7 @@ const Component: FC = () => {
 
   return (
     <PluginConditionTabs tabIndex={tabIndex} onChange={onTabChange}>
-      {conditions.map((_, i) => (
+      {new Array(length).fill('').map((_, i) => (
         <Tab label={<TabLabel index={i} />} key={i} />
       ))}
     </PluginConditionTabs>

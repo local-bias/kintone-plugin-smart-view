@@ -13,15 +13,15 @@ export const headerCellsState = selector<HeaderCell[]>({
     const appFields = get(appPropertiesState);
     const propertiesReady = get(propertiesReadyState);
 
-    if (!condition?.viewDisplayingFields.length) {
+    if (!condition?.viewFields.length) {
       return [];
     }
 
     if (!propertiesReady) {
-      return condition.viewDisplayingFields.map((field) => ({ label: field, property: null }));
+      return condition.viewFields.map((field) => ({ label: field.fieldCode, property: null }));
     }
 
-    const cells = condition.viewDisplayingFields.map<HeaderCell>((fieldCode) => {
+    const cells = condition.viewFields.map<HeaderCell>(({ fieldCode }) => {
       const found = Object.values(appFields).find((property) => property.code === fieldCode);
 
       if (found) {

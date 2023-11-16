@@ -1,13 +1,26 @@
-import { Autocomplete, IconButton, Skeleton, TextField, Tooltip } from '@mui/material';
+import {
+  Autocomplete,
+  IconButton,
+  Skeleton,
+  TextField,
+  Tooltip,
+  InputAdornment,
+} from '@mui/material';
 import React, { FC, memo, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { produce } from 'immer';
 
-import { viewDisplayingFieldsState } from '../../../states/plugin';
+import { viewFieldsState } from '../../../states/plugin';
 import { appFieldsState } from '../../../states/app-fields';
 import styled from '@emotion/styled';
+
+const Rows = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
 
 const Row = styled.div`
   display: flex;
@@ -30,15 +43,27 @@ const Row = styled.div`
 `;
 
 const Component: FC = () => {
-  const selectedFields = useRecoilValue(viewDisplayingFieldsState);
+  const selectedFields = useRecoilValue(viewFieldsState);
   const fields = useRecoilValue(appFieldsState);
 
-  const onFieldChange = useRecoilCallback(
+  const onWidthChange = useRecoilCallback(
     ({ set }) =>
       (rowIndex: number, value: string) => {
-        set(viewDisplayingFieldsState, (current) =>
+        set(viewFieldsState, (current) =>
           produce(current, (draft) => {
-            draft[rowIndex] = value;
+            draft[rowIndex].width = Number(value);
+          })
+        );
+      },
+    []
+  );
+
+  const onFieldCodeChange = useRecoilCallback(
+    ({ set }) =>
+      (rowIndex: number, value: string) => {
+        set(viewFieldsState, (current) =>
+          produce(current, (draft) => {
+            draft[rowIndex].fieldCode = value;
           })
         );
       },
@@ -48,9 +73,9 @@ const Component: FC = () => {
   const addField = useRecoilCallback(
     ({ set }) =>
       (rowIndex: number) => {
-        set(viewDisplayingFieldsState, (current) =>
+        set(viewFieldsState, (current) =>
           produce(current, (draft) => {
-            draft.splice(rowIndex + 1, 0, '');
+            draft.splice(rowIndex + 1, 0, { fieldCode: '', width: 0 });
           })
         );
       },
@@ -60,7 +85,7 @@ const Component: FC = () => {
   const removeField = useRecoilCallback(
     ({ set }) =>
       (rowIndex: number) => {
-        set(viewDisplayingFieldsState, (current) =>
+        set(viewFieldsState, (current) =>
           produce(current, (draft) => {
             draft.splice(rowIndex, 1);
           })
@@ -70,16 +95,16 @@ const Component: FC = () => {
   );
 
   return (
-    <>
+    <Rows>
       {selectedFields.map((value, i) => (
         <Row key={i}>
           <Autocomplete
-            value={fields.find((field) => field.code === value) ?? null}
+            value={fields.find((field) => field.code === value.fieldCode) ?? null}
             sx={{ width: '350px' }}
             options={fields}
             isOptionEqualToValue={(option, v) => option.code === v.code}
             getOptionLabel={(option) => `${option.label}(${option.code})`}
-            onChange={(_, field) => onFieldChange(i, field?.code ?? '')}
+            onChange={(_, field) => onFieldCodeChange(i, field?.code ?? '')}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -92,6 +117,17 @@ const Component: FC = () => {
                 color='primary'
               />
             )}
+          />
+          <TextField
+            label='表示幅'
+            type='number'
+            color='primary'
+            value={value.width}
+            sx={{ width: '120px' }}
+            InputProps={{
+              endAdornment: <InputAdornment position='end'>px</InputAdornment>,
+            }}
+            onChange={(e) => onWidthChange(i, e.target.value)}
           />
           <Tooltip title='表示フィールドを追加する'>
             <IconButton size='small' onClick={() => addField(i)}>
@@ -107,7 +143,7 @@ const Component: FC = () => {
           )}
         </Row>
       ))}
-    </>
+    </Rows>
   );
 };
 
@@ -119,6 +155,7 @@ const Container: FC = () => {
           {new Array(3).fill('').map((_, i) => (
             <Row key={i}>
               <Skeleton variant='rounded' width={350} height={56} />
+              <Skeleton variant='rounded' width={120} height={56} />
               <Skeleton variant='circular' width={24} height={24} />
               <Skeleton variant='circular' width={24} height={24} />
             </Row>

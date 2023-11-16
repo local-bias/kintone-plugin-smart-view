@@ -3,14 +3,15 @@ import { useRecoilValue } from 'recoil';
 
 import { existsRecordState, isFetchCompleteState } from '../../../states/records';
 
-import Layout from './layout';
+import { MyTable } from './layout';
 import Head from './head';
 import Body from './body';
 import Empty from './empty';
 import ErrorNofitication from './error';
-import { errorState } from '../../../states/plugin';
+import { errorState, pluginConditionState } from '../../../states/plugin';
 
 const Table: FC = () => {
+  const condition = useRecoilValue(pluginConditionState);
   const exists = useRecoilValue(existsRecordState);
   const isFetchComplete = useRecoilValue(isFetchCompleteState);
 
@@ -18,10 +19,10 @@ const Table: FC = () => {
     return null;
   }
   return (
-    <table>
+    <MyTable columns={condition?.viewFields.map(({ width }) => ({ width })) ?? []}>
       <Head />
       <Body />
-    </table>
+    </MyTable>
   );
 };
 
@@ -42,10 +43,10 @@ const PlaceHolder: FC = () => {
 };
 
 const Component: FC = () => (
-  <Layout>
+  <div>
     <PlaceHolder />
     <Table />
-  </Layout>
+  </div>
 );
 
 export default Component;

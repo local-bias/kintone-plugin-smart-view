@@ -1,10 +1,10 @@
-import React, { FC, FCX } from 'react';
-import styled from '@emotion/styled';
+import React, { FC } from 'react';
 import {
   PluginFormSection,
   PluginFormTitle,
   PluginFormDescription,
-} from '@konomi-app/kintone-utility-component';
+  RecoilSwitch,
+} from '@konomi-app/kintone-utilities-react';
 import ViewIdForm from './form-view-id';
 import ImportingViewFields from './importing-view-fields';
 import ViewDisplayingFieldsForm from './form-view-fields';
@@ -13,22 +13,11 @@ import EditableModeForm from './form-editable';
 import DeletableModeForm from './form-deletable';
 import DeletionButton from './condition-deletion-button';
 import { OptionalText } from '../../ui/optional-text';
-import { FormSwitch } from '@/lib/components/form-switch';
-import {
-  disableCursorAPIState,
-  enableCSVExportState,
-  enablesPaginationChunkControlState,
-  ignoresHankakuKatakanaState,
-  ignoresKatakanaState,
-  ignoresLetterCaseState,
-  ignoresZenkakuEisujiState,
-  openDetailInNewTabState,
-  sortableState,
-} from '@/config/states/plugin';
+import { getConditionPropertyState } from '@/config/states/plugin';
 
-const Component: FCX = ({ className }) => {
+const Component: FC = () => {
   return (
-    <div {...{ className }}>
+    <div className='p-4'>
       <PluginFormSection>
         <PluginFormTitle>テーブルを表示する一覧の設定</PluginFormTitle>
         <PluginFormDescription>検索機能を実装する一覧を選択してください。</PluginFormDescription>
@@ -43,16 +32,20 @@ const Component: FCX = ({ className }) => {
       <PluginFormSection>
         <PluginFormTitle>テーブルに表示するフィールドの設定</PluginFormTitle>
         <PluginFormDescription>一覧に表示するフィールドを設定します。</PluginFormDescription>
-        <PluginFormDescription last>
+        <PluginFormDescription>
           検索フォームに入力された値が検索対象とするのは、この設定で選択したフィールドのみです。
         </PluginFormDescription>
-        <div className='quick-import-buttons'>
+        <PluginFormDescription>
+          ヘッダーの文字幅を下回る表示幅を指定した場合、表示が見切れてしまう可能性があります。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          表示幅を0に設定した場合、幅は内容に合わせて自動調整されます。
+        </PluginFormDescription>
+        <div className='flex mt-4 mb-6 gap-4'>
           <ImportingViewFields />
         </div>
-
         <ViewDisplayingFieldsForm />
       </PluginFormSection>
-
       <PluginFormSection>
         <PluginFormTitle>ページネーションの設定</PluginFormTitle>
         <PluginFormDescription>
@@ -67,8 +60,8 @@ const Component: FCX = ({ className }) => {
         <PluginFormDescription last>
           この設定を有効にした場合、1ページあたりの表示レコード数を変更することのできるフォームが表示されます。
         </PluginFormDescription>
-        <FormSwitch
-          state={enablesPaginationChunkControlState}
+        <RecoilSwitch
+          state={getConditionPropertyState('isPaginationChunkControlShown')}
           label='一覧から表示件数を変更可能にする'
         />
       </PluginFormSection>
@@ -77,7 +70,10 @@ const Component: FCX = ({ className }) => {
         <PluginFormDescription last>
           この設定を有効にした場合、一覧のヘッダーをクリックすることで、レコードを昇順・降順にソートすることができます。
         </PluginFormDescription>
-        <FormSwitch state={sortableState} label='並び替えを有効にする' />
+        <RecoilSwitch
+          state={getConditionPropertyState('isSortable')}
+          label='並び替えを有効にする'
+        />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>CSVエクスポートの設定</PluginFormTitle>
@@ -90,7 +86,10 @@ const Component: FCX = ({ className }) => {
         <PluginFormDescription last>
           kintone標準のCSVエクスポート機能と互換性がない点に注意してください。
         </PluginFormDescription>
-        <FormSwitch state={enableCSVExportState} label='CSV出力機能を有効にする' />
+        <RecoilSwitch
+          state={getConditionPropertyState('isCsvDownloadButtonHidden')}
+          label='CSV出力機能を無効にする'
+        />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>
@@ -98,6 +97,12 @@ const Component: FCX = ({ className }) => {
             一覧でのレコード編集機能の設定<OptionalText>プラス</OptionalText>
           </div>
         </PluginFormTitle>
+        <PluginFormDescription>
+          一部のフィールドを除き、一覧からレコードの各フィールドを編集できるようになります。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          編集できるのは、レコードに対して編集権限を持つユーザーのみです。
+        </PluginFormDescription>
         <EditableModeForm />
       </PluginFormSection>
       <PluginFormSection>
@@ -106,34 +111,38 @@ const Component: FCX = ({ className }) => {
             一覧でのレコード削除機能の設定<OptionalText>プラス</OptionalText>
           </div>
         </PluginFormTitle>
+        <PluginFormDescription>一覧からレコードを削除できるようになります。</PluginFormDescription>
+        <PluginFormDescription last>
+          削除できるのは、レコードに対して削除権限を持つユーザーのみです。
+        </PluginFormDescription>
         <DeletableModeForm />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>高度なオプション</PluginFormTitle>
-        <div className='advanced-options'>
-          <FormSwitch
-            state={openDetailInNewTabState}
+        <div className='flex flex-col items-start'>
+          <RecoilSwitch
+            state={getConditionPropertyState('isOpenInNewTab')}
             label='レコードの詳細画面を新しいタブで開く'
           />
-          <FormSwitch
-            state={ignoresLetterCaseState}
-            label='絞り込みの際、アルファベットの大文字と小文字を区別しない'
+          <RecoilSwitch
+            state={getConditionPropertyState('isCaseSensitive')}
+            label='絞り込みの際、アルファベットの大文字と小文字を区別する'
           />
-          <FormSwitch
-            state={ignoresKatakanaState}
-            label='絞り込みの際、カタカナとひらがなを区別しない'
+          <RecoilSwitch
+            state={getConditionPropertyState('isKatakanaSensitive')}
+            label='絞り込みの際、カタカナとひらがなを区別する'
           />
-          <FormSwitch
-            state={ignoresHankakuKatakanaState}
-            label='絞り込みの際、半角カナと全角カナを区別しない'
+          <RecoilSwitch
+            state={getConditionPropertyState('isHankakuKatakanaSensitive')}
+            label='絞り込みの際、半角カナと全角カナを区別する'
           />
-          <FormSwitch
-            state={ignoresZenkakuEisujiState}
-            label='絞り込みの際、全角英数字と半角英数字を区別しない'
+          <RecoilSwitch
+            state={getConditionPropertyState('isZenkakuEisujiSensitive')}
+            label='絞り込みの際、全角英数字と半角英数字を区別する'
           />
-          <FormSwitch
-            state={disableCursorAPIState}
-            label='レコード取得時、カーソルAPIを使用しない'
+          <RecoilSwitch
+            state={getConditionPropertyState('isCursorAPIEnabled')}
+            label='カーソルAPIを使用してレコードを取得する'
           />
         </div>
         <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
@@ -145,27 +154,4 @@ const Component: FCX = ({ className }) => {
   );
 };
 
-const StyledComponent = styled(Component)`
-  padding: 0 16px;
-  > div {
-    padding: 8px 8px 8px 16px;
-    > h3 {
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
-  }
-
-  .quick-import-buttons {
-    display: flex;
-    margin: 16px 0 24px;
-    gap: 16px;
-  }
-
-  .advanced-options {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-export default StyledComponent;
+export default Component;

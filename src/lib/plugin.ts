@@ -4,8 +4,8 @@ import { PLUGIN_ID } from './global';
 /**
  * プラグインの設定情報のひな形を返却します
  */
-export const createConfig = (): kintone.plugin.LatestStorage => ({
-  version: 1,
+export const createConfig = (): Plugin.Config => ({
+  version: 2,
   conditions: [getNewCondition()],
 });
 
@@ -14,34 +14,56 @@ export const createConfig = (): kintone.plugin.LatestStorage => ({
  * @param storage 保存されている設定情報
  * @returns 新しいバージョンの設定情報
  */
-export const migrateConfig = (storage: kintone.plugin.Storage): kintone.plugin.LatestStorage => {
+export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
   const { version } = storage;
   switch (version) {
     case undefined:
     case 1:
-      return storage;
+      return {
+        version: 2,
+        conditions: storage.conditions.map((condition) => ({
+          viewId: condition.viewId,
+          viewFields: condition.viewDisplayingFields.map((fieldCode) => ({
+            fieldCode,
+            width: 0,
+          })),
+          isCsvDownloadButtonHidden: !condition.enableCSVExport,
+          isEditable: condition.editable ?? true,
+          isDeletable: condition.deletable ?? true,
+          isSortable: condition.sortable ?? true,
+          paginationChunk: condition.paginationChunk ?? 100,
+          isPaginationChunkControlShown: condition.enablesPaginationChunkControl ?? false,
+          isCaseSensitive: !(condition.ignoresLetterCase ?? true),
+          isKatakanaSensitive: !(condition.ignoresKatakana ?? true),
+          isZenkakuEisujiSensitive: !(condition.ignoresZenkakuEisuji ?? true),
+          isHankakuKatakanaSensitive: !(condition.ignoresHankakuKatakana ?? true),
+          isCursorAPIEnabled: !(condition.disableCursorAPI ?? false),
+          isOpenInNewTab: condition.openDetailInNewTab ?? false,
+        })),
+      };
     default:
       return storage;
   }
 };
 
-export const restorePluginConfig = (): kintone.plugin.LatestStorage => {
-  const config = restoreStorage<kintone.plugin.Storage>(PLUGIN_ID) ?? createConfig();
+export const restorePluginConfig = (): Plugin.Config => {
+  const config = restoreStorage<Plugin.AnyConfig>(PLUGIN_ID) ?? createConfig();
   return migrateConfig(config);
 };
 
-export const getNewCondition = (): kintone.plugin.LatestCondition => ({
+export const getNewCondition = (): Plugin.Condition => ({
   viewId: '',
-  viewDisplayingFields: [''],
-  enableCSVExport: false,
+  viewFields: [{ fieldCode: '', width: 0 }],
+  isCsvDownloadButtonHidden: false,
+  isEditable: true,
+  isDeletable: true,
+  isSortable: true,
   paginationChunk: 100,
-  enablesPaginationChunkControl: false,
-  editable: false,
-  sortable: true,
-  ignoresLetterCase: true,
-  ignoresKatakana: true,
-  ignoresZenkakuEisuji: true,
-  ignoresHankakuKatakana: true,
-  disableCursorAPI: false,
-  openDetailInNewTab: false,
+  isPaginationChunkControlShown: false,
+  isCaseSensitive: false,
+  isKatakanaSensitive: false,
+  isZenkakuEisujiSensitive: false,
+  isHankakuKatakanaSensitive: false,
+  isCursorAPIEnabled: true,
+  isOpenInNewTab: false,
 });

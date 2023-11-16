@@ -10,6 +10,7 @@ import CategoryCell from './cell-category';
 import MultiSelectCell from './cell-multi-select';
 import CheckBoxCell from './cell-checkbox';
 import DateCell from './cell-date';
+import LinkCell from './cell-link';
 import FileCell from './cell-file';
 import MuiliLineTextCell from './cell-multi-line-text';
 import NumberCell from './cell-number';
@@ -18,6 +19,7 @@ import SingleLineTextCell from './cell-single-line-text';
 import UserCell from './cell-user';
 import DateTimeCell from './cell-date-time';
 import EntityCell from './cell-entity';
+import { MyTable, MyTableBody, MyTableHead } from './layout';
 
 type Props = DeepReadonly<{ code: string; field: kintoneAPI.Field }>;
 
@@ -60,6 +62,8 @@ const FieldCell: FC<Props> = (props) => {
       return <EntityCell field={field} />;
     case 'FILE':
       return <FileCell field={field} />;
+    case 'LINK':
+      return <LinkCell code={code} field={field} />;
     default:
       return <>{field.value}</>;
   }
@@ -77,13 +81,15 @@ const Subtable: FC<DeepReadonly<{ code: string; field: kintoneAPI.field.Subtable
   return (
     <SubtableDetails>
       <summary>{props.field.value.length}行</summary>
-      <table>
-        <thead>
-          {fieldProperties.map((property) => (
-            <th key={property.code}>{property.label}</th>
-          ))}
-        </thead>
-        <tbody>
+      <MyTable columns={fieldProperties.map((_) => ({ width: 0 }))} isDetailCellHidden>
+        <MyTableHead sticky={0}>
+          <tr>
+            {fieldProperties.map((property) => (
+              <th key={property.code}>{property.label}</th>
+            ))}
+          </tr>
+        </MyTableHead>
+        <MyTableBody>
           {props.field.value.map(({ value }, i) => (
             <tr key={i}>
               {fieldProperties.map((property) => (
@@ -93,8 +99,8 @@ const Subtable: FC<DeepReadonly<{ code: string; field: kintoneAPI.field.Subtable
               ))}
             </tr>
           ))}
-        </tbody>
-      </table>
+        </MyTableBody>
+      </MyTable>
     </SubtableDetails>
   );
 };

@@ -63,7 +63,10 @@ const Container: FC = () => {
               const condition = draft.conditions[conditionIndex];
 
               if (selectedView.type === 'LIST') {
-                condition.viewDisplayingFields = selectedView.fields;
+                condition.viewFields = selectedView.fields.map((fieldCode) => ({
+                  fieldCode,
+                  width: 0,
+                }));
               }
             })
           );

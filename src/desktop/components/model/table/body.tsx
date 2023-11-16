@@ -1,13 +1,13 @@
-import React, { FC, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
-import { displayingRecordsState, isFetchCompleteState } from '../../../states/records';
-import { loadingState, pluginConditionState } from '../../../states/plugin';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-
-import Cell from './cell';
 import { getQueryString } from '@/lib/cybozu';
 import { isMobile } from '@lb-ribbit/kintone-xapp';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { Skeleton } from '@mui/material';
+import React, { FC, Suspense } from 'react';
+import { useRecoilValue } from 'recoil';
+import { loadingState, pluginConditionState } from '../../../states/plugin';
+import { displayingRecordsState, isFetchCompleteState } from '../../../states/records';
+import Cell from './cell';
+import { MyTableBody } from './layout';
 
 const Component: FC = () => {
   const records = useRecoilValue(displayingRecordsState);
@@ -22,14 +22,20 @@ const Component: FC = () => {
               href={`${location.pathname}show${isMobile() ? '?' : '#'}record=${
                 record.$id.value
               }&l.view=${condition.viewId}&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
-              {...(condition.openDetailInNewTab ? { target: '_blank' } : {})}
+              {...(condition.isOpenInNewTab ? { target: '_blank' } : {})}
             >
               <InsertDriveFileIcon />
             </a>
           </td>
-          {condition.viewDisplayingFields.map((field, j) => (
-            <td key={j} className={['NUMBER', 'CALC'].includes(record[field]?.type) ? 'right' : ''}>
-              <Cell code={field} field={record[field]} />
+          {condition.viewFields.map(({ fieldCode, width }, j) => (
+            <td
+              key={j}
+              {...(width ? { 'data-custom-width': '' } : {})}
+              {...(['NUMBER', 'CALC'].includes(record[fieldCode]?.type)
+                ? { 'data-right': '' }
+                : {})}
+            >
+              <Cell code={fieldCode} field={record[fieldCode]} />
             </td>
           ))}
         </tr>
@@ -42,7 +48,7 @@ const PlaceHolder: FC = () => {
   const isFetchComplete = useRecoilValue(isFetchCompleteState);
   const loading = useRecoilValue(loadingState);
   const condition = useRecoilValue(pluginConditionState);
-  const colCount = condition?.viewDisplayingFields.length ?? 6;
+  let colCount = condition?.viewFields.length ?? 6;
 
   if (!loading || isFetchComplete) {
     return null;
@@ -66,12 +72,12 @@ const PlaceHolder: FC = () => {
 
 const Container: FC = () => {
   return (
-    <tbody>
+    <MyTableBody>
       <Suspense fallback={null}>
         <Component />
       </Suspense>
       <PlaceHolder />
-    </tbody>
+    </MyTableBody>
   );
 };
 

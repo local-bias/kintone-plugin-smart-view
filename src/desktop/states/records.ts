@@ -4,12 +4,7 @@ import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
 import type { ViewRecord } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
-import {
-  convertHankakuKatakanaToZenkaku,
-  convertKatakanaToHiragana,
-  convertZenkakuEisujiToHankaku,
-} from '@/lib/utilities';
-import type { kintoneAPI } from '@konomi-app/kintone-utilities';
+import { getYuruChara, type kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'records';
 
@@ -18,14 +13,14 @@ export const allViewRecordsState = atom<ViewRecord[]>({
   default: [],
 });
 
-const sortedDatasState = selector<ViewRecord[]>({
-  key: 'sortedDatasState',
+const sortedViewRecordsState = selector<ViewRecord[]>({
+  key: 'sortedViewRecordsState',
   get: ({ get }) => {
     const records = get(allViewRecordsState);
     const sorting = get(sortingState);
     const condition = get(pluginConditionState);
 
-    if (!condition?.sortable || !sorting.field) {
+    if (!condition?.isSortable || !sorting.field) {
       return records;
     }
 
@@ -58,34 +53,23 @@ const sortedDatasState = selector<ViewRecord[]>({
 export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
   key: 'filteredRecordsState',
   get: ({ get }) => {
-    const records = get(sortedDatasState);
+    const records = get(sortedViewRecordsState);
     const text = get(searchTextState);
     const condition = get(pluginConditionState);
 
     const {
-      ignoresLetterCase = true,
-      ignoresKatakana = true,
-      ignoresHankakuKatakana = true,
-      ignoresZenkakuEisuji = true,
+      isCaseSensitive = true,
+      isKatakanaSensitive = true,
+      isHankakuKatakanaSensitive = true,
+      isZenkakuEisujiSensitive = true,
     } = condition || {};
 
-    let input = text;
-
-    if (ignoresZenkakuEisuji) {
-      input = convertZenkakuEisujiToHankaku(input);
-    }
-
-    if (ignoresLetterCase) {
-      input = input.toLowerCase();
-    }
-
-    if (ignoresHankakuKatakana) {
-      input = convertHankakuKatakanaToZenkaku(input);
-    }
-
-    if (ignoresKatakana) {
-      input = convertKatakanaToHiragana(input);
-    }
+    let input = getYuruChara(text, {
+      isCaseSensitive,
+      isKatakanaSensitive,
+      isHankakuKatakanaSensitive,
+      isZenkakuEisujiSensitive,
+    });
 
     const words = input.split(/\s+/g);
 

@@ -40,7 +40,7 @@ const Component: FC = () => {
 const Container: FC = () => {
   const condition = useRecoilValue(pluginConditionState);
 
-  if (!condition?.enablesPaginationChunkControl) {
+  if (!condition?.isPaginationChunkControlShown) {
     return null;
   }
   return <Component />;

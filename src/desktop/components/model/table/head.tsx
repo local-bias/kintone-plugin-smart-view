@@ -10,6 +10,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { errorState, pluginConditionState } from '../../../states/plugin';
 import { paginationIndexState } from '../../../states/pagination';
 import { Skeleton } from '@mui/material';
+import { MyTableHead } from './layout';
 
 const Component: FC = () => {
   const cells = useRecoilValue(headerCellsState);
@@ -35,7 +36,7 @@ const Component: FC = () => {
     []
   );
 
-  const sortable = !!condition?.sortable;
+  const sortable = !!condition?.isSortable;
 
   return (
     <>
@@ -52,7 +53,7 @@ const Component: FC = () => {
               : () => null
           }
         >
-          <div>
+          <>
             {label}
             {sorting.field !== property?.code ? (
               ''
@@ -61,7 +62,7 @@ const Component: FC = () => {
             ) : (
               <ArrowDropUpIcon color='primary' />
             )}
-          </div>
+          </>
         </th>
       ))}
     </>
@@ -71,7 +72,7 @@ const Component: FC = () => {
 const PlaceHolder: FC = () => {
   const condition = useRecoilValue(pluginConditionState);
 
-  const colCount = condition?.viewDisplayingFields.length ?? 6;
+  let colCount = condition?.viewFields.length ?? 6;
 
   return (
     <>
@@ -93,13 +94,13 @@ const Container: FC = () => {
   }
 
   return (
-    <thead>
+    <MyTableHead sticky={48}>
       <tr>
         <Suspense fallback={<PlaceHolder />}>
           <Component />
         </Suspense>
       </tr>
-    </thead>
+    </MyTableHead>
   );
 };
 

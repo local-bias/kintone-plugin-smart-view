@@ -1,18 +1,19 @@
 import React from 'react';
+import { restorePluginConfig } from '@/lib/plugin';
 import { createRoot } from 'react-dom/client';
 import { css } from '@emotion/css';
+
 import App from './app';
-import { VIEW_ROOT_ID } from '@/lib/statics';
+import { URL_SEARCH_PARAMS_TEXT, VIEW_ROOT_ID } from '@/lib/statics';
 import { showNotification } from '@/lib/utilities';
 import { listener } from '@/lib/listener';
-import { restorePluginConfig } from '@/lib/plugin';
 
 listener.add(['app.record.index.show'], async (event) => {
   const config = restorePluginConfig();
-
-  const found = config.conditions.find((condition) => Number(condition.viewId) === event.viewId);
-
-  if (!found) {
+  const targetCondition = config.conditions.find(
+    (condition) => Number(condition.viewId) === event.viewId
+  );
+  if (!targetCondition) {
     return event;
   }
 
@@ -36,7 +37,12 @@ listener.add(['app.record.index.show'], async (event) => {
     });
     return event;
   }
-  createRoot(root).render(<App condition={found} />);
+
+  const query = new URLSearchParams(location.search);
+
+  const initSearchText = query.get(URL_SEARCH_PARAMS_TEXT) ?? '';
+
+  createRoot(root).render(<App condition={targetCondition} initSearchText={initSearchText} />);
 
   return event;
 });

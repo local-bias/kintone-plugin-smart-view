@@ -1,10 +1,10 @@
 import { getQuickSearchString } from '@/lib/kintone';
 import {
-  convertHankakuKatakanaToZenkaku,
-  convertKatakanaToHiragana,
-  convertZenkakuEisujiToHankaku,
-} from '@/lib/utilities';
-import { getAllRecords, getAllRecordsWithId, kintoneAPI } from '@konomi-app/kintone-utilities';
+  getAllRecords,
+  getAllRecordsWithId,
+  getYuruChara,
+  kintoneAPI,
+} from '@konomi-app/kintone-utilities';
 import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { FC, useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -34,46 +34,37 @@ const Container: FC = () => {
         }
 
         const {
-          viewDisplayingFields,
-          ignoresLetterCase = true,
-          ignoresKatakana = true,
-          ignoresHankakuKatakana = true,
-          ignoresZenkakuEisuji = true,
-          disableCursorAPI = false,
+          viewFields,
+          isCaseSensitive,
+          isKatakanaSensitive,
+          isHankakuKatakanaSensitive,
+          isZenkakuEisujiSensitive,
+          isCursorAPIEnabled,
         } = condition;
 
         const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
 
-        const targetFields = viewDisplayingFields.filter((field) => !!field);
+        const targetFields = viewFields
+          .filter(({ fieldCode }) => !!fieldCode)
+          .map(({ fieldCode }) => fieldCode);
         const fields = ['$id', ...targetFields];
 
         const onStep = (params: { records: kintoneAPI.RecordData[] }) => {
           const { records } = params;
           const viewRecords = records.map<ViewRecord>((record) => {
-            let __quickSearch = getQuickSearchString(record);
-
-            if (ignoresZenkakuEisuji) {
-              __quickSearch = convertZenkakuEisujiToHankaku(__quickSearch);
-            }
-
-            if (ignoresLetterCase) {
-              __quickSearch = __quickSearch.toLowerCase();
-            }
-
-            if (ignoresHankakuKatakana) {
-              __quickSearch = convertHankakuKatakanaToZenkaku(__quickSearch);
-            }
-
-            if (ignoresKatakana) {
-              __quickSearch = convertKatakanaToHiragana(__quickSearch);
-            }
+            let __quickSearch = getYuruChara(getQuickSearchString(record), {
+              isCaseSensitive,
+              isKatakanaSensitive,
+              isHankakuKatakanaSensitive,
+              isZenkakuEisujiSensitive,
+            });
 
             return { record, __quickSearch };
           });
           setAllRecords(viewRecords);
         };
 
-        if (disableCursorAPI) {
+        if (isCursorAPIEnabled) {
           await getAllRecordsWithId({
             app,
             condition: query,
@@ -100,6 +91,7 @@ const Container: FC = () => {
                 condition: query,
                 fields,
                 onStep,
+                guestSpaceId: GUEST_SPACE_ID,
                 debug: process?.env?.NODE_ENV === 'development',
               });
             } else {

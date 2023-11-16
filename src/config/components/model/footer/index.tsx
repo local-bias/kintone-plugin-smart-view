@@ -12,7 +12,7 @@ import { loadingState, storageState } from '../../../states/plugin';
 import ExportButton from './export-button';
 import ImportButton from './import-button';
 import ResetButton from './reset-button';
-import { PluginFooter } from '@konomi-app/kintone-utility-component';
+import { PluginFooter } from '@konomi-app/kintone-utilities-react';
 import { getAppId } from '@lb-ribbit/kintone-xapp';
 import { GUEST_SPACE_ID } from '@/lib/global';
 import { produce } from 'immer';
@@ -115,7 +115,7 @@ const Container: FC = () => {
             }
           }
 
-          storeStorage(storage, () => true);
+          storeStorage(storage!, () => true);
           if (warning) {
             enqueueSnackbar(warning, {
               variant: 'warning',
@@ -135,8 +135,6 @@ const Container: FC = () => {
               ),
             });
           }
-        } catch (error: any) {
-          enqueueSnackbar(error?.message ?? '不明なエラーが発生しました', { variant: 'error' });
         } finally {
           reset(loadingState);
         }

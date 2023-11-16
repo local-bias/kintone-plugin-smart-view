@@ -5,6 +5,16 @@ const StyledComponent = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  position: sticky;
+  left: 0;
+
+  padding: 0 2vw;
+  max-width: 96vw;
+  @media screen and (min-width: 800px) {
+    padding: 0 16px;
+    max-width: calc(100vw - 48px);
+  }
+
   & > div {
     display: flex;
     align-items: center;
