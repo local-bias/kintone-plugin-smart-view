@@ -64,7 +64,7 @@ const Container: FC = () => {
           setAllRecords(viewRecords);
         };
 
-        if (isCursorAPIEnabled) {
+        if (!isCursorAPIEnabled) {
           await getAllRecordsWithId({
             app,
             condition: query,
