@@ -6,6 +6,8 @@ const localhost = 'https://127.0.0.1:4689';
 /** @type {import('@konomi-app/kintone-utilities').PluginConfig} */
 export default {
   version: 1,
+  id: 'ribbit-kintone-plugin-smart-view',
+  pluginReleasePageUrl: 'https://ribbit.konomi.app/kintone-plugin/',
   manifest: {
     base: {
       manifest_version: 1,
