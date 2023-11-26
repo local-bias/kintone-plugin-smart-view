@@ -2,14 +2,16 @@ import { getQuickSearchString } from '@/lib/kintone';
 import {
   getAllRecords,
   getAllRecordsWithId,
+  getSortFromQuery,
   getYuruChara,
   kintoneAPI,
+  sortField,
 } from '@konomi-app/kintone-utilities';
 import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
 import { FC, useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { errorState, loadingState, pluginConditionState } from '../../states/plugin';
-import { allViewRecordsState, isFetchCompleteState } from '../../states/records';
+import { allViewRecordsState, areAllRecordsReadyState } from '../../states/records';
 import type { ViewRecord } from '../../static';
 import { GUEST_SPACE_ID } from '@/lib/global';
 
@@ -18,7 +20,7 @@ const Container: FC = () => {
   const setLoading = useSetRecoilState(loadingState);
   const condition = useRecoilValue(pluginConditionState);
   const setError = useSetRecoilState(errorState);
-  const setFetchComplete = useSetRecoilState(isFetchCompleteState);
+  const setReady = useSetRecoilState(areAllRecordsReadyState);
 
   useEffect(() => {
     (async () => {
@@ -43,6 +45,7 @@ const Container: FC = () => {
         } = condition;
 
         const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
+        const sort = getSortFromQuery(getQuery() || '');
 
         const targetFields = viewFields
           .filter(({ fieldCode }) => !!fieldCode)
@@ -69,7 +72,36 @@ const Container: FC = () => {
             app,
             condition: query,
             fields,
-            onStep,
+            onStep: (params) => {
+              const { records } = params;
+              const viewRecords = records.map<ViewRecord>((record) => {
+                let __quickSearch = getYuruChara(getQuickSearchString(record), {
+                  isCaseSensitive,
+                  isKatakanaSensitive,
+                  isHankakuKatakanaSensitive,
+                  isZenkakuEisujiSensitive,
+                });
+
+                return { record, __quickSearch };
+              });
+              const sorted = viewRecords.sort((a, b) => {
+                for (const { field, order } of sort) {
+                  const aValue = a.record[field];
+                  const bValue = b.record[field];
+                  if (!aValue || !bValue || aValue.value === bValue.value) {
+                    continue;
+                  }
+                  const compared = sortField(aValue, bValue);
+                  if (order === 'asc') {
+                    return compared;
+                  } else {
+                    return compared * -1;
+                  }
+                }
+                return 0;
+              });
+              setAllRecords(sorted);
+            },
             guestSpaceId: GUEST_SPACE_ID,
             debug: process?.env?.NODE_ENV === 'development',
           });
@@ -100,7 +132,7 @@ const Container: FC = () => {
           }
         }
 
-        setFetchComplete(true);
+        setReady(true);
       } catch (error: any) {
         if (error?.code === 'GAIA_TM12') {
           setError(

@@ -5,7 +5,7 @@ import { Skeleton } from '@mui/material';
 import React, { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
 import { loadingState, pluginConditionState } from '../../../states/plugin';
-import { displayingRecordsState, isFetchCompleteState } from '../../../states/records';
+import { displayingRecordsState, areAllRecordsReadyState } from '../../../states/records';
 import Cell from './cell';
 import { MyTableBody } from './layout';
 
@@ -45,7 +45,7 @@ const Component: FC = () => {
 };
 
 const PlaceHolder: FC = () => {
-  const isFetchComplete = useRecoilValue(isFetchCompleteState);
+  const isFetchComplete = useRecoilValue(areAllRecordsReadyState);
   const loading = useRecoilValue(loadingState);
   const condition = useRecoilValue(pluginConditionState);
   let colCount = condition?.viewFields.length ?? 6;

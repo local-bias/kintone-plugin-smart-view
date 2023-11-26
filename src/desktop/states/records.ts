@@ -92,16 +92,24 @@ export const displayingRecordsState = selector<kintoneAPI.RecordData[]>({
   },
 });
 
-export const isFetchCompleteState = atom<boolean>({
-  key: `${PREFIX}isFetchCompleteState`,
+export const areAllRecordsReadyState = atom<boolean>({
+  key: `${PREFIX}areAllRecordsReadyState`,
   default: false,
 });
 
-export const existsRecordState = selector({
-  key: 'existsRecordState',
+export const isRecordPresentState = selector<boolean>({
+  key: `${PREFIX}isRecordPresentState`,
   get: ({ get }) => {
     const records = get(filteredRecordsState);
-
     return !!records.length;
+  },
+});
+
+export const isOriginalTableShownState = selector<boolean>({
+  key: `${PREFIX}isOriginalTableShownState`,
+  get: ({ get }) => {
+    const areAllRecordsReady = get(areAllRecordsReadyState);
+    const isRecordPresent = get(isRecordPresentState);
+    return !areAllRecordsReady || isRecordPresent;
   },
 });

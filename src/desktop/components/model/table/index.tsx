@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { existsRecordState, isFetchCompleteState } from '../../../states/records';
+import { isOriginalTableShownState } from '../../../states/records';
 
 import { MyTable } from './layout';
 import Head from './head';
@@ -12,12 +12,7 @@ import { errorState, pluginConditionState } from '../../../states/plugin';
 
 const Table: FC = () => {
   const condition = useRecoilValue(pluginConditionState);
-  const exists = useRecoilValue(existsRecordState);
-  const isFetchComplete = useRecoilValue(isFetchCompleteState);
 
-  if (isFetchComplete && !exists) {
-    return null;
-  }
   return (
     <MyTable columns={condition?.viewFields.map(({ width }) => ({ width })) ?? []}>
       <Head />
@@ -26,27 +21,17 @@ const Table: FC = () => {
   );
 };
 
-const PlaceHolder: FC = () => {
-  const exists = useRecoilValue(existsRecordState);
+const Container: FC = () => {
   const error = useRecoilValue(errorState);
-  const isFetchComplete = useRecoilValue(isFetchCompleteState);
+  const isOriginalTableShown = useRecoilValue(isOriginalTableShownState);
 
   if (error) {
     return <ErrorNofitication />;
   }
-
-  if (!isFetchComplete || exists) {
-    return null;
+  if (!isOriginalTableShown) {
+    return <Empty />;
   }
-
-  return <Empty />;
+  return <Table />;
 };
 
-const Component: FC = () => (
-  <div>
-    <PlaceHolder />
-    <Table />
-  </div>
-);
-
-export default Component;
+export default Container;
