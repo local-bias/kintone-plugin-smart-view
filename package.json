@@ -40,7 +40,7 @@
     "utility-types": "3.10.0"
   },
   "devDependencies": {
-    "@kintone/dts-gen": "8.0.2",
+    "@kintone/dts-gen": "8.0.3",
     "@kintone/plugin-packer": "8.0.1",
     "@kintone/plugin-uploader": "9.0.1",
     "@kintone/webpack-plugin-kintone-plugin": "8.0.2",
