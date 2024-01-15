@@ -46,7 +46,7 @@
     "@kintone/webpack-plugin-kintone-plugin": "8.0.4",
     "@konomi-app/kbuild": "^3.0.0",
     "@types/dompurify": "3.0.5",
-    "@types/luxon": "3.4.0",
+    "@types/luxon": "3.4.1",
     "@types/react": "18.2.47",
     "@types/react-dom": "18.2.18",
     "@typescript-eslint/eslint-plugin": "6.18.0",
