@@ -98,3 +98,4 @@ export const getConditionPropertyState = <T extends keyof Plugin.Condition>(prop
 export const viewIdState = getConditionPropertyState('viewId');
 export const viewFieldsState = getConditionPropertyState('viewFields');
 export const paginationChunkState = getConditionPropertyState('paginationChunk');
+export const extractedInputsState = getConditionPropertyState('extractedInputs');

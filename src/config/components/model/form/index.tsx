@@ -9,11 +9,10 @@ import ViewIdForm from './form-view-id';
 import ImportingViewFields from './importing-view-fields';
 import ViewDisplayingFieldsForm from './form-view-fields';
 import PaginationChunkForm from './form-pagination-chunk';
-import EditableModeForm from './form-editable';
-import DeletableModeForm from './form-deletable';
 import DeletionButton from './condition-deletion-button';
-import { OptionalText } from '../../ui/optional-text';
 import { getConditionPropertyState } from '@/config/states/plugin';
+import ExtractedInputsForm from './form-extracted-inputs';
+import { Tooltip } from '@mui/material';
 
 const Component: FC = () => {
   return (
@@ -92,30 +91,45 @@ const Component: FC = () => {
         />
       </PluginFormSection>
       <PluginFormSection>
-        <PluginFormTitle>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            一覧でのレコード編集機能の設定<OptionalText>プラス</OptionalText>
-          </div>
-        </PluginFormTitle>
+        <PluginFormTitle>編集機能の設定</PluginFormTitle>
         <PluginFormDescription>
           一部のフィールドを除き、一覧からレコードの各フィールドを編集できるようになります。
         </PluginFormDescription>
         <PluginFormDescription last>
           編集できるのは、レコードに対して編集権限を持つユーザーのみです。
         </PluginFormDescription>
-        <EditableModeForm />
+        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+          <div>
+            <RecoilSwitch
+              state={getConditionPropertyState('isEditable')}
+              label='一覧での編集を有効にする'
+              disabled={true}
+            />
+          </div>
+        </Tooltip>
       </PluginFormSection>
       <PluginFormSection>
-        <PluginFormTitle>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            一覧でのレコード削除機能の設定<OptionalText>プラス</OptionalText>
-          </div>
-        </PluginFormTitle>
+        <PluginFormTitle>削除機能の設定</PluginFormTitle>
         <PluginFormDescription>一覧からレコードを削除できるようになります。</PluginFormDescription>
         <PluginFormDescription last>
           削除できるのは、レコードに対して削除権限を持つユーザーのみです。
         </PluginFormDescription>
-        <DeletableModeForm />
+        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+          <div>
+            <RecoilSwitch
+              state={getConditionPropertyState('isDeletable')}
+              label='一覧での削除を有効にする'
+              disabled={true}
+            />
+          </div>
+        </Tooltip>
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>追加の検索フィールド</PluginFormTitle>
+        <PluginFormDescription last>
+          プラグイン標準の全フィールドを対象とした検索フォームに加えて、特定のフィールドのみを対象とする検索フィールドを追加したい場合は、こちらで設定してください。
+        </PluginFormDescription>
+        <ExtractedInputsForm />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>高度なオプション</PluginFormTitle>

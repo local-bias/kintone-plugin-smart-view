@@ -7,6 +7,11 @@ export const pluginConditionState = atom<Plugin.Condition | null>({
   default: null,
 });
 
+export const extractedSearchConditionsState = atom<Plugin.ExtractedSearchCondition[]>({
+  key: `${PREFIX}extractedSearchConditionsState`,
+  default: [],
+});
+
 export const loadingState = atom({ key: `${PREFIX}loadingState`, default: true });
 
 export const errorState = atom<string | null>({

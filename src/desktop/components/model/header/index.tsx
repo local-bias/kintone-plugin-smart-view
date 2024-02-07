@@ -5,11 +5,13 @@ import SearchInput from './search-input';
 import CSVDownloadButton from './csv-download-button';
 import Pagination from './pagination';
 import PaginationChunk from './pagination-chunk';
+import ExtractedInputs from './extracted-inputs';
 
 const Component: FC = () => (
   <Layout>
-    <div>
+    <div className='flex flex-wrap gap-4 items-center'>
       <SearchInput />
+      <ExtractedInputs />
     </div>
     <div>
       <CSVDownloadButton />

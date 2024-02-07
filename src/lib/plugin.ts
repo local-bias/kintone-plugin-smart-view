@@ -5,7 +5,7 @@ import { PLUGIN_ID } from './global';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 2,
+  version: 3,
   conditions: [getNewCondition()],
 });
 
@@ -20,13 +20,14 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
     case undefined:
     case 1:
       return {
-        version: 2,
+        version: 3,
         conditions: storage.conditions.map((condition) => ({
           viewId: condition.viewId,
           viewFields: condition.viewDisplayingFields.map((fieldCode) => ({
             fieldCode,
             width: 0,
           })),
+          extractedInputs: [{ type: 'text', fieldCode: '' }],
           isCsvDownloadButtonHidden: !condition.enableCSVExport,
           isEditable: condition.editable ?? true,
           isDeletable: condition.deletable ?? true,
@@ -39,6 +40,14 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
           isHankakuKatakanaSensitive: !(condition.ignoresHankakuKatakana ?? true),
           isCursorAPIEnabled: !(condition.disableCursorAPI ?? false),
           isOpenInNewTab: condition.openDetailInNewTab ?? false,
+        })),
+      };
+    case 2:
+      return {
+        version: 3,
+        conditions: storage.conditions.map((condition) => ({
+          extractedInputs: [{ type: 'text', fieldCode: '' }],
+          ...condition,
         })),
       };
     default:
@@ -54,6 +63,7 @@ export const restorePluginConfig = (): Plugin.Config => {
 export const getNewCondition = (): Plugin.Condition => ({
   viewId: '',
   viewFields: [{ fieldCode: '', width: 0 }],
+  extractedInputs: [{ type: 'text', fieldCode: '' }],
   isCsvDownloadButtonHidden: false,
   isEditable: true,
   isDeletable: true,

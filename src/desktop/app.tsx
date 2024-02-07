@@ -4,7 +4,7 @@ import { SnackbarProvider } from 'notistack';
 
 import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 
-import { pluginConditionState } from './states/plugin';
+import { extractedSearchConditionsState, pluginConditionState } from './states/plugin';
 import Initializer from './components/functional/initializer';
 import AppPropertiesObserver from './components/functional/app-properties-observer';
 import Layout from './components/model/layout';
@@ -14,14 +14,19 @@ import Footer from './components/model/footer';
 import { paginationChunkState } from './states/pagination';
 import { searchTextState } from './states/search-text';
 
-type Props = Readonly<{ condition: Plugin.Condition; initSearchText: string }>;
+type Props = Readonly<{
+  condition: Plugin.Condition;
+  initSearchText: string;
+  extractedSearchCondition: Plugin.ExtractedSearchCondition[];
+}>;
 
-const Component: FC<Props> = ({ condition, initSearchText }) => (
+const Component: FC<Props> = ({ condition, initSearchText, extractedSearchCondition }) => (
   <RecoilRoot
     initializeState={({ set }) => {
       set(pluginConditionState, condition);
       set(searchTextState, initSearchText);
       set(paginationChunkState, condition.paginationChunk || 100);
+      set(extractedSearchConditionsState, extractedSearchCondition);
     }}
   >
     <SnackbarProvider maxSnack={1}>

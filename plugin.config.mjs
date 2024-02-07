@@ -3,7 +3,7 @@ const HP = 'https://konomi.app';
 const common = 'https://kintone-plugin.konomi.app/common';
 const localhost = 'https://127.0.0.1:4689';
 
-/** @type {import('@konomi-app/kintone-utilities').PluginConfig} */
+/** @type { import('@konomi-app/kintone-utilities').PluginConfig } */
 export default {
   version: 1,
   id: 'ribbit-kintone-plugin-smart-view',
@@ -11,7 +11,7 @@ export default {
   manifest: {
     base: {
       manifest_version: 1,
-      version: '3.1.0',
+      version: '3.2.0',
       type: 'APP',
       name: {
         en: 'faster search plugin',
@@ -36,15 +36,15 @@ export default {
     },
     dev: {
       desktop: {
-        js: [`${localhost}/dist/dev/desktop/index.js`],
+        js: [`${localhost}/dist/dev/desktop.js`],
         css: [`${localhost}/dist/dev/desktop.css`],
       },
       mobile: {
-        js: [`${localhost}/dist/dev/desktop/index.js`],
+        js: [`${localhost}/dist/dev/desktop.js`],
         css: [`${localhost}/dist/dev/desktop.css`],
       },
       config: {
-        js: [`${localhost}/dist/dev/config/index.js`],
+        js: [`${localhost}/dist/dev/config.js`],
         css: [`${localhost}/dist/dev/config.css`],
       },
     },

@@ -1,10 +1,14 @@
-import { atom, selector } from 'recoil';
-import { pluginConditionState } from './plugin';
+import { atom, selector, selectorFamily } from 'recoil';
+import { extractedSearchConditionsState, pluginConditionState } from './plugin';
 import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
 import type { ViewRecord } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
-import { getYuruChara, type kintoneAPI } from '@konomi-app/kintone-utilities';
+import {
+  getFieldValueAsString,
+  getYuruChara,
+  type kintoneAPI,
+} from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'records';
 
@@ -56,6 +60,7 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
     const records = get(sortedViewRecordsState);
     const text = get(searchTextState);
     const condition = get(pluginConditionState);
+    const extractedSearchConditions = get(extractedSearchConditionsState);
 
     const {
       isCaseSensitive = true,
@@ -73,11 +78,52 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
 
     const words = input.split(/\s+/g);
 
-    const filtered = records.filter(({ __quickSearch }) =>
+    process.env.NODE_ENV === 'development' && console.time('filtering');
+
+    const firstFiltered = records.filter(({ __quickSearch }) =>
       words.every((word) => ~__quickSearch.indexOf(word))
     );
 
-    return filtered.map(({ record }) => record);
+    const lastFiltered = firstFiltered.filter(({ record }) =>
+      extractedSearchConditions.slice(0, 1).every(({ type, value, fieldCode }) => {
+        if (!fieldCode || !value || !record[fieldCode]) {
+          return true;
+        }
+
+        const fieldValue = getYuruChara(getFieldValueAsString(record[fieldCode]));
+
+        switch (type) {
+          case 'text':
+          case 'autocomplete':
+            const input = getYuruChara(value, {
+              isCaseSensitive,
+              isKatakanaSensitive,
+              isHankakuKatakanaSensitive,
+              isZenkakuEisujiSensitive,
+            });
+
+            const words = input.split(/\s+/g);
+
+            return words.every((word) => {
+              return ~fieldValue.indexOf(word);
+            });
+          case 'date':
+            return fieldValue.startsWith(value);
+          case 'month':
+            const month = value.slice(0, 7);
+            return fieldValue.startsWith(month);
+          case 'year':
+            const year = value.slice(0, 4);
+            return fieldValue.startsWith(year);
+          default:
+            return true;
+        }
+      })
+    );
+
+    process.env.NODE_ENV === 'development' && console.timeEnd('filtering');
+
+    return lastFiltered.map(({ record }) => record);
   },
 });
 
@@ -112,4 +158,14 @@ export const isOriginalTableShownState = selector<boolean>({
     const isRecordPresent = get(isRecordPresentState);
     return !areAllRecordsReady || isRecordPresent;
   },
+});
+
+export const autocompleteValuesState = selectorFamily<string[], string>({
+  key: `${PREFIX}autocompleteValuesState`,
+  get:
+    (fieldCode) =>
+    ({ get }) => {
+      const records = get(allViewRecordsState);
+      return [...new Set(records.map((record) => getFieldValueAsString(record.record[fieldCode])))];
+    },
 });

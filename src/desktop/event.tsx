@@ -38,11 +38,22 @@ listener.add(['app.record.index.show'], async (event) => {
     return event;
   }
 
+  const extractedSearchCondition = targetCondition.extractedInputs.map((input) => ({
+    ...input,
+    value: '',
+  }));
+
   const query = new URLSearchParams(location.search);
 
   const initSearchText = query.get(URL_SEARCH_PARAMS_TEXT) ?? '';
 
-  createRoot(root).render(<App condition={targetCondition} initSearchText={initSearchText} />);
+  createRoot(root).render(
+    <App
+      condition={targetCondition}
+      initSearchText={initSearchText}
+      extractedSearchCondition={extractedSearchCondition}
+    />
+  );
 
   return event;
 });
