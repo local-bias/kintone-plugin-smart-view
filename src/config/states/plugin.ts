@@ -25,7 +25,7 @@ export const storageState = atom<Plugin.Config>({
 
 export const loadingState = atom<boolean>({
   key: `${PREFIX}loadingState`,
-  default: false,
+  default: true,
 });
 
 export const tabIndexState = atom<number>({

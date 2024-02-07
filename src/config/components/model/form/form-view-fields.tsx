@@ -14,33 +14,6 @@ import { produce } from 'immer';
 
 import { viewFieldsState } from '../../../states/plugin';
 import { appFieldsState } from '../../../states/app-fields';
-import styled from '@emotion/styled';
-
-const Rows = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-
-  &:not(:last-of-type) {
-    margin-bottom: 8px;
-  }
-
-  > *:not(button) {
-    margin: 0 8px;
-  }
-  > button {
-    margin-right: 8px;
-  }
-
-  > svg {
-    fill: #999;
-  }
-`;
 
 const Component: FC = () => {
   const selectedFields = useRecoilValue(viewFieldsState);
@@ -95,9 +68,9 @@ const Component: FC = () => {
   );
 
   return (
-    <Rows>
+    <>
       {selectedFields.map((value, i) => (
-        <Row key={i}>
+        <div key={i} className='flex items-center gap-4'>
           <Autocomplete
             value={fields.find((field) => field.code === value.fieldCode) ?? null}
             sx={{ width: '350px' }}
@@ -141,30 +114,36 @@ const Component: FC = () => {
               </IconButton>
             </Tooltip>
           )}
-        </Row>
+        </div>
       ))}
-    </Rows>
+    </>
   );
 };
 
 const Container: FC = () => {
   return (
-    <Suspense
-      fallback={
-        <>
-          {new Array(3).fill('').map((_, i) => (
-            <Row key={i}>
-              <Skeleton variant='rounded' width={350} height={56} />
-              <Skeleton variant='rounded' width={120} height={56} />
-              <Skeleton variant='circular' width={24} height={24} />
-              <Skeleton variant='circular' width={24} height={24} />
-            </Row>
-          ))}
-        </>
-      }
-    >
-      <Component />
-    </Suspense>
+    <div className='grid gap-4'>
+      <Suspense
+        fallback={
+          <>
+            {new Array(3).fill('').map((_, i) => (
+              <div key={i} className='flex items-center gap-4'>
+                <Skeleton variant='rounded' width={350} height={56} />
+                <Skeleton variant='rounded' width={120} height={56} />
+                <IconButton size='small' disabled>
+                  <AddIcon fontSize='small' />
+                </IconButton>
+                <IconButton size='small' disabled>
+                  <DeleteIcon fontSize='small' />
+                </IconButton>
+              </div>
+            ))}
+          </>
+        }
+      >
+        <Component />
+      </Suspense>
+    </div>
   );
 };
 

@@ -12,6 +12,7 @@ import PaginationChunkForm from './form-pagination-chunk';
 import DeletionButton from './condition-deletion-button';
 import { getConditionPropertyState } from '@/config/states/plugin';
 import ExtractedInputsForm from './form-extracted-inputs';
+import CreateViewButton from './create-view-button';
 import { Tooltip } from '@mui/material';
 
 const Component: FC = () => {
@@ -26,7 +27,10 @@ const Component: FC = () => {
         <PluginFormDescription last>
           この設定を変更するには、システム管理権限が必要です。
         </PluginFormDescription>
-        <ViewIdForm />
+        <div className='flex items-center gap-8'>
+          <ViewIdForm />
+          <CreateViewButton />
+        </div>
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>テーブルに表示するフィールドの設定</PluginFormTitle>

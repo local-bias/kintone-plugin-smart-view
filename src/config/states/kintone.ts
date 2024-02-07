@@ -1,26 +1,11 @@
-import { getAppId } from '@lb-ribbit/kintone-xapp';
-import { selector } from 'recoil';
-import { getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
-import { GUEST_SPACE_ID } from '@/lib/global';
+import { atom, selector } from 'recoil';
+import { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 const PREFIX = 'kintone';
 
-export const allAppViewsState = selector<Record<string, kintoneAPI.view.Response>>({
+export const allAppViewsState = atom<Record<string, kintoneAPI.view.Response>>({
   key: `${PREFIX}allAppViewsState`,
-  get: async () => {
-    const app = getAppId();
-    if (!app) {
-      throw new Error('アプリのフィールド情報が取得できませんでした');
-    }
-
-    const { views } = await getViews({
-      app,
-      preview: true,
-      guestSpaceId: GUEST_SPACE_ID,
-      debug: process.env.NODE_ENV === 'development',
-    });
-    return views;
-  },
+  default: {},
 });
 
 export const customViewsState = selector({

@@ -17,29 +17,37 @@ import Sidebar from './components/model/sidebar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { jaJP } from '@mui/material/locale';
 import config from '../../plugin.config.mjs';
+import { useInitialize } from './hooks/use-initialize';
 
-const Component: FC = () => (
+const Component: FC = () => {
+  useInitialize();
+  return (
+    <PluginConfigProvider config={config}>
+      <Notification />
+      <SnackbarProvider maxSnack={1}>
+        <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
+          <PluginLayout>
+            <Sidebar />
+            <PluginContent>
+              <PluginErrorBoundary>
+                <Form />
+              </PluginErrorBoundary>
+            </PluginContent>
+            <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
+            <Footer />
+          </PluginLayout>
+        </Suspense>
+      </SnackbarProvider>
+    </PluginConfigProvider>
+  );
+};
+
+const Container: FC = () => (
   <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
     <ThemeProvider theme={createTheme({}, jaJP)}>
       <RecoilRoot>
         <PluginErrorBoundary>
-          <PluginConfigProvider config={config}>
-            <Notification />
-            <SnackbarProvider maxSnack={1}>
-              <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
-                <PluginLayout>
-                  <Sidebar />
-                  <PluginContent>
-                    <PluginErrorBoundary>
-                      <Form />
-                    </PluginErrorBoundary>
-                  </PluginContent>
-                  <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
-                  <Footer />
-                </PluginLayout>
-              </Suspense>
-            </SnackbarProvider>
-          </PluginConfigProvider>
+          <Component />
         </PluginErrorBoundary>
       </RecoilRoot>
     </ThemeProvider>
@@ -52,4 +60,4 @@ const Component: FC = () => (
   </Suspense>
 );
 
-export default Component;
+export default Container;
