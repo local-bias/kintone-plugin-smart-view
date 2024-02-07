@@ -15,7 +15,7 @@ const Component: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const onClick = useRecoilCallback(
-    ({ reset, snapshot, set }) =>
+    ({ snapshot, set }) =>
       async () => {
         try {
           set(loadingState, true);
@@ -65,7 +65,7 @@ const Component: FC = () => {
           process.env.NODE_ENV === 'development' && console.error(error);
           enqueueSnackbar('一覧の作成に失敗しました', { variant: 'error' });
         } finally {
-          reset(loadingState);
+          set(loadingState, false);
         }
       },
     []

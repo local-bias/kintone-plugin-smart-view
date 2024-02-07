@@ -22,23 +22,16 @@ import { useInitialize } from './hooks/use-initialize';
 const Component: FC = () => {
   useInitialize();
   return (
-    <PluginConfigProvider config={config}>
-      <Notification />
-      <SnackbarProvider maxSnack={1}>
-        <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
-          <PluginLayout>
-            <Sidebar />
-            <PluginContent>
-              <PluginErrorBoundary>
-                <Form />
-              </PluginErrorBoundary>
-            </PluginContent>
-            <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
-            <Footer />
-          </PluginLayout>
-        </Suspense>
-      </SnackbarProvider>
-    </PluginConfigProvider>
+    <>
+      <Sidebar />
+      <PluginContent>
+        <PluginErrorBoundary>
+          <Form />
+        </PluginErrorBoundary>
+      </PluginContent>
+      <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
+      <Footer />
+    </>
   );
 };
 
@@ -47,16 +40,20 @@ const Container: FC = () => (
     <ThemeProvider theme={createTheme({}, jaJP)}>
       <RecoilRoot>
         <PluginErrorBoundary>
-          <Component />
+          <PluginConfigProvider config={config}>
+            <Notification />
+            <SnackbarProvider maxSnack={1}>
+              <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
+                <PluginLayout>
+                  <Component />
+                </PluginLayout>
+              </Suspense>
+            </SnackbarProvider>
+          </PluginConfigProvider>
         </PluginErrorBoundary>
       </RecoilRoot>
     </ThemeProvider>
-    <iframe
-      title='promotion'
-      loading='lazy'
-      src={URL_PROMOTION}
-      style={{ border: '0', width: '100%', height: '64px' }}
-    />
+    <iframe title='promotion' loading='lazy' src={URL_PROMOTION} className='border-0 w-full h-16' />
   </Suspense>
 );
 
