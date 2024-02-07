@@ -14,31 +14,35 @@ import { RecoilRoot } from 'recoil';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
 import Sidebar from './components/model/sidebar';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { jaJP } from '@mui/material/locale';
 import config from '../../plugin.config.mjs';
 
 const Component: FC = () => (
   <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
-    <RecoilRoot>
-      <PluginErrorBoundary>
-        <PluginConfigProvider config={config}>
-          <Notification />
-          <SnackbarProvider maxSnack={1}>
-            <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
-              <PluginLayout>
-                <Sidebar />
-                <PluginContent>
-                  <PluginErrorBoundary>
-                    <Form />
-                  </PluginErrorBoundary>
-                </PluginContent>
-                <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
-                <Footer />
-              </PluginLayout>
-            </Suspense>
-          </SnackbarProvider>
-        </PluginConfigProvider>
-      </PluginErrorBoundary>
-    </RecoilRoot>
+    <ThemeProvider theme={createTheme({}, jaJP)}>
+      <RecoilRoot>
+        <PluginErrorBoundary>
+          <PluginConfigProvider config={config}>
+            <Notification />
+            <SnackbarProvider maxSnack={1}>
+              <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
+                <PluginLayout>
+                  <Sidebar />
+                  <PluginContent>
+                    <PluginErrorBoundary>
+                      <Form />
+                    </PluginErrorBoundary>
+                  </PluginContent>
+                  <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
+                  <Footer />
+                </PluginLayout>
+              </Suspense>
+            </SnackbarProvider>
+          </PluginConfigProvider>
+        </PluginErrorBoundary>
+      </RecoilRoot>
+    </ThemeProvider>
     <iframe
       title='promotion'
       loading='lazy'
