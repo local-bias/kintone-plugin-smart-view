@@ -1,6 +1,5 @@
 import React, { Suspense, FC, FCX } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
 import type { DeepReadonly } from 'utility-types';
 import { CircularProgress, Dialog, DialogTitle } from '@mui/material';
 import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
@@ -23,8 +22,6 @@ const Component: FCX<Props> = (props) => (
   </Dialog>
 );
 
-const StyledComponent = styled(Component)``;
-
 const Container: FC = () => {
   const conditionIndex = useRecoilValue(tabIndexState);
   const [shownIndex, setShownIndex] = useRecoilState(listViewDialogShownIndexState);
@@ -33,7 +30,7 @@ const Container: FC = () => {
     setShownIndex(null);
   };
 
-  return <StyledComponent {...{ conditionIndex, shownIndex, onDialogClose }} />;
+  return <Component {...{ conditionIndex, shownIndex, onDialogClose }} />;
 };
 
 export default Container;
