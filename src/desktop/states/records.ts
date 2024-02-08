@@ -32,8 +32,8 @@ const sortedViewRecordsState = selector<ViewRecord[]>({
       const recordA = dataA.record;
       const recordB = dataB.record;
 
-      const a = (recordA[sorting.field]?.value ?? '') as string;
-      const b = (recordB[sorting.field]?.value ?? '') as string;
+      const a = getFieldValueAsString(recordA[sorting.field]);
+      const b = getFieldValueAsString(recordB[sorting.field]);
 
       const fieldType = recordA[sorting.field]?.type;
 
@@ -90,12 +90,18 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
           return true;
         }
 
-        const fieldValue = getYuruChara(getFieldValueAsString(record[fieldCode]));
+        const field = record[fieldCode];
 
         switch (type) {
           case 'text':
-          case 'autocomplete':
             const input = getYuruChara(value, {
+              isCaseSensitive,
+              isKatakanaSensitive,
+              isHankakuKatakanaSensitive,
+              isZenkakuEisujiSensitive,
+            });
+
+            const fieldValue = getYuruChara(getFieldValueAsString(field), {
               isCaseSensitive,
               isKatakanaSensitive,
               isHankakuKatakanaSensitive,
@@ -107,14 +113,16 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
             return words.every((word) => {
               return ~fieldValue.indexOf(word);
             });
+          case 'autocomplete':
+            return getFieldValueAsString(field) === value;
           case 'date':
-            return fieldValue.startsWith(value);
+            return ~getFieldValueAsString(field).indexOf(value);
           case 'month':
             const month = value.slice(0, 7);
-            return fieldValue.startsWith(month);
+            return ~getFieldValueAsString(field).indexOf(month);
           case 'year':
             const year = value.slice(0, 4);
-            return fieldValue.startsWith(year);
+            return ~getFieldValueAsString(field).indexOf(year);
           default:
             return true;
         }
@@ -166,6 +174,8 @@ export const autocompleteValuesState = selectorFamily<string[], string>({
     (fieldCode) =>
     ({ get }) => {
       const records = get(allViewRecordsState);
-      return [...new Set(records.map((record) => getFieldValueAsString(record.record[fieldCode])))];
+      return [
+        ...new Set(records.map((record) => getFieldValueAsString(record.record[fieldCode]))),
+      ].filter((v) => v);
     },
 });
