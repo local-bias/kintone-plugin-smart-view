@@ -1,12 +1,16 @@
 import React from 'react';
 import { restorePluginConfig } from '@/lib/plugin';
-import { createRoot } from 'react-dom/client';
+import { Root, createRoot } from 'react-dom/client';
 import { css } from '@emotion/css';
 
 import App from './app';
 import { URL_SEARCH_PARAMS_TEXT, VIEW_ROOT_ID } from '@/lib/statics';
 import { showNotification } from '@/lib/utilities';
 import { listener } from '@/lib/listener';
+import { getSortFromQuery } from '@konomi-app/kintone-utilities';
+import { getQuery } from '@lb-ribbit/kintone-xapp';
+
+let cachedRoot: Root | null = null;
 
 listener.add(['app.record.index.show'], async (event) => {
   const config = restorePluginConfig();
@@ -24,13 +28,13 @@ listener.add(['app.record.index.show'], async (event) => {
     }
   `);
 
-  const root =
+  const rootElement =
     document.querySelector(`#${VIEW_ROOT_ID}`) ||
     document.querySelector('.gaia-app-indexview-customview-html') ||
     document.querySelector('.gaia-mobile-app-customview') ||
     document.querySelector('.contents-gaia');
 
-  if (!root) {
+  if (!rootElement) {
     showNotification({
       title: 'プラグインでエラーが発生しました',
       body: 'プラグインの一覧を表示する領域が見つかりませんでした',
@@ -44,12 +48,19 @@ listener.add(['app.record.index.show'], async (event) => {
   }));
 
   const query = new URLSearchParams(location.search);
+  const sortCondition = getSortFromQuery(getQuery() || '');
 
   const initSearchText = query.get(URL_SEARCH_PARAMS_TEXT) ?? '';
 
-  createRoot(root).render(
+  const root = cachedRoot || createRoot(rootElement);
+  if (!cachedRoot) {
+    cachedRoot = root;
+  }
+
+  root.render(
     <App
       condition={targetCondition}
+      sortCondition={sortCondition}
       initSearchText={initSearchText}
       extractedSearchCondition={extractedSearchCondition}
     />

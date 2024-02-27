@@ -1,4 +1,6 @@
-import { atom } from 'recoil';
+import { AuthenticationResponse, authentication } from '@/lib/auth';
+import { getSortFromQuery, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { atom, atomFamily, selector } from 'recoil';
 
 const PREFIX = 'plugin';
 
@@ -7,9 +9,17 @@ export const pluginConditionState = atom<Plugin.Condition | null>({
   default: null,
 });
 
-export const extractedSearchConditionsState = atom<Plugin.ExtractedSearchCondition[]>({
-  key: `${PREFIX}extractedSearchConditionsState`,
+export const defaultSortConditionState = atom<ReturnType<typeof getSortFromQuery>>({
+  key: `${PREFIX}defaultSortConditionState`,
   default: [],
+});
+
+export const extractedSearchConditionsState = atomFamily<
+  Plugin.ExtractedSearchCondition | null,
+  number
+>({
+  key: `${PREFIX}extractedSearchConditionsState`,
+  default: (index) => null,
 });
 
 export const loadingState = atom({ key: `${PREFIX}loadingState`, default: true });

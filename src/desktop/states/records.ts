@@ -1,5 +1,9 @@
 import { atom, selector, selectorFamily } from 'recoil';
-import { extractedSearchConditionsState, pluginConditionState } from './plugin';
+import {
+  defaultSortConditionState,
+  extractedSearchConditionsState,
+  pluginConditionState,
+} from './plugin';
 import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
 import type { ViewRecord } from '../static';
@@ -7,6 +11,7 @@ import { paginationIndexState, paginationChunkState } from './pagination';
 import {
   getFieldValueAsString,
   getYuruChara,
+  sortField,
   type kintoneAPI,
 } from '@konomi-app/kintone-utilities';
 
@@ -17,16 +22,49 @@ export const allViewRecordsState = atom<ViewRecord[]>({
   default: [],
 });
 
+export const defaultSortedViewRecordsState = selector<ViewRecord[]>({
+  key: 'defaultSortedViewRecordsState',
+  get: ({ get }) => {
+    const records = get(allViewRecordsState);
+    const defaultSort = get(defaultSortConditionState);
+
+    process.env.NODE_ENV === 'development' && console.time('default sorting');
+
+    const sorted = [...records].sort((a, b) => {
+      for (const { field, order } of defaultSort) {
+        const aValue = a.record[field];
+        const bValue = b.record[field];
+        if (!aValue || !bValue || aValue.value === bValue.value) {
+          continue;
+        }
+        const compared = sortField(aValue, bValue);
+        if (order === 'asc') {
+          return compared;
+        } else {
+          return compared * -1;
+        }
+      }
+      return 0;
+    });
+
+    process.env.NODE_ENV === 'development' && console.timeEnd('default sorting');
+
+    return sorted;
+  },
+});
+
 const sortedViewRecordsState = selector<ViewRecord[]>({
   key: 'sortedViewRecordsState',
   get: ({ get }) => {
-    const records = get(allViewRecordsState);
+    const records = get(defaultSortedViewRecordsState);
     const sorting = get(sortingState);
     const condition = get(pluginConditionState);
 
     if (!condition?.isSortable || !sorting.field) {
       return records;
     }
+
+    process.env.NODE_ENV === 'development' && console.time('sorting');
 
     const sorted = [...records].sort((dataA, dataB) => {
       const recordA = dataA.record;
@@ -50,6 +88,8 @@ const sortedViewRecordsState = selector<ViewRecord[]>({
       return a.localeCompare(b, 'ja');
     });
 
+    process.env.NODE_ENV === 'development' && console.timeEnd('sorting');
+
     return sorted;
   },
 });
@@ -59,8 +99,10 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
   get: ({ get }) => {
     const records = get(sortedViewRecordsState);
     const text = get(searchTextState);
-    const condition = get(pluginConditionState);
-    const extractedSearchConditions = get(extractedSearchConditionsState);
+    const condition = get(pluginConditionState)!;
+    const extractedSearchConditions = condition.extractedInputs.map((_, i) =>
+      get(extractedSearchConditionsState(i))
+    ) as Plugin.ExtractedSearchCondition[];
 
     const {
       isCaseSensitive = true,

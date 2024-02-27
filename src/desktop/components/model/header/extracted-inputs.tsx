@@ -9,17 +9,13 @@ type Props = { input: Plugin.ExtractedInput; index: number };
 
 const ExtractedAutocomplete: FC<Props> = ({ input, index }) => {
   const appFields = useRecoilValue(appPropertiesState);
-  const searchCondition = useRecoilValue(extractedSearchConditionsState)[index];
+  const searchCondition = useRecoilValue(extractedSearchConditionsState(index))!;
   const suggests = useRecoilValue(autocompleteValuesState(input.fieldCode));
 
   const onChange = useRecoilCallback(
     ({ set }) =>
       (value: string | null) => {
-        set(extractedSearchConditionsState, (current) => {
-          const next = [...current];
-          next[index] = { ...next[index], value: value ?? '' };
-          return next;
-        });
+        set(extractedSearchConditionsState(index), (_c, c = _c!) => ({ ...c, value: value ?? '' }));
       },
     [index]
   );
@@ -30,7 +26,7 @@ const ExtractedAutocomplete: FC<Props> = ({ input, index }) => {
 
   return (
     <Autocomplete
-      value={searchCondition.value}
+      value={searchCondition.value || null}
       sx={{ width: '250px' }}
       options={suggests}
       onChange={(_, field) => onChange(field)}
@@ -52,16 +48,15 @@ const ExtractedAutocomplete: FC<Props> = ({ input, index }) => {
 
 const ExtractedInput: FC<Props> = ({ input, index }) => {
   const appFields = useRecoilValue(appPropertiesState);
-  const searchCondition = useRecoilValue(extractedSearchConditionsState)[index];
+  const searchCondition = useRecoilValue(extractedSearchConditionsState(index))!;
 
   const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
     ({ set }) =>
       (event) => {
-        set(extractedSearchConditionsState, (current) => {
-          const next = [...current];
-          next[index] = { ...next[index], value: event.target.value };
-          return next;
-        });
+        set(extractedSearchConditionsState(index), (_c, c = _c!) => ({
+          ...c,
+          value: event.target.value,
+        }));
       },
     [index]
   );
@@ -100,7 +95,7 @@ const ExtractedInputContainer: FC<Props> = (props) => {
       return <ExtractedAutocomplete {...props} />;
     default:
       return (
-        <Suspense fallback={<Skeleton variant='rounded' width={200} height={52} />}>
+        <Suspense fallback={<Skeleton variant='rounded' width={250} height={52} />}>
           <ExtractedInput {...props} />
         </Suspense>
       );

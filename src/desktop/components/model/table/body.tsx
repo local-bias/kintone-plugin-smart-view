@@ -1,6 +1,5 @@
 import { getQueryString } from '@/lib/cybozu';
 import { isMobile } from '@lb-ribbit/kintone-xapp';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { Skeleton } from '@mui/material';
 import React, { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -8,6 +7,7 @@ import { loadingState, pluginConditionState } from '../../../states/plugin';
 import { displayingRecordsState, areAllRecordsReadyState } from '../../../states/records';
 import Cell from './cell';
 import { MyTableBody } from './layout';
+import { DocumentIcon } from '../../ui/document-icon';
 
 const Component: FC = () => {
   const records = useRecoilValue(displayingRecordsState);
@@ -24,7 +24,7 @@ const Component: FC = () => {
               }&l.view=${condition.viewId}&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
               {...(condition.isOpenInNewTab ? { target: '_blank' } : {})}
             >
-              <InsertDriveFileIcon />
+              <DocumentIcon />
             </a>
           </td>
           {condition.viewFields.map(({ fieldCode, width }, j) => (
@@ -58,7 +58,7 @@ const PlaceHolder: FC = () => {
     <tr>
       <td title='キャッシュは進行中です。まだ条件に一致するレコードが存在する可能性があります。'>
         <a>
-          <InsertDriveFileIcon />
+          <DocumentIcon />
         </a>
       </td>
       {new Array(colCount).fill('').map((_, i) => (

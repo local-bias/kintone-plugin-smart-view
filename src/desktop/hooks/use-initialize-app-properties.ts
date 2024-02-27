@@ -1,12 +1,12 @@
-import { useEffect, FC } from 'react';
+import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { propertiesReadyState } from '../../states/kintone';
+import { propertiesReadyState } from '@/desktop/states/kintone';
 
 import { getFieldsWithoutIgnores } from '@/lib/kintone';
-import { appPropertiesState } from '../../states/kintone';
+import { appPropertiesState } from '@/desktop/states/kintone';
 import { GUEST_SPACE_ID } from '@/lib/global';
 
-const Container: FC = () => {
+export const useInitializeAppProperties = () => {
   const setReady = useSetRecoilState(propertiesReadyState);
   const setAppProperties = useSetRecoilState(appPropertiesState);
 
@@ -19,5 +19,3 @@ const Container: FC = () => {
 
   return null;
 };
-
-export default Container;
