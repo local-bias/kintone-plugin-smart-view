@@ -1,6 +1,5 @@
-import { AuthenticationResponse, authentication } from '@/lib/auth';
-import { getSortFromQuery, kintoneAPI } from '@konomi-app/kintone-utilities';
-import { atom, atomFamily, selector } from 'recoil';
+import { getSortFromQuery } from '@konomi-app/kintone-utilities';
+import { atom, atomFamily } from 'recoil';
 
 const PREFIX = 'plugin';
 
