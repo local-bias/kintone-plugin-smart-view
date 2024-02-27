@@ -158,12 +158,7 @@ const Component: FC = () => {
             state={getConditionPropertyState('isZenkakuEisujiSensitive')}
             label='絞り込みの際、全角英数字と半角英数字を区別する'
           />
-          <RecoilSwitch
-            state={getConditionPropertyState('isCursorAPIEnabled')}
-            label='カーソルAPIを使用してレコードを取得する'
-          />
         </div>
-        <small>カーソルAPIを無効にした場合、一覧のソート条件は適用されません</small>
       </PluginFormSection>
       <div>
         <DeletionButton />
