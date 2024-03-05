@@ -46,7 +46,7 @@
     "@konomi-app/kbuild": "^3.1.2",
     "@types/dompurify": "3.0.5",
     "@types/luxon": "3.4.2",
-    "@types/react": "18.2.62",
+    "@types/react": "18.2.63",
     "@types/react-dom": "18.2.19",
     "@typescript-eslint/eslint-plugin": "7.1.1",
     "@typescript-eslint/parser": "7.1.1",
