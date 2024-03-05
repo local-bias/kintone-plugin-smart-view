@@ -5,7 +5,7 @@ import { PLUGIN_ID } from './global';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 3,
+  version: 4,
   conditions: [getNewCondition()],
 });
 
@@ -19,7 +19,7 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
   switch (version) {
     case undefined:
     case 1:
-      return {
+      return migrateConfig({
         version: 3,
         conditions: storage.conditions.map((condition) => ({
           viewId: condition.viewId,
@@ -41,16 +41,27 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
           isCursorAPIEnabled: !(condition.disableCursorAPI ?? false),
           isOpenInNewTab: condition.openDetailInNewTab ?? false,
         })),
-      };
+      });
     case 2:
-      return {
+      return migrateConfig({
         version: 3,
         conditions: storage.conditions.map((condition) => ({
           extractedInputs: [{ type: 'text', fieldCode: '' }],
           ...condition,
         })),
-      };
-    default:
+      });
+    case 3:
+      return migrateConfig({
+        version: 4,
+        conditions: storage.conditions.map((condition) => ({
+          ...condition,
+          isEditorControlEnabled: false,
+          editors: [{ type: 'user', code: '' }],
+          isDeleterControlEnabled: false,
+          deleters: [{ type: 'user', code: '' }],
+        })),
+      });
+    case 4:
       return storage;
   }
 };
@@ -66,7 +77,11 @@ export const getNewCondition = (): Plugin.Condition => ({
   extractedInputs: [{ type: 'text', fieldCode: '' }],
   isCsvDownloadButtonHidden: false,
   isEditable: true,
+  isEditorControlEnabled: false,
+  editors: [{ type: 'user', code: '' }],
   isDeletable: true,
+  isDeleterControlEnabled: false,
+  deleters: [{ type: 'user', code: '' }],
   isSortable: true,
   paginationChunk: 100,
   isPaginationChunkControlShown: false,

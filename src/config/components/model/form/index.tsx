@@ -102,15 +102,26 @@ const Component: FC = () => {
         <PluginFormDescription last>
           編集できるのは、レコードに対して編集権限を持つユーザーのみです。
         </PluginFormDescription>
-        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
-          <div>
-            <RecoilSwitch
-              state={getConditionPropertyState('isEditable')}
-              label='一覧での編集を有効にする'
-              disabled={true}
-            />
-          </div>
-        </Tooltip>
+        <div>
+          <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+            <div>
+              <div>
+                <RecoilSwitch
+                  state={getConditionPropertyState('isEditable')}
+                  label='一覧での編集を有効にする'
+                  disabled={true}
+                />
+              </div>
+              <div>
+                <RecoilSwitch
+                  state={getConditionPropertyState('isEditorControlEnabled')}
+                  label='編集できるユーザーを制限する'
+                  disabled={true}
+                />
+              </div>
+            </div>
+          </Tooltip>
+        </div>
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>削除機能の設定</PluginFormTitle>
@@ -118,15 +129,26 @@ const Component: FC = () => {
         <PluginFormDescription last>
           削除できるのは、レコードに対して削除権限を持つユーザーのみです。
         </PluginFormDescription>
-        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
-          <div>
-            <RecoilSwitch
-              state={getConditionPropertyState('isDeletable')}
-              label='一覧での削除を有効にする'
-              disabled={true}
-            />
-          </div>
-        </Tooltip>
+        <div>
+          <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+            <div>
+              <div>
+                <RecoilSwitch
+                  state={getConditionPropertyState('isDeletable')}
+                  label='一覧での削除を有効にする'
+                  disabled={true}
+                />
+              </div>
+              <div>
+                <RecoilSwitch
+                  state={getConditionPropertyState('isDeleterControlEnabled')}
+                  label='削除できるユーザーを制限する'
+                  disabled={true}
+                />
+              </div>
+            </div>
+          </Tooltip>
+        </div>
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>追加の検索フィールド</PluginFormTitle>

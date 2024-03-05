@@ -103,7 +103,7 @@ const Component: FC = () => {
               />
             )}
           />
-          <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+          <Tooltip title='無料版では１件のみ設定可能です'>
             <div>
               <IconButton size='small' disabled>
                 <AddIcon fontSize='small' />
@@ -111,9 +111,9 @@ const Component: FC = () => {
             </div>
           </Tooltip>
           {extractedInputs.length > 1 && (
-            <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+            <Tooltip title='無料版では１件のみ設定可能です'>
               <div>
-                <IconButton size='small'>
+                <IconButton size='small' disabled>
                   <DeleteIcon fontSize='small' />
                 </IconButton>
               </div>

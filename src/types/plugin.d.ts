@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV3;
+  type Config = ConfigV4;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -13,7 +13,23 @@ declare namespace Plugin {
   type ExtractedSearchCondition = ExtractedInput & { value: string };
 
   /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3;
+  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4;
+
+  type ConfigV4 = {
+    version: 4;
+    conditions: (ConfigV3['conditions'][number] & {
+      isEditorControlEnabled: boolean;
+      editors: {
+        type: 'user' | 'group' | 'organization';
+        code: string;
+      }[];
+      isDeleterControlEnabled: boolean;
+      deleters: {
+        type: 'user' | 'group' | 'organization';
+        code: string;
+      }[];
+    })[];
+  };
 
   type ConfigV3 = {
     version: 3;
