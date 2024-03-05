@@ -1,10 +1,10 @@
+import styled from '@emotion/styled';
+import { isMobile } from '@konomi-app/kintone-utilities';
+import { Pagination } from '@mui/material';
 import React, { FC, FCX } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
-import { Pagination } from '@mui/material';
+import { paginationChunkState, paginationIndexState } from '../../../states/pagination';
 import { filteredRecordsState } from '../../../states/records';
-import { paginationIndexState, paginationChunkState } from '../../../states/pagination';
-import { isMobile } from '@lb-ribbit/kintone-xapp';
 
 type Props = {
   size: number;

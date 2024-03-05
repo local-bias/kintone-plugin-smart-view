@@ -1,10 +1,8 @@
 import { allAppViewsState } from '@/config/states/kintone';
-import { viewIdState } from '@/config/states/plugin';
-import { loadingState } from '@/config/states/plugin';
+import { loadingState, viewIdState } from '@/config/states/plugin';
 import { GUEST_SPACE_ID } from '@/lib/global';
 import { VIEW_ROOT_ID } from '@/lib/statics';
-import { getViews, kintoneAPI, updateViews } from '@konomi-app/kintone-utilities';
-import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { getAppId, getViews, kintoneAPI, updateViews } from '@konomi-app/kintone-utilities';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import React, { FC } from 'react';

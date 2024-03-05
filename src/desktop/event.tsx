@@ -1,14 +1,12 @@
-import React from 'react';
+import { listener } from '@/lib/listener';
 import { restorePluginConfig } from '@/lib/plugin';
-import { Root, createRoot } from 'react-dom/client';
-import { css } from '@emotion/css';
-
-import App from './app';
 import { URL_SEARCH_PARAMS_TEXT, VIEW_ROOT_ID } from '@/lib/statics';
 import { showNotification } from '@/lib/utilities';
-import { listener } from '@/lib/listener';
-import { getSortFromQuery } from '@konomi-app/kintone-utilities';
-import { getQuery } from '@lb-ribbit/kintone-xapp';
+import { css } from '@emotion/css';
+import { getQuery, getSortFromQuery } from '@konomi-app/kintone-utilities';
+import React from 'react';
+import { Root, createRoot } from 'react-dom/client';
+import App from './app';
 
 let cachedRoot: Root | null = null;
 

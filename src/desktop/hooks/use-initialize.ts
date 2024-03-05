@@ -3,8 +3,12 @@ import { allViewRecordsState, areAllRecordsReadyState } from '@/desktop/states/r
 import type { ViewRecord } from '@/desktop/static';
 import { GUEST_SPACE_ID } from '@/lib/global';
 import { getQuickSearchString } from '@/lib/kintone';
-import { getAllRecordsWithId, getYuruChara } from '@konomi-app/kintone-utilities';
-import { getAppId, getQuery } from '@lb-ribbit/kintone-xapp';
+import {
+  getAllRecordsWithId,
+  getAppId,
+  getQuery,
+  getYuruChara,
+} from '@konomi-app/kintone-utilities';
 import { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 

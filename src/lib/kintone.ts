@@ -1,5 +1,9 @@
-import { getAppId } from '@lb-ribbit/kintone-xapp';
-import { getFieldValueAsString, getFormFields, kintoneAPI } from '@konomi-app/kintone-utilities';
+import {
+  getFieldValueAsString,
+  getFormFields,
+  kintoneAPI,
+  getAppId,
+} from '@konomi-app/kintone-utilities';
 
 const IGNORE_FIELDS: kintoneAPI.FieldPropertyType[] = ['GROUP'];
 

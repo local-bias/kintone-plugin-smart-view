@@ -1,6 +1,5 @@
 import { GUEST_SPACE_ID } from '@/lib/global';
-import { getViews } from '@konomi-app/kintone-utilities';
-import { getAppId } from '@lb-ribbit/kintone-xapp';
+import { getAppId, getViews } from '@konomi-app/kintone-utilities';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { allAppViewsState } from '../states/kintone';
