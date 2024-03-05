@@ -105,10 +105,10 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
     ) as Plugin.ExtractedSearchCondition[];
 
     const {
-      isCaseSensitive = true,
-      isKatakanaSensitive = true,
-      isHankakuKatakanaSensitive = true,
-      isZenkakuEisujiSensitive = true,
+      isCaseSensitive = false,
+      isKatakanaSensitive = false,
+      isHankakuKatakanaSensitive = false,
+      isZenkakuEisujiSensitive = false,
     } = condition || {};
 
     let input = getYuruChara(text, {
