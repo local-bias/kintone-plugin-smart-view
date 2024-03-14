@@ -70,8 +70,11 @@ const Component: FC = () => {
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>並び替えの設定</PluginFormTitle>
-        <PluginFormDescription last>
+        <PluginFormDescription>
           この設定を有効にした場合、一覧のヘッダーをクリックすることで、レコードを昇順・降順にソートすることができます。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          フィールドタイプによって並び替えができない場合があります。
         </PluginFormDescription>
         <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
           <div>
