@@ -29,7 +29,7 @@ const Component: FC = () => {
           <Form />
         </PluginErrorBoundary>
       </PluginContent>
-      <PluginBanner url='https://promotion.konomi.app/kintone-plugin/paid' />
+      <PluginBanner url='https://promotion.konomi.app/kintone-plugin/sidebar' />
       <Footer />
     </>
   );
