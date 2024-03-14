@@ -66,6 +66,7 @@ const Container: FC = () => {
                 condition.viewFields = selectedView.fields.map((fieldCode) => ({
                   fieldCode,
                   width: 0,
+                  isEditable: true,
                 }));
               }
             })
