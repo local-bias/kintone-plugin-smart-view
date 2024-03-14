@@ -20,6 +20,7 @@ const Table: FC = () => {
     </MyTable>
   );
 };
+Table.displayName = 'OriginalTable';
 
 const Container: FC = () => {
   const error = useRecoilValue(errorState);
@@ -33,5 +34,6 @@ const Container: FC = () => {
   }
   return <Table />;
 };
+Container.displayName = 'TableContainer';
 
 export default Container;
