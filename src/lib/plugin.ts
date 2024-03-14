@@ -5,7 +5,7 @@ import { PLUGIN_ID } from './global';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 4,
+  version: 5,
   conditions: [getNewCondition()],
 });
 
@@ -14,14 +14,14 @@ export const createConfig = (): Plugin.Config => ({
  * @param storage 保存されている設定情報
  * @returns 新しいバージョンの設定情報
  */
-export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
-  const { version } = storage;
+export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
+  const { version } = config;
   switch (version) {
     case undefined:
     case 1:
       return migrateConfig({
         version: 3,
-        conditions: storage.conditions.map((condition) => ({
+        conditions: config.conditions.map((condition) => ({
           viewId: condition.viewId,
           viewFields: condition.viewDisplayingFields.map((fieldCode) => ({
             fieldCode,
@@ -45,7 +45,7 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
     case 2:
       return migrateConfig({
         version: 3,
-        conditions: storage.conditions.map((condition) => ({
+        conditions: config.conditions.map((condition) => ({
           extractedInputs: [{ type: 'text', fieldCode: '' }],
           ...condition,
         })),
@@ -53,7 +53,7 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
     case 3:
       return migrateConfig({
         version: 4,
-        conditions: storage.conditions.map((condition) => ({
+        conditions: config.conditions.map((condition) => ({
           ...condition,
           isEditorControlEnabled: false,
           editors: [{ type: 'user', code: '' }],
@@ -62,7 +62,15 @@ export const migrateConfig = (storage: Plugin.AnyConfig): Plugin.Config => {
         })),
       });
     case 4:
-      return storage;
+      return migrateConfig({
+        version: 5,
+        conditions: config.conditions.map((condition) => ({
+          ...condition,
+          viewFields: condition.viewFields.map((field) => ({ ...field, isEditable: true })),
+        })),
+      });
+    case 5:
+      return config;
   }
 };
 
@@ -73,7 +81,7 @@ export const restorePluginConfig = (): Plugin.Config => {
 
 export const getNewCondition = (): Plugin.Condition => ({
   viewId: '',
-  viewFields: [{ fieldCode: '', width: 0 }],
+  viewFields: [{ fieldCode: '', width: 0, isEditable: true }],
   extractedInputs: [{ type: 'text', fieldCode: '' }],
   isCsvDownloadButtonHidden: false,
   isEditable: true,

@@ -107,7 +107,7 @@ const Component: FC = () => {
 
   return (
     <>
-      {extractedInputs.map((input, i) => (
+      {extractedInputs.slice(0, 1).map((input, i) => (
         <ExtractedInputContainer key={i} index={i} input={input} />
       ))}
     </>

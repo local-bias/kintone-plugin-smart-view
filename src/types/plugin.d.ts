@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV4;
+  type Config = ConfigV5;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -13,7 +13,18 @@ declare namespace Plugin {
   type ExtractedSearchCondition = ExtractedInput & { value: string };
 
   /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4;
+  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4 | ConfigV5;
+
+  type ConfigV5 = {
+    version: 5;
+    conditions: (Omit<ConfigV4['conditions'][number], 'viewFields'> & {
+      viewFields: {
+        fieldCode: string;
+        width: number;
+        isEditable: boolean;
+      }[];
+    })[];
+  };
 
   type ConfigV4 = {
     version: 4;

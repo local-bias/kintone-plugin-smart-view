@@ -5,6 +5,8 @@ import {
   TextField,
   Tooltip,
   InputAdornment,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import React, { FC, memo, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
@@ -14,8 +16,13 @@ import { produce } from 'immer';
 
 import { viewFieldsState } from '../../../states/plugin';
 import { appFieldsState } from '../../../states/app-fields';
+import { useRecoilRow } from '@konomi-app/kintone-utilities-react';
 
 const Component: FC = () => {
+  const { addRow, deleteRow } = useRecoilRow({
+    state: viewFieldsState,
+    getNewRow: () => ({ fieldCode: '', width: 0, isEditable: true }),
+  });
   const selectedFields = useRecoilValue(viewFieldsState);
   const fields = useRecoilValue(appFieldsState);
 
@@ -43,24 +50,12 @@ const Component: FC = () => {
     []
   );
 
-  const addField = useRecoilCallback(
+  const onEditableChange = useRecoilCallback(
     ({ set }) =>
-      (rowIndex: number) => {
+      (rowIndex: number, value: boolean) => {
         set(viewFieldsState, (current) =>
           produce(current, (draft) => {
-            draft.splice(rowIndex + 1, 0, { fieldCode: '', width: 0 });
-          })
-        );
-      },
-    []
-  );
-
-  const removeField = useRecoilCallback(
-    ({ set }) =>
-      (rowIndex: number) => {
-        set(viewFieldsState, (current) =>
-          produce(current, (draft) => {
-            draft.splice(rowIndex, 1);
+            draft[rowIndex].isEditable = value;
           })
         );
       },
@@ -102,14 +97,23 @@ const Component: FC = () => {
             }}
             onChange={(e) => onWidthChange(i, e.target.value)}
           />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={value.isEditable}
+                onChange={(_, checked) => onEditableChange(i, checked)}
+              />
+            }
+            label='編集画面に表示'
+          />
           <Tooltip title='表示フィールドを追加する'>
-            <IconButton size='small' onClick={() => addField(i)}>
+            <IconButton size='small' onClick={() => addRow(i)}>
               <AddIcon fontSize='small' />
             </IconButton>
           </Tooltip>
           {selectedFields.length > 1 && (
             <Tooltip title='この表示フィールドを削除する'>
-              <IconButton size='small' onClick={() => removeField(i)}>
+              <IconButton size='small' onClick={() => deleteRow(i)}>
                 <DeleteIcon fontSize='small' />
               </IconButton>
             </Tooltip>
@@ -130,6 +134,7 @@ const Container: FC = () => {
               <div key={i} className='flex items-center gap-4'>
                 <Skeleton variant='rounded' width={350} height={56} />
                 <Skeleton variant='rounded' width={120} height={56} />
+                <FormControlLabel control={<Switch disabled />} label='編集画面に表示' />
                 <IconButton size='small' disabled>
                   <AddIcon fontSize='small' />
                 </IconButton>

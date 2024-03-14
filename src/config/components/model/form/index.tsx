@@ -73,10 +73,15 @@ const Component: FC = () => {
         <PluginFormDescription last>
           この設定を有効にした場合、一覧のヘッダーをクリックすることで、レコードを昇順・降順にソートすることができます。
         </PluginFormDescription>
-        <RecoilSwitch
-          state={getConditionPropertyState('isSortable')}
-          label='並び替えを有効にする'
-        />
+        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+          <div>
+            <RecoilSwitch
+              state={getConditionPropertyState('isSortable')}
+              label='並び替えを有効にする'
+              disabled
+            />
+          </div>
+        </Tooltip>
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>CSVエクスポートの設定</PluginFormTitle>
@@ -109,14 +114,14 @@ const Component: FC = () => {
                 <RecoilSwitch
                   state={getConditionPropertyState('isEditable')}
                   label='一覧での編集を有効にする'
-                  disabled={true}
+                  disabled
                 />
               </div>
               <div>
                 <RecoilSwitch
                   state={getConditionPropertyState('isEditorControlEnabled')}
                   label='編集できるユーザーを制限する'
-                  disabled={true}
+                  disabled
                 />
               </div>
             </div>
