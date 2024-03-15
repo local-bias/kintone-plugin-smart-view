@@ -5,7 +5,7 @@ import { PLUGIN_ID } from './global';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 5,
+  version: 6,
   conditions: [getNewCondition()],
 });
 
@@ -70,6 +70,14 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
         })),
       });
     case 5:
+      return migrateConfig({
+        version: 6,
+        conditions: config.conditions.map((condition) => ({
+          ...condition,
+          isViewSortConditionEnabled: true,
+        })),
+      });
+    case 6:
       return config;
   }
 };
@@ -90,6 +98,7 @@ export const getNewCondition = (): Plugin.Condition => ({
   isDeletable: true,
   isDeleterControlEnabled: false,
   deleters: [{ type: 'user', code: '' }],
+  isViewSortConditionEnabled: true,
   isSortable: true,
   paginationChunk: 100,
   isPaginationChunkControlShown: false,

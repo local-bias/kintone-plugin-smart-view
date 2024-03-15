@@ -3,7 +3,6 @@ import { restorePluginConfig } from '@/lib/plugin';
 import { URL_SEARCH_PARAMS_TEXT, VIEW_ROOT_ID } from '@/lib/statics';
 import { showNotification } from '@/lib/utilities';
 import { css } from '@emotion/css';
-import { getQuery, getSortFromQuery } from '@konomi-app/kintone-utilities';
 import React from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import App from './app';
@@ -46,7 +45,6 @@ listener.add(['app.record.index.show'], async (event) => {
   }));
 
   const query = new URLSearchParams(location.search);
-  const sortCondition = getSortFromQuery(getQuery() || '');
 
   const initSearchText = query.get(URL_SEARCH_PARAMS_TEXT) ?? '';
 
@@ -58,7 +56,7 @@ listener.add(['app.record.index.show'], async (event) => {
   root.render(
     <App
       condition={targetCondition}
-      sortCondition={sortCondition}
+      sortCondition={[]}
       initSearchText={initSearchText}
       extractedSearchCondition={extractedSearchCondition}
     />

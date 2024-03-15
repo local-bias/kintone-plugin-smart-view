@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV5;
+  type Config = ConfigV6;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -13,7 +13,14 @@ declare namespace Plugin {
   type ExtractedSearchCondition = ExtractedInput & { value: string };
 
   /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4 | ConfigV5;
+  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4 | ConfigV5 | ConfigV6;
+
+  type ConfigV6 = {
+    version: 6;
+    conditions: (ConfigV5['conditions'][number] & {
+      isViewSortConditionEnabled: boolean;
+    })[];
+  };
 
   type ConfigV5 = {
     version: 5;

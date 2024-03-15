@@ -69,12 +69,30 @@ const Component: FC = () => {
         />
       </PluginFormSection>
       <PluginFormSection>
+        <PluginFormTitle>一覧のソート条件の設定</PluginFormTitle>
+        <PluginFormDescription>
+          対象の一覧に設定したソート条件を、プラグインの一覧にも適用するかを設定します。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          この設定を無効にした場合。プラグインの一覧は必ず新しいレコードから表示されます。
+        </PluginFormDescription>
+        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
+          <div>
+            <RecoilSwitch
+              state={getConditionPropertyState('isViewSortConditionEnabled')}
+              label='一覧のソート条件を有効にする'
+              disabled
+            />
+          </div>
+        </Tooltip>
+      </PluginFormSection>
+      <PluginFormSection>
         <PluginFormTitle>並び替えの設定</PluginFormTitle>
         <PluginFormDescription>
           この設定を有効にした場合、一覧のヘッダーをクリックすることで、レコードを昇順・降順にソートすることができます。
         </PluginFormDescription>
         <PluginFormDescription last>
-          フィールドタイプによって並び替えができない場合があります。
+          フィールドタイプによっては、並び替えができない場合があります。
         </PluginFormDescription>
         <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
           <div>
