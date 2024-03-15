@@ -78,6 +78,7 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
         })),
       });
     case 6:
+    default:
       return config;
   }
 };
