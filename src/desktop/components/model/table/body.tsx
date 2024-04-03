@@ -1,5 +1,5 @@
 import { getQueryString } from '@/lib/cybozu';
-import { isMobile } from '@lb-ribbit/kintone-xapp';
+import { isMobile } from '@konomi-app/kintone-utilities';
 import { Skeleton } from '@mui/material';
 import React, { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
