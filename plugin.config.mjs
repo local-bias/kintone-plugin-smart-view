@@ -1,11 +1,11 @@
-//@ts-check
+// @ts-check
 const HP = 'https://konomi.app';
 const cdn = 'https://kintone-plugin.konomi.app';
 const key = 'smart-view';
 const localhost = 'https://127.0.0.1:4689';
 
-/** @type { import('@konomi-app/kintone-utilities').PluginConfig } */
-export default {
+/** @satisfies { import('@konomi-app/kintone-utilities').PluginConfig } */
+export default /** @type { const } */ ({
   version: 1,
   id: `ribbit-kintone-plugin-${key}`,
   pluginReleasePageUrl: 'https://ribbit.konomi.app/kintone-plugin/',
@@ -26,12 +26,12 @@ export default {
       },
       icon: 'icon.png',
       homepage_url: { ja: HP, en: HP },
-      desktop: { js: [`${cdn}/common/desktop.js`], css: [] },
-      mobile: { js: [`${cdn}/common/desktop.js`], css: [] },
+      desktop: { js: [`${cdn}/common/desktop.js`], css: [`${cdn}/common/desktop.css`] },
+      mobile: { js: [`${cdn}/common/desktop.js`], css: [`${cdn}/common/desktop.css`] },
       config: {
         html: 'config.html',
         js: [`${cdn}/common/config.js`],
-        css: [],
+        css: [`${cdn}/common/config.css`],
         required_params: [],
       },
     },
@@ -55,9 +55,9 @@ export default {
       config: { js: [`${cdn}/${key}/config.js`], css: [`${cdn}/${key}/config.css`] },
     },
     standalone: {
-      desktop: { js: [`${cdn}/${key}/desktop.js`], css: [`${cdn}/${key}/desktop.css`] },
-      mobile: { js: [`${cdn}/${key}/desktop.js`], css: [`${cdn}/${key}/desktop.css`] },
-      config: { js: [`${cdn}/${key}/config.js`], css: [`${cdn}/${key}/config.css`] },
+      desktop: { js: ['desktop.js'], css: ['desktop.css'] },
+      mobile: { js: ['desktop.js'], css: ['desktop.css'] },
+      config: { js: ['config.js'], css: ['config.css'] },
     },
   },
-};
+});
