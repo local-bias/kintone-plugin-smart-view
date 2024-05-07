@@ -4,10 +4,14 @@ import { SnackbarProvider } from 'notistack';
 
 import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 
-import { extractedSearchConditionsState, pluginConditionState } from './states/plugin';
+import {
+  extractedSearchConditionsState,
+  pluginConditionState,
+  viewTypeState,
+} from './states/plugin';
 import Layout from './components/model/layout';
 import Header from './components/model/header';
-import Table from './components/model/table';
+import View from './components/model/view';
 import Footer from './components/model/footer';
 import { paginationChunkState } from './states/pagination';
 import { searchTextState } from './states/search-text';
@@ -31,9 +35,9 @@ const Component: FC<Pick<Props, 'sortCondition'>> = ({ sortCondition }) => {
 
   return (
     <>
-      <Layout>
+      <Layout className='🐸'>
         <Header />
-        <Table />
+        <View />
         <Footer />
       </Layout>
     </>
@@ -51,6 +55,7 @@ const Container: FC<Props> = ({
       set(pluginConditionState, condition);
       set(searchTextState, initSearchText);
       set(paginationChunkState, condition.paginationChunk || 100);
+      set(viewTypeState, condition.viewType || 'table');
       extractedSearchCondition.forEach((con, index) => {
         set(extractedSearchConditionsState(index), con);
       });

@@ -1,5 +1,6 @@
 import { atom, selectorFamily } from 'recoil';
 import { downloadFile, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { GUEST_SPACE_ID } from '@/lib/global';
 
 const PREFIX = 'kintone';
 
@@ -13,7 +14,10 @@ export const propertiesReadyState = atom({ key: `${PREFIX}propertiesReadyState`,
 export const fileUrlState = selectorFamily<string | null, string>({
   key: `${PREFIX}fileUrlState`,
   get: (fileKey: string) => async () => {
-    const blob = await downloadFile({ fileKey });
+    const blob = await downloadFile({
+      fileKey,
+      guestSpaceId: GUEST_SPACE_ID,
+    });
     if (!blob) {
       return null;
     }

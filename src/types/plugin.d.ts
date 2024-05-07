@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV6;
+  type Config = ConfigV7;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -11,9 +11,21 @@ declare namespace Plugin {
   type ExtractedInputType = ExtractedInput['type'];
   /** 🔌 検索用に切り出されたフィールドの検索値 */
   type ExtractedSearchCondition = ExtractedInput & { value: string };
+  /** 🔌 選択できる一覧の種類 */
+  type ViewType = Condition['viewType'];
+
+  type ViewField = Condition['viewFields'][number];
 
   /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4 | ConfigV5 | ConfigV6;
+  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4 | ConfigV5 | ConfigV6 | ConfigV7;
+
+  type ConfigV7 = {
+    version: 7;
+    conditions: (ConfigV6['conditions'][number] & {
+      viewType: 'table' | 'card';
+      isViewTypeControlEnabled: boolean;
+    })[];
+  };
 
   type ConfigV6 = {
     version: 6;

@@ -14,6 +14,7 @@ import { getConditionPropertyState } from '@/config/states/plugin';
 import ExtractedInputsForm from './form-extracted-inputs';
 import CreateViewButton from './create-view-button';
 import { Tooltip } from '@mui/material';
+import ViewTypeForm from './form-view-type';
 
 const Component: FC = () => {
   return (
@@ -50,6 +51,25 @@ const Component: FC = () => {
         <ViewDisplayingFieldsForm />
       </PluginFormSection>
       <PluginFormSection>
+        <PluginFormTitle>表示タイプの設定</PluginFormTitle>
+        <PluginFormDescription>
+          レコードをどのような形式で表示するかを設定します。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          カードタイプを選択した場合、表示するフィールドの中から最初の添付ファイルフィールドが画像用に参照されます。
+        </PluginFormDescription>
+        <div className='mb-4'>
+          <ViewTypeForm />
+        </div>
+        <PluginFormDescription last>
+          この設定を有効にした場合、一覧の表示タイプを変更することのできるフォームが表示されます。
+        </PluginFormDescription>
+        <RecoilSwitch
+          state={getConditionPropertyState('isViewTypeControlEnabled')}
+          label='一覧から表示タイプを変更可能にする'
+        />
+      </PluginFormSection>
+      <PluginFormSection>
         <PluginFormTitle>ページネーションの設定</PluginFormTitle>
         <PluginFormDescription>
           1ページあたりの表示レコード数を変更することができます。
@@ -57,7 +77,7 @@ const Component: FC = () => {
         <PluginFormDescription last>
           スペックの低い環境では、表示レコード数を減らすことで動作が軽くなる場合があります。
         </PluginFormDescription>
-        <div style={{ marginBottom: '16px' }}>
+        <div className='mb-4'>
           <PaginationChunkForm />
         </div>
         <PluginFormDescription last>

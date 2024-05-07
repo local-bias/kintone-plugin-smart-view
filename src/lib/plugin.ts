@@ -5,7 +5,7 @@ import { PLUGIN_ID } from './global';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 6,
+  version: 7,
   conditions: [getNewCondition()],
 });
 
@@ -78,6 +78,14 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
         })),
       });
     case 6:
+      return migrateConfig({
+        version: 7,
+        conditions: config.conditions.map((condition) => ({
+          ...condition,
+          viewType: 'table',
+          isViewTypeControlEnabled: false,
+        })),
+      });
     default:
       return config;
   }
@@ -109,4 +117,6 @@ export const getNewCondition = (): Plugin.Condition => ({
   isHankakuKatakanaSensitive: false,
   isCursorAPIEnabled: true,
   isOpenInNewTab: false,
+  viewType: 'table',
+  isViewTypeControlEnabled: false,
 });

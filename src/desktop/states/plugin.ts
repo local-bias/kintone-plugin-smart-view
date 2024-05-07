@@ -1,5 +1,6 @@
 import { getSortFromQuery } from '@konomi-app/kintone-utilities';
-import { atom, atomFamily } from 'recoil';
+import { atom, atomFamily, selector } from 'recoil';
+import { appPropertiesState } from './kintone';
 
 const PREFIX = 'plugin';
 
@@ -19,6 +20,43 @@ export const extractedSearchConditionsState = atomFamily<
 >({
   key: `${PREFIX}extractedSearchConditionsState`,
   default: (index) => null,
+});
+
+export const viewTypeState = atom<Plugin.ViewType>({
+  key: `${PREFIX}viewTypeState`,
+  default: 'table',
+});
+
+export const cardImageFieldCodeState = selector<string | null>({
+  key: `${PREFIX}cardImageFieldCodeState`,
+  get: ({ get }) => {
+    const condition = get(pluginConditionState);
+    if (!condition) {
+      return null;
+    }
+    const appProperties = get(appPropertiesState);
+    if (!Object.keys(appProperties).length) {
+      return null;
+    }
+    return (
+      condition.viewFields.find((field) => {
+        const property = appProperties[field.fieldCode];
+        return property.type === 'FILE';
+      })?.fieldCode ?? null
+    );
+  },
+});
+
+export const cardViewFieldsState = selector<Plugin.ViewField[]>({
+  key: `${PREFIX}cardViewFieldsState`,
+  get: ({ get }) => {
+    const condition = get(pluginConditionState);
+    if (!condition) {
+      return [];
+    }
+    const imageFieldCode = get(cardImageFieldCodeState);
+    return condition.viewFields.filter((field) => field.fieldCode !== imageFieldCode);
+  },
 });
 
 export const loadingState = atom({ key: `${PREFIX}loadingState`, default: true });
