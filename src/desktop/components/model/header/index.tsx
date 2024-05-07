@@ -6,6 +6,7 @@ import CSVDownloadButton from './csv-download-button';
 import Pagination from './pagination';
 import PaginationChunk from './pagination-chunk';
 import ExtractedInputs from './extracted-inputs';
+import ViewTypeSelect from './view-type-select';
 
 const Component: FC = () => (
   <Layout>
@@ -15,6 +16,7 @@ const Component: FC = () => (
     </div>
     <div>
       <CSVDownloadButton />
+      <ViewTypeSelect />
       <Pagination />
       <PaginationChunk />
     </div>
