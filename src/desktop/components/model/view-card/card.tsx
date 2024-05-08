@@ -11,7 +11,7 @@ import styled from '@emotion/styled';
 import Field from './field';
 import { getQueryString } from '@/lib/cybozu';
 import { DocumentIcon } from '../../ui/document-icon';
-import { IconButton, Tooltip } from '@mui/material';
+import { Card, IconButton, Tooltip } from '@mui/material';
 
 type FileInfo = kintoneAPI.field.File['value'][number];
 
@@ -36,7 +36,7 @@ const Component: FCX<Props> = ({ className, record }) => {
   }
 
   return (
-    <div className={className}>
+    <Card className={className}>
       <Image file={image} />
       <div className='🐸right'>
         <div className='🐸fields'>
@@ -59,7 +59,7 @@ const Component: FCX<Props> = ({ className, record }) => {
           </a>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -68,14 +68,10 @@ const Container: FC<Props> = (props) => {
 };
 
 const StyledContainer: FC<Props> = styled(Container)`
-  border: 1px solid #0001;
-  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 2px 5px -1px #0002;
   display: grid;
   grid-template-columns: 1fr 2fr;
   height: 100%;
-  max-height: 40dvh;
 
   .🐸right {
     display: grid;
