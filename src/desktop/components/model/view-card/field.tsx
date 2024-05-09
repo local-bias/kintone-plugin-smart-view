@@ -1,53 +1,50 @@
 import { appPropertiesState } from '@/desktop/states/kintone';
 import styled from '@emotion/styled';
-import { getFieldValueAsString, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { kintoneAPI } from '@konomi-app/kintone-utilities';
 import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
+import { FieldValue } from '../field-value';
 
 type Props = {
   fieldCode: string;
   field: kintoneAPI.Field;
 };
 
-const Component: FCX<Props> = ({ className, field, fieldCode }) => {
+const FieldLabel: FC<{ fieldCode: string }> = ({ fieldCode }) => {
   const properties = useRecoilValue(appPropertiesState);
   const property = Object.values(properties).find((p) => p.code === fieldCode);
 
   const label = property?.label ?? fieldCode;
 
-  return (
-    <div className={className}>
-      <div>{label}</div>
-      <div>{getFieldValueAsString(field)}</div>
-    </div>
-  );
+  return <>{label}</>;
 };
 
-const PlaceHolder: FCX<Props> = ({ className, field, fieldCode }) => {
+const Component: FCX<Props> = ({ className, field, fieldCode }) => {
   return (
     <div className={className}>
-      <div>{fieldCode}</div>
-      <div>{getFieldValueAsString(field)}</div>
+      <div>
+        <Suspense fallback={<div>{fieldCode}</div>}>
+          <FieldLabel fieldCode={fieldCode} />
+        </Suspense>
+      </div>
+      <div>
+        <FieldValue code={fieldCode} field={field} />
+      </div>
     </div>
   );
 };
 
 const Styling = (Component: FC<any>) => styled(Component)`
-  div:nth-of-type(1) {
+  > div:nth-of-type(1) {
     font-size: 12px;
     color: #000a;
   }
 `;
 
 const StyledComponent = Styling(Component);
-const StyledPlaceHolder = Styling(PlaceHolder);
 
 const Container: FC<Props> = (props) => {
-  return (
-    <Suspense fallback={<StyledPlaceHolder {...props} />}>
-      <StyledComponent {...props} />
-    </Suspense>
-  );
+  return <StyledComponent {...props} />;
 };
 
 export default Container;
