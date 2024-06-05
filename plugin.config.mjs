@@ -4,7 +4,7 @@ const cdn = 'https://kintone-plugin.konomi.app';
 const key = 'smart-view';
 const localhost = 'https://127.0.0.1:4689';
 
-/** @satisfies { import('@konomi-app/kintone-utilities').PluginConfig } */
+/** @satisfies { Plugin.Meta.Config } */
 export default /** @type { const } */ ({
   version: 1,
   id: `ribbit-kintone-plugin-${key}`,
