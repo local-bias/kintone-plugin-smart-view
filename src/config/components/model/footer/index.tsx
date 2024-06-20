@@ -61,7 +61,7 @@ const Container: FC = () => {
   const onBackButtonClick = useCallback(() => history.back(), []);
 
   const onSaveButtonClick = useRecoilCallback(
-    ({ reset, set, snapshot }) =>
+    ({ set, snapshot }) =>
       async () => {
         try {
           set(loadingState, true);

@@ -19,7 +19,7 @@ const Component: FC = () => {
   return (
     <TextField select label='一覧の名前' value={viewId} {...{ onChange }}>
       {Object.entries(views)
-        .sort(([_, a], [__, b]) => Number(a.index) - Number(b.index))
+        .sort(([, a], [, b]) => Number(a.index) - Number(b.index))
         .map(([name, { id }], i) => (
           <MenuItem key={i} value={id}>
             {name}

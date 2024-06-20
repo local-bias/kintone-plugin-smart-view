@@ -23,7 +23,7 @@ const Component: FC = () => {
 
           let viewName = '🔎 高速検索';
           let counter = 1;
-          while (views.some(([key, value]) => key === viewName)) {
+          while (views.some(([key]) => key === viewName)) {
             viewName = `🔎 高速検索 (${counter})`;
             counter++;
           }

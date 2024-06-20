@@ -111,7 +111,7 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
       isZenkakuEisujiSensitive = false,
     } = condition || {};
 
-    let input = getYuruChara(text, {
+    const input = getYuruChara(text, {
       isCaseSensitive,
       isKatakanaSensitive,
       isHankakuKatakanaSensitive,
@@ -135,7 +135,7 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
         const field = record[fieldCode];
 
         switch (type) {
-          case 'text':
+          case 'text': {
             const input = getYuruChara(value, {
               isCaseSensitive,
               isKatakanaSensitive,
@@ -155,18 +155,24 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
             return words.every((word) => {
               return ~fieldValue.indexOf(word);
             });
-          case 'autocomplete':
+          }
+          case 'autocomplete': {
             return getFieldValueAsString(field) === value;
-          case 'date':
+          }
+          case 'date': {
             return ~getFieldValueAsString(field).indexOf(value);
-          case 'month':
+          }
+          case 'month': {
             const month = value.slice(0, 7);
             return ~getFieldValueAsString(field).indexOf(month);
-          case 'year':
+          }
+          case 'year': {
             const year = value.slice(0, 4);
             return ~getFieldValueAsString(field).indexOf(year);
-          default:
+          }
+          default: {
             return true;
+          }
         }
       })
     );

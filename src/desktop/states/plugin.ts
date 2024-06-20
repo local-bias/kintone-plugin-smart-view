@@ -19,7 +19,7 @@ export const extractedSearchConditionsState = atomFamily<
   number
 >({
   key: `${PREFIX}extractedSearchConditionsState`,
-  default: (index) => null,
+  default: null,
 });
 
 export const viewTypeState = atom<Plugin.ViewType>({

@@ -13,7 +13,7 @@ export const customViewsState = selector({
   get: async ({ get }) => {
     const allViews = get(allAppViewsState);
 
-    const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'CUSTOM');
+    const filtered = Object.entries(allViews).filter(([, view]) => view.type === 'CUSTOM');
 
     return filtered.reduce<Record<string, kintoneAPI.view.Response>>(
       (acc, [name, view]) => ({ ...acc, [name]: view }),
@@ -27,7 +27,7 @@ export const listViewsState = selector({
   get: async ({ get }) => {
     const allViews = get(allAppViewsState);
 
-    const filtered = Object.entries(allViews).filter(([_, view]) => view.type === 'LIST');
+    const filtered = Object.entries(allViews).filter(([, view]) => view.type === 'LIST');
 
     return filtered.reduce<Record<string, kintoneAPI.view.Response>>(
       (acc, [name, view]) => ({ ...acc, [name]: view }),

@@ -48,7 +48,7 @@ const PlaceHolder: FC = () => {
   const isFetchComplete = useRecoilValue(areAllRecordsReadyState);
   const loading = useRecoilValue(loadingState);
   const condition = useRecoilValue(pluginConditionState);
-  let colCount = condition?.viewFields.length ?? 6;
+  const colCount = condition?.viewFields.length ?? 6;
 
   if (!loading || isFetchComplete) {
     return null;

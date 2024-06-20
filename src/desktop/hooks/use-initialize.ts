@@ -54,7 +54,7 @@ export const useInitialize = () => {
           onStep: (params) => {
             const { records } = params;
             const viewRecords = records.map<ViewRecord>((record) => {
-              let __quickSearch = getYuruChara(getQuickSearchString(record), {
+              const __quickSearch = getYuruChara(getQuickSearchString(record), {
                 isCaseSensitive,
                 isKatakanaSensitive,
                 isHankakuKatakanaSensitive,

@@ -20,7 +20,7 @@ const Subtable: FC<Readonly<{ code: string; field: kintoneAPI.field.Subtable }>>
   return (
     <SubtableDetails>
       <summary>{props.field.value.length}行</summary>
-      <MyTable columns={fieldProperties.map((_) => ({ width: 0 }))} isDetailCellHidden>
+      <MyTable columns={fieldProperties.map(() => ({ width: 0 }))} isDetailCellHidden>
         <MyTableHead sticky={0}>
           <tr>
             {fieldProperties.map((property) => (

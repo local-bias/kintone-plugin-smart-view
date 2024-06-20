@@ -9,8 +9,8 @@ type Props = DeepReadonly<{ field: kintoneAPI.field.File }>;
 const Component: FC<Props> = ({ field }) => {
   const files = field.value;
 
-  let images: kintoneAPI.field.File['value'] = [];
-  let others: kintoneAPI.field.File['value'] = [];
+  const images: kintoneAPI.field.File['value'] = [];
+  const others: kintoneAPI.field.File['value'] = [];
 
   for (const file of files) {
     if (/^image\//.test(file.contentType)) {

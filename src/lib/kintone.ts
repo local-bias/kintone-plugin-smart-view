@@ -34,7 +34,7 @@ export const getFieldsWithoutIgnores = async (
   const fields = await getAppFields(options);
 
   const filtered = Object.entries(fields).filter(
-    ([_, value]) => !IGNORE_FIELDS.includes(value.type)
+    ([, value]) => !IGNORE_FIELDS.includes(value.type)
   );
 
   return filtered.reduce<kintoneAPI.FieldProperties>(
