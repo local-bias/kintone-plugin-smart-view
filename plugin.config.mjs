@@ -2,13 +2,25 @@
 const HP = 'https://konomi.app';
 const cdn = 'https://kintone-plugin.konomi.app';
 const key = 'smart-view';
-const localhost = 'https://127.0.0.1:4689';
 
 /** @satisfies { Plugin.Meta.Config } */
 export default /** @type { const } */ ({
   version: 1,
   id: `ribbit-kintone-plugin-${key}`,
   pluginReleasePageUrl: 'https://ribbit.konomi.app/kintone-plugin/',
+  server: {
+    port: 4689,
+  },
+  lint: {
+    build: false,
+  },
+  tailwind: {
+    css: 'src/styles/global.css',
+    config: {
+      desktop: 'tailwind.config.desktop.mjs',
+      config: 'tailwind.config.config.mjs',
+    },
+  },
   manifest: {
     base: {
       manifest_version: 1,
@@ -33,20 +45,6 @@ export default /** @type { const } */ ({
         js: [`${cdn}/common/config.js`],
         css: [`${cdn}/common/config.css`],
         required_params: [],
-      },
-    },
-    dev: {
-      desktop: {
-        js: [`${localhost}/dist/dev/desktop.js`],
-        css: [`${localhost}/dist/dev/desktop.css`],
-      },
-      mobile: {
-        js: [`${localhost}/dist/dev/desktop.js`],
-        css: [`${localhost}/dist/dev/desktop.css`],
-      },
-      config: {
-        js: [`${localhost}/dist/dev/config.js`],
-        css: [`${localhost}/dist/dev/config.css`],
       },
     },
     prod: {

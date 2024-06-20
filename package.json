@@ -3,15 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "init": "plugin init && plugin genkey",
-    "build": "concurrently \"npm:build:*\" && plugin zip -p ./.plugin/smart-view.ppk",
-    "build:js": "plugin build",
-    "build:css": "tailwindcss -i ./src/styles/global.css -o ./.plugin/contents/config.css -c ./tailwind.config.config.mjs --minify && tailwindcss -i ./src/styles/global.css -o ./.plugin/contents/desktop.css -c ./tailwind.config.desktop.mjs --minify",
-    "standalone": "concurrently \"npm:build:*\" && plugin zip -e standalone -p ./.plugin/smart-view.ppk",
-    "dev": "concurrently \"npm:dev:*\"",
-    "dev:plugin": "plugin dev -p ./.plugin/smart-view.ppk",
-    "dev:css-config": "tailwindcss -i ./src/styles/global.css -o ./.plugin/dev/config.css -c ./tailwind.config.config.mjs -w",
-    "dev:css-desktop": "tailwindcss -i ./src/styles/global.css -o ./.plugin/dev/desktop.css -c ./tailwind.config.desktop.mjs -w",
-    "lint": "eslint ./src --cache --ext .js,.ts,.tsx"
+    "dev": "plugin dev --ppk ./.plugin/smart-view.ppk",
+    "build": "plugin build && plugin zip --ppk ./.plugin/smart-view.ppk",
+    "standalone": "plugin build && plugin zip --env standalone"
   },
   "dependencies": {
     "@emotion/css": "11",
@@ -20,10 +14,10 @@
     "@konomi-app/kintone-utilities": "*",
     "@konomi-app/kintone-utilities-react": "*",
     "@konomi-app/ui-react": "*",
-    "@mui/icons-material": "5.15.16",
+    "@mui/icons-material": "5.15.20",
     "@mui/lab": "^5.0.0-alpha.170",
-    "@mui/material": "5.15.16",
-    "dompurify": "3.1.2",
+    "@mui/material": "5.15.20",
+    "dompurify": "3.1.5",
     "immer": "10.1.1",
     "luxon": "3.4.4",
     "notistack": "3.0.1",
@@ -42,12 +36,9 @@
     "@types/luxon": "3",
     "@types/react": "18",
     "@types/react-dom": "18",
-    "@typescript-eslint/eslint-plugin": "7",
-    "@typescript-eslint/parser": "7",
     "concurrently": "^8",
     "dotenv": "16",
     "eslint": "^8",
-    "tailwindcss": "^3",
     "typescript": "5"
   }
 }
