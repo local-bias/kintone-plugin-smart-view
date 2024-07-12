@@ -92,7 +92,7 @@ const download = (
 
   const body = records.map((record) =>
     targetFieldCodes.map((key) => {
-      const field = record[key];
+      const field = record[key] as kintoneAPI.Field | undefined;
       if (!field) {
         return '';
       }

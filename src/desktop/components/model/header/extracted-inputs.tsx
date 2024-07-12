@@ -1,7 +1,7 @@
 import { appPropertiesState } from '@/desktop/states/kintone';
 import { extractedSearchConditionsState, pluginConditionState } from '@/desktop/states/plugin';
 import { autocompleteValuesState } from '@/desktop/states/records';
-import { Autocomplete, Skeleton, TextField } from '@mui/material';
+import { Autocomplete, Skeleton, TextField, Tooltip } from '@mui/material';
 import React, { ChangeEventHandler, FC, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 
@@ -20,9 +20,23 @@ const ExtractedAutocomplete: FC<Props> = ({ input, index }) => {
     [index]
   );
 
-  const label =
-    Object.values(appFields).find((field) => field.code === input.fieldCode)?.label ??
-    input.fieldCode;
+  const field = Object.values(appFields).find((field) => field.code === input.fieldCode);
+
+  if (Object.keys(appFields).length && !field) {
+    return (
+      <Tooltip title='フィールドが存在しないか、フィールドの設定が不正です'>
+        <TextField
+          sx={{ width: '250px' }}
+          disabled
+          label={input.fieldCode}
+          variant='outlined'
+          color='primary'
+        />
+      </Tooltip>
+    );
+  }
+
+  const label = field?.label ?? input.fieldCode;
 
   return (
     <Autocomplete
