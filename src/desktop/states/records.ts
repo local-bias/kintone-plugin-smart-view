@@ -32,8 +32,8 @@ export const defaultSortedViewRecordsState = selector<ViewRecord[]>({
 
     const sorted = [...records].sort((a, b) => {
       for (const { field, order } of defaultSort) {
-        const aValue = a.record[field];
-        const bValue = b.record[field];
+        const aValue = a.record[field] as kintoneAPI.Field | undefined;
+        const bValue = b.record[field] as kintoneAPI.Field | undefined;
         if (!aValue || !bValue || aValue.value === bValue.value) {
           continue;
         }
@@ -223,7 +223,11 @@ export const autocompleteValuesState = selectorFamily<string[], string>({
     ({ get }) => {
       const records = get(allViewRecordsState);
       return [
-        ...new Set(records.map((record) => getFieldValueAsString(record.record[fieldCode]))),
+        ...new Set(
+          records.map((record) =>
+            record.record[fieldCode] ? getFieldValueAsString(record.record[fieldCode]) : ''
+          )
+        ),
       ].filter((v) => v);
     },
 });

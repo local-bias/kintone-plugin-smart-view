@@ -1,4 +1,4 @@
-import { getSortFromQuery } from '@konomi-app/kintone-utilities';
+import { getSortFromQuery, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { atom, atomFamily, selector } from 'recoil';
 import { appPropertiesState } from './kintone';
 
@@ -40,8 +40,8 @@ export const cardImageFieldCodeState = selector<string | null>({
     }
     return (
       condition.viewFields.find((field) => {
-        const property = appProperties[field.fieldCode];
-        return property.type === 'FILE';
+        const property = appProperties[field.fieldCode] as kintoneAPI.FieldProperty | undefined;
+        return property?.type === 'FILE';
       })?.fieldCode ?? null
     );
   },
