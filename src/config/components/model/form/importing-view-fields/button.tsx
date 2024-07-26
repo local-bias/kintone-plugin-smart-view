@@ -3,9 +3,7 @@ import { useRecoilCallback } from 'recoil';
 import type { DeepReadonly } from 'utility-types';
 import { Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
-import { listViewDialogShownIndexState } from '../../../../states/importing-view-fields';
-import { tabIndexState } from '@/config/states/plugin';
+import { listViewDialogShownState } from '../../../../states/importing-view-fields';
 
 type Props = DeepReadonly<{ onClick: () => void }>;
 
@@ -17,10 +15,9 @@ const Component: FC<Props> = ({ onClick }) => (
 
 const Container: FC = () => {
   const onClick = useRecoilCallback(
-    ({ set, snapshot }) =>
+    ({ set }) =>
       async () => {
-        const conditionIndex = await snapshot.getPromise(tabIndexState);
-        set(listViewDialogShownIndexState, conditionIndex);
+        set(listViewDialogShownState, true);
       },
     []
   );

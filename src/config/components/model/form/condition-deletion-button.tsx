@@ -1,27 +1,33 @@
 import React, { FC, memo } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { produce } from 'immer';
-import { storageState, tabIndexState } from '../../../states/plugin';
 import { PluginConditionDeleteButton } from '@konomi-app/kintone-utilities-react';
+import { selectedConditionIdState, storageState } from '../../../states/plugin';
 import { useSnackbar } from 'notistack';
 
 const Container: FC = () => {
-  const index = useRecoilValue(tabIndexState);
   const { enqueueSnackbar } = useSnackbar();
+  const storage = useRecoilValue(storageState);
 
   const onClick = useRecoilCallback(
-    ({ set }) =>
+    ({ reset, set, snapshot }) =>
       async () => {
+        const id = await snapshot.getPromise(selectedConditionIdState);
         set(storageState, (_, _storage = _!) =>
           produce(_storage, (draft) => {
+            const index = draft.conditions.findIndex((condition) => condition.id === id);
             draft.conditions.splice(index, 1);
           })
         );
-        set(tabIndexState, (i) => (i === 0 ? i : i - 1));
-        enqueueSnackbar('プラグイン設定を削除しました', { variant: 'success' });
+        reset(selectedConditionIdState);
+        enqueueSnackbar('設定を削除しました', { variant: 'success' });
       },
-    [index]
+    []
   );
+
+  if ((storage?.conditions.length ?? 0) < 2) {
+    return null;
+  }
 
   return <PluginConditionDeleteButton {...{ onClick }} />;
 };

@@ -1,11 +1,12 @@
 import { restoreStorage } from '@konomi-app/kintone-utilities';
 import { PLUGIN_ID } from './global';
+import { nanoid } from 'nanoid';
 
 /**
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 7,
+  version: 8,
   conditions: [getNewCondition()],
 });
 
@@ -86,6 +87,15 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           isViewTypeControlEnabled: false,
         })),
       });
+    case 7:
+      return migrateConfig({
+        version: 8,
+        conditions: config.conditions.map((condition) => ({
+          ...condition,
+          id: nanoid(),
+          viewFields: condition.viewFields.map((field) => ({ ...field, id: nanoid() })),
+        })),
+      });
     default:
       return config;
   }
@@ -97,8 +107,9 @@ export const restorePluginConfig = (): Plugin.Config => {
 };
 
 export const getNewCondition = (): Plugin.Condition => ({
+  id: nanoid(),
   viewId: '',
-  viewFields: [{ fieldCode: '', width: 0, isEditable: true }],
+  viewFields: [{ id: nanoid(), fieldCode: '', width: 0, isEditable: true }],
   extractedInputs: [{ type: 'text', fieldCode: '' }],
   isCsvDownloadButtonHidden: false,
   isEditable: true,

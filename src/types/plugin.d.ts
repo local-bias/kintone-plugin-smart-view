@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV7;
+  type Config = ConfigV8;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -17,7 +17,23 @@ declare namespace Plugin {
   type ViewField = Condition['viewFields'][number];
 
   /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3 | ConfigV4 | ConfigV5 | ConfigV6 | ConfigV7;
+  type AnyConfig =
+    | ConfigV1
+    | ConfigV2
+    | ConfigV3
+    | ConfigV4
+    | ConfigV5
+    | ConfigV6
+    | ConfigV7
+    | ConfigV8;
+
+  type ConfigV8 = {
+    version: 8;
+    conditions: (Omit<ConfigV7['conditions'][number], 'viewFields'> & {
+      id: string;
+      viewFields: (ConfigV7['conditions'][number]['viewFields'][number] & { id: string })[];
+    })[];
+  };
 
   type ConfigV7 = {
     version: 7;

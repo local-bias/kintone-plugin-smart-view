@@ -1,6 +1,6 @@
 import { restorePluginConfig } from '@/lib/plugin';
 import { produce } from 'immer';
-import { RecoilState, atom, selector, selectorFamily } from 'recoil';
+import { DefaultValue, RecoilState, atom, selector, selectorFamily } from 'recoil';
 
 const PREFIX = 'plugin';
 
@@ -31,6 +31,29 @@ export const loadingState = atom<boolean>({
 export const tabIndexState = atom<number>({
   key: `${PREFIX}tabIndexState`,
   default: 0,
+});
+
+export const selectedConditionIdState = atom<string>({
+  key: `${PREFIX}selectedConditionIdState`,
+  default: selector<string>({
+    key: `${PREFIX}selectedConditionIdState/default`,
+    get: ({ get }) => {
+      const storage = get(storageState);
+      return storage.conditions[0].id;
+    },
+  }),
+});
+
+export const selectedConditionState = selector<Plugin.Condition>({
+  key: `${PREFIX}selectedConditionState`,
+  get: ({ get }) => {
+    const storage = get(storageState);
+    const selectedConditionId = get(selectedConditionIdState);
+    return (
+      storage.conditions.find((condition) => condition.id === selectedConditionId) ??
+      storage.conditions[0]
+    );
+  },
 });
 
 export const conditionsState = selector<Plugin.Condition[]>({
@@ -66,7 +89,7 @@ export const conditionState = selector<Plugin.Condition | null>({
   },
 });
 
-export const conditionPropertyState = selectorFamily<
+const conditionPropertyState = selectorFamily<
   Plugin.Condition[keyof Plugin.Condition],
   keyof Plugin.Condition
 >({
@@ -74,21 +97,21 @@ export const conditionPropertyState = selectorFamily<
   get:
     (key) =>
     ({ get }) => {
-      const conditionIndex = get(tabIndexState);
-      const storage = get(storageState);
-      return storage.conditions[conditionIndex][key];
+      return get(selectedConditionState)[key];
     },
   set:
     (key) =>
     ({ get, set }, newValue) => {
-      const conditionIndex = get(tabIndexState);
-      set(storageState, (current) =>
-        updated(current, {
-          conditionIndex,
-          key,
-          value: newValue as Plugin.Condition[keyof Plugin.Condition],
-        })
-      );
+      const conditionId = get(selectedConditionState).id;
+      set(storageState, (current) => {
+        if (newValue instanceof DefaultValue) {
+          return current;
+        }
+        const conditionIndex = current.conditions.findIndex(
+          (condition) => condition.id === conditionId
+        );
+        return updated(current, { conditionIndex, key, value: newValue });
+      });
     },
 });
 

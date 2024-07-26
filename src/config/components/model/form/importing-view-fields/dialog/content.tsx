@@ -1,13 +1,13 @@
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
-import { produce } from 'immer';
 import { useSnackbar } from 'notistack';
 import React, { FC, FCX, Suspense } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import type { DeepReadonly } from 'utility-types';
-import { listViewDialogShownIndexState } from '../../../../../states/importing-view-fields';
+import { listViewDialogShownState } from '../../../../../states/importing-view-fields';
 import { listViewsState } from '../../../../../states/kintone';
-import { storageState, tabIndexState } from '../../../../../states/plugin';
+import { getConditionPropertyState } from '../../../../../states/plugin';
+import { nanoid } from 'nanoid';
 
 type Props = DeepReadonly<{
   onListItemClick: (id: string) => void;
@@ -41,10 +41,9 @@ const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const onListItemClick = useRecoilCallback(
-    ({ snapshot, set }) =>
+    ({ reset, snapshot, set }) =>
       async (id: string) => {
         try {
-          const conditionIndex = await snapshot.getPromise(tabIndexState);
           const viewsSnapshot = await snapshot.getPromise(listViewsState);
 
           if (!viewsSnapshot) {
@@ -58,21 +57,19 @@ const Container: FC = () => {
             return;
           }
 
-          set(storageState, (_storage) =>
-            produce(_storage, (draft) => {
-              const condition = draft.conditions[conditionIndex];
-
-              if (selectedView.type === 'LIST') {
-                condition.viewFields = selectedView.fields.map((fieldCode) => ({
-                  fieldCode,
-                  width: 0,
-                  isEditable: true,
-                }));
-              }
-            })
-          );
+          if (selectedView.type === 'LIST') {
+            set(
+              getConditionPropertyState('viewFields'),
+              selectedView.fields.map((fieldCode) => ({
+                id: nanoid(),
+                fieldCode,
+                width: 0,
+                isEditable: true,
+              }))
+            );
+          }
         } finally {
-          set(listViewDialogShownIndexState, null);
+          reset(listViewDialogShownState);
         }
       },
     []
