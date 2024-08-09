@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 8,
+  version: 9,
   conditions: [getNewCondition()],
 });
 
@@ -19,7 +19,7 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
   const { version } = config;
   switch (version) {
     case undefined:
-    case 1:
+    case 1: {
       return migrateConfig({
         version: 3,
         conditions: config.conditions.map((condition) => ({
@@ -43,7 +43,8 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           isOpenInNewTab: condition.openDetailInNewTab ?? false,
         })),
       });
-    case 2:
+    }
+    case 2: {
       return migrateConfig({
         version: 3,
         conditions: config.conditions.map((condition) => ({
@@ -51,7 +52,8 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           ...condition,
         })),
       });
-    case 3:
+    }
+    case 3: {
       return migrateConfig({
         version: 4,
         conditions: config.conditions.map((condition) => ({
@@ -62,7 +64,8 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           deleters: [{ type: 'user', code: '' }],
         })),
       });
-    case 4:
+    }
+    case 4: {
       return migrateConfig({
         version: 5,
         conditions: config.conditions.map((condition) => ({
@@ -70,7 +73,8 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           viewFields: condition.viewFields.map((field) => ({ ...field, isEditable: true })),
         })),
       });
-    case 5:
+    }
+    case 5: {
       return migrateConfig({
         version: 6,
         conditions: config.conditions.map((condition) => ({
@@ -78,7 +82,8 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           isViewSortConditionEnabled: true,
         })),
       });
-    case 6:
+    }
+    case 6: {
       return migrateConfig({
         version: 7,
         conditions: config.conditions.map((condition) => ({
@@ -87,7 +92,8 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           isViewTypeControlEnabled: false,
         })),
       });
-    case 7:
+    }
+    case 7: {
       return migrateConfig({
         version: 8,
         conditions: config.conditions.map((condition) => ({
@@ -96,6 +102,18 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
           viewFields: condition.viewFields.map((field) => ({ ...field, id: nanoid() })),
         })),
       });
+    }
+    case 8: {
+      return migrateConfig({
+        version: 9,
+        conditions: config.conditions.map((condition) => ({
+          ...condition,
+          viewFields: condition.viewFields.map((field) => ({ ...field, joinConditionId: null })),
+          joinConditions: [getNewJoinCondition()],
+        })),
+      });
+    }
+    case 9:
     default:
       return config;
   }
@@ -106,11 +124,21 @@ export const restorePluginConfig = (): Plugin.Config => {
   return migrateConfig(config);
 };
 
+export const getNewJoinCondition = (): Plugin.JoinCondition => ({
+  id: nanoid(),
+  srcKeyFieldCode: '',
+  dstAppId: '',
+  dstSpaceId: null,
+  isDstAppGuestSpace: false,
+  dstKeyFieldCode: '',
+});
+
 export const getNewCondition = (): Plugin.Condition => ({
   id: nanoid(),
   viewId: '',
-  viewFields: [{ id: nanoid(), fieldCode: '', width: 0, isEditable: true }],
+  viewFields: [{ id: nanoid(), fieldCode: '', width: 0, isEditable: true, joinConditionId: null }],
   extractedInputs: [{ type: 'text', fieldCode: '' }],
+  joinConditions: [getNewJoinCondition()],
   isCsvDownloadButtonHidden: false,
   isEditable: true,
   isEditorControlEnabled: false,

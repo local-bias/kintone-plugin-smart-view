@@ -137,7 +137,13 @@ const FieldSelect: FC<{
 const Component: FC = () => {
   const { addRow, deleteRow } = useRecoilRow({
     state: viewFieldsState,
-    getNewRow: () => ({ id: nanoid(), fieldCode: '', width: 0, isEditable: true }),
+    getNewRow: () => ({
+      id: nanoid(),
+      fieldCode: '',
+      width: 0,
+      isEditable: true,
+      joinConditionId: null,
+    }),
   });
   const selectedFields = useRecoilValue(viewFieldsState);
 

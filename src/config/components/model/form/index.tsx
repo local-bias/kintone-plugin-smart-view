@@ -15,6 +15,7 @@ import ExtractedInputsForm from './form-extracted-inputs';
 import CreateViewButton from './create-view-button';
 import { Tooltip } from '@mui/material';
 import ViewTypeForm from './form-view-type';
+import JoinConditionForm from './form-join-condition';
 
 const Component: FC = () => {
   return (
@@ -205,28 +206,41 @@ const Component: FC = () => {
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>高度なオプション</PluginFormTitle>
-        <div className='flex flex-col items-start'>
-          <RecoilSwitch
-            state={getConditionPropertyState('isOpenInNewTab')}
-            label='レコードの詳細画面を新しいタブで開く'
-          />
-          <RecoilSwitch
-            state={getConditionPropertyState('isCaseSensitive')}
-            label='絞り込みの際、アルファベットの大文字と小文字を区別する'
-          />
-          <RecoilSwitch
-            state={getConditionPropertyState('isKatakanaSensitive')}
-            label='絞り込みの際、カタカナとひらがなを区別する'
-          />
-          <RecoilSwitch
-            state={getConditionPropertyState('isHankakuKatakanaSensitive')}
-            label='絞り込みの際、半角カナと全角カナを区別する'
-          />
-          <RecoilSwitch
-            state={getConditionPropertyState('isZenkakuEisujiSensitive')}
-            label='絞り込みの際、全角英数字と半角英数字を区別する'
-          />
-        </div>
+        <PluginFormSection>
+          <PluginFormTitle>あいまい検索の設定</PluginFormTitle>
+          <div className='flex flex-col items-start'>
+            <RecoilSwitch
+              state={getConditionPropertyState('isOpenInNewTab')}
+              label='レコードの詳細画面を新しいタブで開く'
+            />
+            <RecoilSwitch
+              state={getConditionPropertyState('isCaseSensitive')}
+              label='絞り込みの際、アルファベットの大文字と小文字を区別する'
+            />
+            <RecoilSwitch
+              state={getConditionPropertyState('isKatakanaSensitive')}
+              label='絞り込みの際、カタカナとひらがなを区別する'
+            />
+            <RecoilSwitch
+              state={getConditionPropertyState('isHankakuKatakanaSensitive')}
+              label='絞り込みの際、半角カナと全角カナを区別する'
+            />
+            <RecoilSwitch
+              state={getConditionPropertyState('isZenkakuEisujiSensitive')}
+              label='絞り込みの際、全角英数字と半角英数字を区別する'
+            />
+          </div>
+        </PluginFormSection>
+        <PluginFormSection>
+          <PluginFormTitle>他アプリとの結合設定</PluginFormTitle>
+          <PluginFormDescription>
+            特定のキーを基準に、他のアプリのレコードを参照することができます。結合設定を有効にすると、「テーブルに表示するフィールドの設定」で結合したアプリのフィールドを追加することができます。
+          </PluginFormDescription>
+          <PluginFormDescription last>
+            現在のバージョンでは、各レコードについてキー情報に一致した最初のレコードが参照されます。
+          </PluginFormDescription>
+          <JoinConditionForm />
+        </PluginFormSection>
       </PluginFormSection>
       <div>
         <DeletionButton />

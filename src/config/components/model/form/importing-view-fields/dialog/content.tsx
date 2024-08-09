@@ -65,6 +65,7 @@ const Container: FC = () => {
                 fieldCode,
                 width: 0,
                 isEditable: true,
+                joinConditionId: null,
               }))
             );
           }

@@ -1,9 +1,12 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV8;
+  type Config = ConfigV9;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
+
+  /** 🔌 他アプリとの結合設定 */
+  type JoinCondition = Condition['joinConditions'][number];
 
   /** 🔌 検索用に切り出すフィールド情報 */
   type ExtractedInput = Condition['extractedInputs'][number];
@@ -25,7 +28,34 @@ declare namespace Plugin {
     | ConfigV5
     | ConfigV6
     | ConfigV7
-    | ConfigV8;
+    | ConfigV8
+    | ConfigV9;
+
+  type ConfigV9 = {
+    version: 9;
+    conditions: (Omit<ConfigV8['conditions'][number], 'viewFields'> & {
+      /**
+       * 他アプリとの結合設定
+       */
+      joinConditions: {
+        /** 設定ID */
+        id: string;
+        /** プラグインを設定しているアプリのキーとなるフィールド */
+        srcKeyFieldCode: string;
+        /** 結合先アプリのアプリID */
+        dstAppId: string;
+        /** 結合先アプリのスペースID */
+        dstSpaceId: string | null;
+        /** 結合先アプリのゲストスペースかどうか */
+        isDstAppGuestSpace: boolean;
+        /** 結合先アプリのキーとなるフィールド */
+        dstKeyFieldCode: string;
+      }[];
+      viewFields: (ConfigV8['conditions'][number]['viewFields'][number] & {
+        joinConditionId: string | null;
+      })[];
+    })[];
+  };
 
   type ConfigV8 = {
     version: 8;
@@ -91,15 +121,52 @@ declare namespace Plugin {
       }[];
       isCsvDownloadButtonHidden: boolean;
       isEditable: boolean;
+      /**
+       * - `true` - レコード一覧画面からレコードを削除する機能を有効にする
+       * - `false` - 削除機能を無効にする
+       */
       isDeletable: boolean;
+      /**
+       * - `true` - レコード一覧画面から各フィールド単位でソートできる
+       * - `false` - ソートを無効にする
+       */
       isSortable: boolean;
+      /** レコード一覧に一度に表示するレコード数の上限 */
       paginationChunk: number;
+      /**
+       * - `true` - レコード一覧画面から表示するレコード数を変更できる
+       * - `false` - 変更できない
+       */
       isPaginationChunkControlShown: boolean;
+      /**
+       * - `true` - アルファベットの大文字と小文字を区別する
+       * - `false` - 区別しない
+       */
       isCaseSensitive: boolean;
+      /**
+       * - `true` - カタカナの全角と半角を区別する
+       * - `false` - 区別しない
+       */
       isKatakanaSensitive: boolean;
+      /**
+       * - `true` - 全角英数字と半角英数字を区別する
+       * - `false` - 区別しない
+       */
       isZenkakuEisujiSensitive: boolean;
+      /**
+       * - `true` - 半角カタカナの全角と半角を区別する
+       * - `false` - 区別しない
+       */
       isHankakuKatakanaSensitive: boolean;
+      /**
+       * - `true` - カーソルAPIを有効にする
+       * - `false` - レコードの降順に取得する
+       */
       isCursorAPIEnabled: boolean;
+      /**
+       * - `true` - 詳細画面を新しいタブで開く
+       * - `false` - 詳細画面を同じタブで開く
+       */
       isOpenInNewTab: boolean;
     }[];
   };
