@@ -205,6 +205,16 @@ const Component: FC = () => {
         <ExtractedInputsForm />
       </PluginFormSection>
       <PluginFormSection>
+        <PluginFormTitle>JOIN (他アプリとの結合設定)</PluginFormTitle>
+        <PluginFormDescription>
+          特定のキーを基準に、他のアプリのレコードを参照することができます。結合設定を有効にすると、「テーブルに表示するフィールドの設定」で結合したアプリのフィールドを追加することができます。
+        </PluginFormDescription>
+        <PluginFormDescription last>
+          現在のバージョンでは、各レコードについてキー情報に一致した最初のレコードが参照されます。
+        </PluginFormDescription>
+        <JoinConditionForm />
+      </PluginFormSection>
+      <PluginFormSection>
         <PluginFormTitle>高度なオプション</PluginFormTitle>
         <PluginFormSection>
           <PluginFormTitle>あいまい検索の設定</PluginFormTitle>
@@ -230,16 +240,6 @@ const Component: FC = () => {
               label='絞り込みの際、全角英数字と半角英数字を区別する'
             />
           </div>
-        </PluginFormSection>
-        <PluginFormSection>
-          <PluginFormTitle>他アプリとの結合設定</PluginFormTitle>
-          <PluginFormDescription>
-            特定のキーを基準に、他のアプリのレコードを参照することができます。結合設定を有効にすると、「テーブルに表示するフィールドの設定」で結合したアプリのフィールドを追加することができます。
-          </PluginFormDescription>
-          <PluginFormDescription last>
-            現在のバージョンでは、各レコードについてキー情報に一致した最初のレコードが参照されます。
-          </PluginFormDescription>
-          <JoinConditionForm />
         </PluginFormSection>
       </PluginFormSection>
       <div>
