@@ -54,6 +54,20 @@ export const selectedConditionState = selector<Plugin.Condition>({
       storage.conditions[0]
     );
   },
+  set: ({ get, set }, newValue) => {
+    if (newValue instanceof DefaultValue) {
+      return;
+    }
+    const selectedConditionId = get(selectedConditionIdState);
+    set(conditionsState, (current) =>
+      produce(current, (draft) => {
+        const index = draft.findIndex((condition) => condition.id === selectedConditionId);
+        if (index !== -1) {
+          draft[index] = newValue;
+        }
+      })
+    );
+  },
 });
 
 export const conditionsState = selector<Plugin.Condition[]>({
@@ -130,3 +144,8 @@ export const viewIdState = getConditionPropertyState('viewId');
 export const viewFieldsState = getConditionPropertyState('viewFields');
 export const paginationChunkState = getConditionPropertyState('paginationChunk');
 export const extractedInputsState = getConditionPropertyState('extractedInputs');
+
+export const selectedViewFieldDetailSettingIndexState = atom<number | null>({
+  key: `${PREFIX}selectedViewFieldDetailSettingIndexState`,
+  default: null,
+});

@@ -205,7 +205,7 @@ const Component: FC = () => {
         <ExtractedInputsForm />
       </PluginFormSection>
       <PluginFormSection>
-        <PluginFormTitle>JOIN (他アプリとの結合設定)</PluginFormTitle>
+        <PluginFormTitle>JOIN - 他アプリとの結合設定</PluginFormTitle>
         <PluginFormDescription>
           特定のキーを基準に、他のアプリのレコードを参照することができます。結合設定を有効にすると、「テーブルに表示するフィールドの設定」で結合したアプリのフィールドを追加することができます。
         </PluginFormDescription>

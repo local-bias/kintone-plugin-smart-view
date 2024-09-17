@@ -1,3 +1,4 @@
+import { getNewViewField } from '@/lib/plugin';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -7,7 +8,6 @@ import type { DeepReadonly } from 'utility-types';
 import { listViewDialogShownState } from '../../../../../states/importing-view-fields';
 import { listViewsState } from '../../../../../states/kintone';
 import { getConditionPropertyState } from '../../../../../states/plugin';
-import { nanoid } from 'nanoid';
 
 type Props = DeepReadonly<{
   onListItemClick: (id: string) => void;
@@ -61,11 +61,8 @@ const Container: FC = () => {
             set(
               getConditionPropertyState('viewFields'),
               selectedView.fields.map((fieldCode) => ({
-                id: nanoid(),
+                ...getNewViewField(),
                 fieldCode,
-                width: 0,
-                isEditable: true,
-                joinConditionId: null,
               }))
             );
           }
