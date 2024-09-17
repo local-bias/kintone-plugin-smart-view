@@ -1,6 +1,6 @@
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 
-export type ViewRecord = {
+export type TableRow = {
   record: kintoneAPI.RecordData;
   __quickSearch: string;
 };

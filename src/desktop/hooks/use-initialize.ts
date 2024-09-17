@@ -1,6 +1,6 @@
 import { errorState, loadingState, pluginConditionState } from '@/desktop/states/plugin';
 import { allViewRecordsState, areAllRecordsReadyState } from '@/desktop/states/records';
-import type { ViewRecord } from '@/desktop/static';
+import type { TableRow } from '@/desktop/static';
 import { GUEST_SPACE_ID } from '@/lib/global';
 import { getQuickSearchString } from '@/lib/kintone';
 import {
@@ -53,7 +53,7 @@ export const useInitialize = () => {
           fields,
           onStep: (params) => {
             const { records } = params;
-            const viewRecords = records.map<ViewRecord>((record) => {
+            const viewRecords = records.map<TableRow>((record) => {
               const __quickSearch = getYuruChara(getQuickSearchString(record), {
                 isCaseSensitive,
                 isKatakanaSensitive,

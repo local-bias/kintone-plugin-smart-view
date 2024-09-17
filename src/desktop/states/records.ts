@@ -6,7 +6,7 @@ import {
 } from './plugin';
 import { searchTextState } from './search-text';
 import { sortingState } from './sorting';
-import type { ViewRecord } from '../static';
+import type { TableRow } from '../static';
 import { paginationIndexState, paginationChunkState } from './pagination';
 import {
   getFieldValueAsString,
@@ -17,12 +17,12 @@ import {
 
 const PREFIX = 'records';
 
-export const allViewRecordsState = atom<ViewRecord[]>({
+export const allViewRecordsState = atom<TableRow[]>({
   key: 'allViewRecordsState',
   default: [],
 });
 
-export const defaultSortedViewRecordsState = selector<ViewRecord[]>({
+export const defaultSortedViewRecordsState = selector<TableRow[]>({
   key: 'defaultSortedViewRecordsState',
   get: ({ get }) => {
     const records = get(allViewRecordsState);
@@ -53,7 +53,7 @@ export const defaultSortedViewRecordsState = selector<ViewRecord[]>({
   },
 });
 
-const sortedViewRecordsState = selector<ViewRecord[]>({
+const sortedViewRecordsState = selector<TableRow[]>({
   key: 'sortedViewRecordsState',
   get: ({ get }) => {
     const records = get(defaultSortedViewRecordsState);
