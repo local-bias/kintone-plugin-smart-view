@@ -9,7 +9,7 @@ const Table: FC = () => {
   const condition = useRecoilValue(pluginConditionState);
 
   return (
-    <MyTable columns={condition?.viewFields.map(({ width }) => ({ width })) ?? []}>
+    <MyTable condition={condition}>
       <Head />
       <Body />
     </MyTable>

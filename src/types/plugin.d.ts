@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV9;
+  type Config = ConfigV10;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -29,7 +29,18 @@ declare namespace Plugin {
     | ConfigV6
     | ConfigV7
     | ConfigV8
-    | ConfigV9;
+    | ConfigV9
+    | ConfigV10;
+
+  type ConfigV10 = {
+    version: 10;
+    conditions: (Omit<ConfigV9['conditions'][number], 'viewFields'> & {
+      viewFields: (ConfigV9['conditions'][number]['viewFields'][number] & {
+        displayName: string | null;
+        nowrap: boolean;
+      })[];
+    })[];
+  };
 
   type ConfigV9 = {
     version: 9;

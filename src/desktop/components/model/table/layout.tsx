@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const MyTable = styled.table<{
-  columns: { width: number }[];
+  condition: Plugin.Condition | null;
   isDetailCellHidden?: boolean;
 }>`
   background-color: #fff;
@@ -9,9 +9,10 @@ export const MyTable = styled.table<{
 
   display: grid;
   grid-template-columns: ${({ isDetailCellHidden = false }) => (isDetailCellHidden ? '' : 'auto')} ${({
-      columns,
+      condition,
     }) => {
-      return columns
+      const viewFields = condition?.viewFields ?? [];
+      return viewFields
         .map(({ width }) => {
           if (width === 0) {
             return '1fr';
@@ -33,6 +34,19 @@ export const MyTable = styled.table<{
   td {
     display: block;
     border-right: 1px solid #0002;
+
+    ${({ condition }) => {
+      const viewFields = condition?.viewFields ?? [];
+      return viewFields
+        .map(({ nowrap }, i) => {
+          if (!nowrap) {
+            return '';
+          }
+          return `&:nth-of-type(${i + 2}) {white-space: nowrap;overflow: auto;}`;
+        })
+        .filter((v) => v)
+        .join('\n');
+    }}
 
     &[data-right] {
       text-align: right;
@@ -78,6 +92,22 @@ export const MyTable = styled.table<{
 
   @media print {
     font-size: 100%;
+  }
+
+  *::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+    @media screen and (min-width: 800px) {
+      width: 4px;
+      height: 4px;
+    }
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #0002;
+    border-radius: 400px;
+  }
+  *::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 `;
 
@@ -153,5 +183,22 @@ export const MyTableBody = styled.tbody`
         filter: brightness(0.95);
       }
     }
+  }
+`;
+
+export const Subtable = styled.table`
+  tr {
+    display: table-row !important;
+  }
+
+  thead,
+  tbody,
+  tfoot {
+    display: table-header-group !important;
+  }
+
+  th,
+  td {
+    display: table-cell !important;
   }
 `;

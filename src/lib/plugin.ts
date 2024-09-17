@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 9,
+  version: 10,
   conditions: [getNewCondition()],
 });
 
@@ -113,7 +113,20 @@ export const migrateConfig = (config: Plugin.AnyConfig): Plugin.Config => {
         })),
       });
     }
-    case 9:
+    case 9: {
+      return migrateConfig({
+        version: 10,
+        conditions: config.conditions.map((condition) => ({
+          ...condition,
+          viewFields: condition.viewFields.map((field) => ({
+            ...field,
+            displayName: null,
+            nowrap: false,
+          })),
+        })),
+      });
+    }
+    case 10:
     default:
       return config;
   }
@@ -133,10 +146,20 @@ export const getNewJoinCondition = (): Plugin.JoinCondition => ({
   dstKeyFieldCode: '',
 });
 
+export const getNewViewField = (): Plugin.ViewField => ({
+  id: nanoid(),
+  fieldCode: '',
+  width: 0,
+  isEditable: true,
+  joinConditionId: null,
+  displayName: null,
+  nowrap: false,
+});
+
 export const getNewCondition = (): Plugin.Condition => ({
   id: nanoid(),
   viewId: '',
-  viewFields: [{ id: nanoid(), fieldCode: '', width: 0, isEditable: true, joinConditionId: null }],
+  viewFields: [getNewViewField()],
   extractedInputs: [{ type: 'text', fieldCode: '' }],
   joinConditions: [getNewJoinCondition()],
   isCsvDownloadButtonHidden: false,

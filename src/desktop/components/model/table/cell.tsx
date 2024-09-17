@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { appPropertiesState } from '../../../states/kintone';
 import { SubtableDetails } from '../../ui/subtable-details';
 import { FieldValue } from '../field-value';
-import { MyTable, MyTableBody, MyTableHead } from './layout';
+import { Subtable as MySubtable, MyTableBody, MyTableHead } from './layout';
 
 type Props = Readonly<{ code: string; field: kintoneAPI.Field }>;
 
@@ -20,7 +20,7 @@ const Subtable: FC<Readonly<{ code: string; field: kintoneAPI.field.Subtable }>>
   return (
     <SubtableDetails>
       <summary>{props.field.value.length}行</summary>
-      <MyTable columns={fieldProperties.map(() => ({ width: 0 }))} isDetailCellHidden>
+      <MySubtable>
         <MyTableHead sticky={0}>
           <tr>
             {fieldProperties.map((property) => (
@@ -39,7 +39,7 @@ const Subtable: FC<Readonly<{ code: string; field: kintoneAPI.field.Subtable }>>
             </tr>
           ))}
         </MyTableBody>
-      </MyTable>
+      </MySubtable>
     </SubtableDetails>
   );
 };
