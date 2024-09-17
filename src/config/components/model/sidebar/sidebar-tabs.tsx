@@ -1,15 +1,14 @@
-import React, { FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { conditionsState, selectedConditionIdState, storageState } from '../../../states/plugin';
-import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { arrayMove, SortableContext, useSortable } from '@dnd-kit/sortable';
-import { cn } from '@/lib/utils';
-import { CSS } from '@dnd-kit/utilities';
-import { GripVertical } from 'lucide-react';
-import { useTab } from './use-tab';
-import styled from '@emotion/styled';
 import { customViewsState } from '@/config/states/kintone';
+import { cn } from '@/lib/utils';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import styled from '@emotion/styled';
+import { GripVertical } from 'lucide-react';
+import React, { FC } from 'react';
+import { useRecoilValue } from 'recoil';
+import { conditionsState, selectedConditionIdState } from '../../../states/plugin';
+import { useTab } from './use-tab';
+import { RecoilDndContext, RecoilSortableContext } from '@konomi-app/kintone-utilities-react';
 
 const SidebarTab: FC<{ condition: Plugin.Condition; index: number }> = ({ condition, index }) => {
   const {
@@ -73,13 +72,11 @@ const Component: FC<{ className?: string }> = ({ className }) => {
   const conditions = useRecoilValue(conditionsState);
 
   return (
-    <SortableContext items={conditions}>
-      <div className={cn(className, 'h-full')}>
-        {conditions.map((condition, index) => (
-          <SidebarTab key={condition.id} condition={condition} index={index} />
-        ))}
-      </div>
-    </SortableContext>
+    <div className={cn(className, 'h-full')}>
+      {conditions.map((condition, index) => (
+        <SidebarTab key={condition.id} condition={condition} index={index} />
+      ))}
+    </div>
   );
 };
 
@@ -102,31 +99,12 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC = () => {
-  const onDragEnd = useRecoilCallback(
-    ({ set, snapshot }) =>
-      async (event: DragEndEvent) => {
-        const { active, over } = event;
-        if (over == null || active.id === over.id) {
-          return;
-        }
-        const storage = await snapshot.getPromise(storageState);
-        const conditions = storage.conditions;
-        const oldIndex = conditions.findIndex((item) => item.id === active.id);
-        const newIndex = conditions.findIndex((item) => item.id === over.id);
-        const newConditions = arrayMove(conditions, oldIndex, newIndex);
-        set(storageState, { ...storage, conditions: newConditions });
-      },
-    []
-  );
-
   return (
-    <DndContext
-      modifiers={[restrictToVerticalAxis]}
-      collisionDetection={closestCenter}
-      onDragEnd={onDragEnd}
-    >
-      <StyledComponent />
-    </DndContext>
+    <RecoilDndContext state={conditionsState}>
+      <RecoilSortableContext state={conditionsState}>
+        <StyledComponent />
+      </RecoilSortableContext>
+    </RecoilDndContext>
   );
 };
 
