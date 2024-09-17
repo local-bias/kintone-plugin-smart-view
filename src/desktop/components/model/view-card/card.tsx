@@ -24,7 +24,7 @@ const Component: FCX<Props> = ({ className, record }) => {
   const imageFieldCode = useRecoilValue(cardImageFieldCodeState);
   const viewFields = useRecoilValue(cardViewFieldsState) ?? [];
 
-  const files = imageFieldCode ? (record[imageFieldCode]?.value as FileInfo[]) ?? [] : [];
+  const files = imageFieldCode ? ((record[imageFieldCode]?.value as FileInfo[]) ?? []) : [];
 
   let image: FileInfo | null = null;
 

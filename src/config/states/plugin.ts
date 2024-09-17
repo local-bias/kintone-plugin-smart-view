@@ -1,4 +1,4 @@
-import { restorePluginConfig } from '@/lib/plugin';
+import { getNewCondition, restorePluginConfig } from '@/lib/plugin';
 import { produce } from 'immer';
 import { DefaultValue, RecoilState, atom, selector, selectorFamily } from 'recoil';
 
@@ -61,6 +61,14 @@ export const conditionsState = selector<Plugin.Condition[]>({
   get: ({ get }) => {
     const storage = get(storageState);
     return storage?.conditions ?? [];
+  },
+  set: ({ set }, newValue) => {
+    set(storageState, (current) => {
+      if (newValue instanceof DefaultValue) {
+        return { ...current, conditions: [getNewCondition()] };
+      }
+      return { ...current, conditions: newValue };
+    });
   },
 });
 
