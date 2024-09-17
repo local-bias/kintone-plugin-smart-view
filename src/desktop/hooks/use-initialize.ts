@@ -1,5 +1,5 @@
 import { errorState, loadingState, pluginConditionState } from '@/desktop/states/plugin';
-import { allViewRecordsState, areAllRecordsReadyState } from '@/desktop/states/records';
+import { allTableRowsState, areAllRecordsReadyState } from '@/desktop/states/records';
 import type { TableRow } from '@/desktop/static';
 import { GUEST_SPACE_ID } from '@/lib/global';
 import { getQuickSearchString } from '@/lib/kintone';
@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 export const useInitialize = () => {
-  const setAllRecords = useSetRecoilState(allViewRecordsState);
+  const setAllRecords = useSetRecoilState(allTableRowsState);
   const setLoading = useSetRecoilState(loadingState);
   const condition = useRecoilValue(pluginConditionState);
   const setError = useSetRecoilState(errorState);

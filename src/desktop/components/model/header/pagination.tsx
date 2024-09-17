@@ -4,7 +4,7 @@ import { Pagination } from '@mui/material';
 import React, { FC, FCX } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import { paginationChunkState, paginationIndexState } from '../../../states/pagination';
-import { filteredRecordsState } from '../../../states/records';
+import { filteredTableRowsState } from '../../../states/records';
 
 type Props = {
   size: number;
@@ -42,7 +42,7 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC = () => {
-  const records = useRecoilValue(filteredRecordsState);
+  const records = useRecoilValue(filteredTableRowsState);
   const [index, setIndex] = useRecoilState(paginationIndexState);
   const chunkSize = useRecoilValue(paginationChunkState);
 

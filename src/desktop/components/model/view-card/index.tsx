@@ -1,11 +1,11 @@
 import React, { FCX } from 'react';
 import { useRecoilValue } from 'recoil';
-import { displayingRecordsState } from '../../../states/records';
+import { displayingTableRowsState } from '../../../states/records';
 import Card from './card';
 import styled from '@emotion/styled';
 
 const CardList: FCX = ({ className }) => {
-  const records = useRecoilValue(displayingRecordsState);
+  const records = useRecoilValue(displayingTableRowsState);
 
   return (
     <div className={className}>

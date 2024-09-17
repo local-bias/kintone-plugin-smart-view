@@ -1,5 +1,5 @@
 import { getSortFromQuery, kintoneAPI } from '@konomi-app/kintone-utilities';
-import { atom, atomFamily, selector } from 'recoil';
+import { atom, atomFamily, selector, selectorFamily } from 'recoil';
 import { appPropertiesState } from './kintone';
 
 const PREFIX = 'plugin';

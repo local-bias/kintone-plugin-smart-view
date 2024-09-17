@@ -17,15 +17,15 @@ import {
 
 const PREFIX = 'records';
 
-export const allViewRecordsState = atom<TableRow[]>({
+export const allTableRowsState = atom<TableRow[]>({
   key: 'allViewRecordsState',
   default: [],
 });
 
-export const defaultSortedViewRecordsState = selector<TableRow[]>({
+export const defaultSortedTableRowsState = selector<TableRow[]>({
   key: 'defaultSortedViewRecordsState',
   get: ({ get }) => {
-    const records = get(allViewRecordsState);
+    const records = get(allTableRowsState);
     const defaultSort = get(defaultSortConditionState);
 
     process.env.NODE_ENV === 'development' && console.time('default sorting');
@@ -53,10 +53,10 @@ export const defaultSortedViewRecordsState = selector<TableRow[]>({
   },
 });
 
-const sortedViewRecordsState = selector<TableRow[]>({
-  key: 'sortedViewRecordsState',
+const sortedTableRowsState = selector<TableRow[]>({
+  key: 'sortedTableRowsState',
   get: ({ get }) => {
-    const records = get(defaultSortedViewRecordsState);
+    const records = get(defaultSortedTableRowsState);
     const sorting = get(sortingState);
     const condition = get(pluginConditionState);
 
@@ -94,10 +94,10 @@ const sortedViewRecordsState = selector<TableRow[]>({
   },
 });
 
-export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
-  key: 'filteredRecordsState',
+export const filteredTableRowsState = selector<kintoneAPI.RecordData[]>({
+  key: 'filteredTableRowsState',
   get: ({ get }) => {
-    const records = get(sortedViewRecordsState);
+    const records = get(sortedTableRowsState);
     const text = get(searchTextState);
     const condition = get(pluginConditionState)!;
     const extractedSearchConditions = condition.extractedInputs.map((_, i) =>
@@ -183,10 +183,10 @@ export const filteredRecordsState = selector<kintoneAPI.RecordData[]>({
   },
 });
 
-export const displayingRecordsState = selector<kintoneAPI.RecordData[]>({
-  key: 'displayingRecordsState',
+export const displayingTableRowsState = selector<kintoneAPI.RecordData[]>({
+  key: 'displayingTableRowsState',
   get: ({ get }) => {
-    const records = get(filteredRecordsState);
+    const records = get(filteredTableRowsState);
     const index = get(paginationIndexState);
     const chunk = get(paginationChunkState);
 
@@ -202,7 +202,7 @@ export const areAllRecordsReadyState = atom<boolean>({
 export const isRecordPresentState = selector<boolean>({
   key: `${PREFIX}isRecordPresentState`,
   get: ({ get }) => {
-    const records = get(filteredRecordsState);
+    const records = get(filteredTableRowsState);
     return !!records.length;
   },
 });
@@ -221,7 +221,7 @@ export const autocompleteValuesState = selectorFamily<string[], string>({
   get:
     (fieldCode) =>
     ({ get }) => {
-      const records = get(allViewRecordsState);
+      const records = get(allTableRowsState);
       return [
         ...new Set(
           records.map((record) =>

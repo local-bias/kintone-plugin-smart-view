@@ -6,7 +6,7 @@ import { Button, Tooltip } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { unparse as toCsv } from 'papaparse';
 
-import { filteredRecordsState } from '../../../states/records';
+import { filteredTableRowsState } from '../../../states/records';
 import { pluginConditionState } from '../../../states/plugin';
 import { getFieldValueAsString, type kintoneAPI } from '@konomi-app/kintone-utilities';
 import { appPropertiesState } from '../../../states/kintone';
@@ -18,7 +18,7 @@ const Component: FCX = ({ className }) => {
     ({ snapshot }) =>
       async () => {
         try {
-          const records = await snapshot.getPromise(filteredRecordsState);
+          const records = await snapshot.getPromise(filteredTableRowsState);
 
           if (!records.length) {
             enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {
