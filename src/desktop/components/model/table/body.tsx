@@ -1,21 +1,22 @@
 import { getQueryString } from '@/lib/cybozu';
 import { isMobile } from '@konomi-app/kintone-utilities';
 import { Skeleton } from '@mui/material';
-import React, { FC, Suspense } from 'react';
+import React, { FC, Suspense, useDeferredValue } from 'react';
 import { useRecoilValue } from 'recoil';
 import { loadingState, pluginConditionState } from '../../../states/plugin';
-import { displayingRecordsState, areAllRecordsReadyState } from '../../../states/records';
+import { displayingTableRowsState, areAllRecordsReadyState } from '../../../states/records';
 import Cell from './cell';
 import { MyTableBody } from './layout';
 import { DocumentIcon } from '../../ui/document-icon';
 
 const Component: FC = () => {
-  const records = useRecoilValue(displayingRecordsState);
+  const records = useRecoilValue(displayingTableRowsState);
+  const deferredRecords = useDeferredValue(records);
   const condition = useRecoilValue(pluginConditionState)!;
 
   return (
     <>
-      {records.map((record, i) => (
+      {deferredRecords.map((record, i) => (
         <tr key={i}>
           <td>
             <a
