@@ -21,13 +21,13 @@ export const headerCellsState = selector<HeaderCell[]>({
       return condition.viewFields.map((field) => ({ label: field.fieldCode, property: null }));
     }
 
-    const cells = condition.viewFields.map<HeaderCell>(({ fieldCode }) => {
+    const cells = condition.viewFields.map<HeaderCell>(({ fieldCode, displayName }) => {
       const found = Object.values(appFields).find((property) => property.code === fieldCode);
 
       if (found) {
-        return { label: found.label, property: found };
+        return { label: displayName || found.label, property: found };
       }
-      return { label: fieldCode, property: null };
+      return { label: displayName || fieldCode, property: null };
     });
 
     return cells;

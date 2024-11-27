@@ -1,8 +1,9 @@
 import { Skeleton } from '@mui/material';
-import React, { FC, Suspense } from 'react';
+import { FC, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 import { appPropertiesState } from '../../../states/kintone';
+import { LANGUAGE } from '@/lib/global';
 
 type Props = { field: kintoneAPI.field.Number; code: string };
 
@@ -20,7 +21,12 @@ const Component: FC<Props> = ({ field, code }) => {
     ? Math.round(casted * Math.pow(10, Number(property.displayScale))) /
       Math.pow(10, Number(property.displayScale))
     : casted;
-  const separated = property?.digit ? Number(scaled).toLocaleString() : scaled;
+  const separated = property?.digit
+    ? Number(scaled).toLocaleString(LANGUAGE, {
+        maximumFractionDigits: Number(property?.displayScale ?? 0),
+        minimumFractionDigits: Number(property?.displayScale ?? 0),
+      })
+    : Number(scaled).toFixed(Number(property?.displayScale ?? 0));
 
   if (property?.unit) {
     if (property.unitPosition === 'BEFORE') {

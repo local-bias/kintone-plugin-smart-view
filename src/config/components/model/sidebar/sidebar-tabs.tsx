@@ -27,7 +27,12 @@ const SidebarTab: FC<{ condition: Plugin.Condition; index: number }> = ({ condit
 
   const onClick = () => onTabChange(condition);
 
-  const label = found ? <>{`設定${index + 1}(${found.name})`}</> : <>{`設定${index + 1}`}</>;
+  const label = (
+    <>
+      <div className='text-[11px] leading-4 text-gray-400'>設定{index + 1}</div>
+      <div className='text-sm text-gray-600'>{`${found?.name ? found.name : '未設定'}`}</div>
+    </>
+  );
 
   return (
     <div
@@ -45,7 +50,7 @@ const SidebarTab: FC<{ condition: Plugin.Condition; index: number }> = ({ condit
       }}
     >
       <div
-        className='grid place-items-center p-4 outline-none'
+        className='grid place-items-center py-3 px-4 outline-none'
         style={{
           cursor: isDragging ? 'grabbing' : 'grab',
         }}
@@ -60,7 +65,7 @@ const SidebarTab: FC<{ condition: Plugin.Condition; index: number }> = ({ condit
         role='button'
         tabIndex={0}
         onClick={onClick}
-        className='p-4 pl-0 bg-transparent border-0 cursor-pointer outline-none text-left text-gray-600 text-sm'
+        className='py-3 px-4 pl-0 bg-transparent border-0 cursor-pointer outline-none text-left text-gray-600 text-sm'
       >
         {label}
       </button>
