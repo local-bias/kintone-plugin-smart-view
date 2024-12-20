@@ -1,19 +1,22 @@
-import { atom, selectorFamily } from 'recoil';
-import { downloadFile, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { GUEST_SPACE_ID } from '@/lib/global';
+import { downloadFile, getAppId, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { atomFamily } from 'jotai/utils';
+import { atom } from 'jotai';
 
-const PREFIX = 'kintone';
-
-export const appPropertiesState = atom<kintoneAPI.FieldProperties>({
-  key: `${PREFIX}appPropertiesState`,
-  default: {},
+export const currentAppIdAtom = atom(() => {
+  const appId = getAppId();
+  if (!appId) {
+    throw new Error('アプリ情報が取得できませんでした');
+  }
+  return appId;
 });
 
-export const propertiesReadyState = atom({ key: `${PREFIX}propertiesReadyState`, default: false });
+export const appPropertiesAtom = atom<kintoneAPI.FieldProperties>({});
 
-export const fileUrlState = selectorFamily<string | null, string>({
-  key: `${PREFIX}fileUrlState`,
-  get: (fileKey: string) => async () => {
+export const propertiesReadyAtom = atom(false);
+
+export const fileUrlAtom = atomFamily((fileKey: string) =>
+  atom<Promise<string | null>>(async () => {
     const blob = await downloadFile({
       fileKey,
       guestSpaceId: GUEST_SPACE_ID,
@@ -23,5 +26,5 @@ export const fileUrlState = selectorFamily<string | null, string>({
     }
     const url = (window.URL || window.webkitURL).createObjectURL(blob);
     return url;
-  },
-});
+  })
+);

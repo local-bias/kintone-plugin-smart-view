@@ -1,35 +1,31 @@
-import { selector } from 'recoil';
-import { appPropertiesState } from './kintone';
-import { pluginConditionState } from './plugin';
-import { propertiesReadyState } from './kintone';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
+import { atom } from 'jotai';
+import { appPropertiesAtom, propertiesReadyAtom } from './kintone';
+import { pluginConditionAtom } from './plugin';
 
 export type HeaderCell = { label: string; property: kintoneAPI.FieldProperty | null };
 
-export const headerCellsState = selector<HeaderCell[]>({
-  key: 'headerCellsState',
-  get: async ({ get }) => {
-    const condition = get(pluginConditionState);
-    const appFields = get(appPropertiesState);
-    const propertiesReady = get(propertiesReadyState);
+export const headerCellsAtom = atom<Promise<HeaderCell[]>>(async (get) => {
+  const condition = get(pluginConditionAtom);
+  const appFields = get(appPropertiesAtom);
+  const propertiesReady = get(propertiesReadyAtom);
 
-    if (!condition?.viewFields.length) {
-      return [];
+  if (!condition?.viewFields.length) {
+    return [];
+  }
+
+  if (!propertiesReady) {
+    return condition.viewFields.map((field) => ({ label: field.fieldCode, property: null }));
+  }
+
+  const cells = condition.viewFields.map<HeaderCell>(({ fieldCode, displayName }) => {
+    const found = Object.values(appFields).find((property) => property.code === fieldCode);
+
+    if (found) {
+      return { label: displayName || found.label, property: found };
     }
+    return { label: displayName || fieldCode, property: null };
+  });
 
-    if (!propertiesReady) {
-      return condition.viewFields.map((field) => ({ label: field.fieldCode, property: null }));
-    }
-
-    const cells = condition.viewFields.map<HeaderCell>(({ fieldCode, displayName }) => {
-      const found = Object.values(appFields).find((property) => property.code === fieldCode);
-
-      if (found) {
-        return { label: displayName || found.label, property: found };
-      }
-      return { label: displayName || fieldCode, property: null };
-    });
-
-    return cells;
-  },
+  return cells;
 });

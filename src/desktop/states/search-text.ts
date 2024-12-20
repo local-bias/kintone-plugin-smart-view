@@ -1,22 +1,18 @@
 import { URL_SEARCH_PARAMS_TEXT } from '@/lib/statics';
-import { atom } from 'recoil';
+import { atom } from 'jotai';
+import { atomEffect } from 'jotai-effect';
 
-export const searchTextState = atom({
-  key: 'searchTextState',
-  default: '',
-  effects: [
-    ({ onSet }) =>
-      onSet((newValue, oldValue) => {
-        if (newValue === oldValue) {
-          return;
-        }
-        const url = new URL(location.href);
-        if (newValue) {
-          url.searchParams.set(URL_SEARCH_PARAMS_TEXT, newValue);
-        } else {
-          url.searchParams.delete(URL_SEARCH_PARAMS_TEXT);
-        }
-        history.replaceState(null, '', url.href);
-      }),
-  ],
+export const searchTextAtom = atom(
+  new URLSearchParams(location.search).get(URL_SEARCH_PARAMS_TEXT) ?? ''
+);
+
+export const searchTextEffect = atomEffect((get) => {
+  const text = get(searchTextAtom);
+  const url = new URL(location.href);
+  if (!text) {
+    url.searchParams.delete(URL_SEARCH_PARAMS_TEXT);
+  } else {
+    url.searchParams.set(URL_SEARCH_PARAMS_TEXT, text);
+  }
+  history.replaceState(null, '', url.toString());
 });

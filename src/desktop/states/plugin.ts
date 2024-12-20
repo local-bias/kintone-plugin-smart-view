@@ -1,67 +1,45 @@
+import { PluginCondition } from '@/lib/plugin';
 import { getSortFromQuery, kintoneAPI } from '@konomi-app/kintone-utilities';
-import { atom, atomFamily, selector, selectorFamily } from 'recoil';
-import { appPropertiesState } from './kintone';
+import { atom } from 'jotai';
+import { atomFamily } from 'jotai/utils';
+import { appPropertiesAtom } from './kintone';
 
-const PREFIX = 'plugin';
+export const pluginConditionAtom = atom<PluginCondition | null>(null);
 
-export const pluginConditionState = atom<Plugin.Condition | null>({
-  key: `${PREFIX}pluginConditionState`,
-  default: null,
+export const defaultSortConditionAtom = atom<ReturnType<typeof getSortFromQuery>>([]);
+
+export const extractedSearchConditionsAtom = atomFamily((index: number) =>
+  atom<Plugin.ExtractedSearchCondition | null>(null)
+);
+
+export const viewTypeAtom = atom<Plugin.ViewType>('table');
+
+export const cardImageFieldCodeAtom = atom<string | null>((get) => {
+  const condition = get(pluginConditionAtom);
+  if (!condition) {
+    return null;
+  }
+  const appProperties = get(appPropertiesAtom);
+  if (!Object.keys(appProperties).length) {
+    return null;
+  }
+  return (
+    condition.viewFields.find((field) => {
+      const property = appProperties[field.fieldCode] as kintoneAPI.FieldProperty | undefined;
+      return property?.type === 'FILE';
+    })?.fieldCode ?? null
+  );
 });
 
-export const defaultSortConditionState = atom<ReturnType<typeof getSortFromQuery>>({
-  key: `${PREFIX}defaultSortConditionState`,
-  default: [],
+export const cardViewFieldsAtom = atom<Plugin.ViewField[]>((get) => {
+  const condition = get(pluginConditionAtom);
+  if (!condition) {
+    return [];
+  }
+  const imageFieldCode = get(cardImageFieldCodeAtom);
+  return condition.viewFields.filter((field) => field.fieldCode !== imageFieldCode);
 });
 
-export const extractedSearchConditionsState = atomFamily<
-  Plugin.ExtractedSearchCondition | null,
-  number
->({
-  key: `${PREFIX}extractedSearchConditionsState`,
-  default: null,
-});
+export const loadingAtom = atom(true);
 
-export const viewTypeState = atom<Plugin.ViewType>({
-  key: `${PREFIX}viewTypeState`,
-  default: 'table',
-});
-
-export const cardImageFieldCodeState = selector<string | null>({
-  key: `${PREFIX}cardImageFieldCodeState`,
-  get: ({ get }) => {
-    const condition = get(pluginConditionState);
-    if (!condition) {
-      return null;
-    }
-    const appProperties = get(appPropertiesState);
-    if (!Object.keys(appProperties).length) {
-      return null;
-    }
-    return (
-      condition.viewFields.find((field) => {
-        const property = appProperties[field.fieldCode] as kintoneAPI.FieldProperty | undefined;
-        return property?.type === 'FILE';
-      })?.fieldCode ?? null
-    );
-  },
-});
-
-export const cardViewFieldsState = selector<Plugin.ViewField[]>({
-  key: `${PREFIX}cardViewFieldsState`,
-  get: ({ get }) => {
-    const condition = get(pluginConditionState);
-    if (!condition) {
-      return [];
-    }
-    const imageFieldCode = get(cardImageFieldCodeState);
-    return condition.viewFields.filter((field) => field.fieldCode !== imageFieldCode);
-  },
-});
-
-export const loadingState = atom({ key: `${PREFIX}loadingState`, default: true });
-
-export const errorState = atom<string | null>({
-  key: `${PREFIX}errorState`,
-  default: null,
-});
+export const errorAtom = atom<string | null>(null);

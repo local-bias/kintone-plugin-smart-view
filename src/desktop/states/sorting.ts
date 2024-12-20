@@ -1,8 +1,5 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
 export type Sorting = { field: string; order: 'desc' | 'asc' };
 
-export const sortingState = atom<Sorting>({
-  key: 'sortingState',
-  default: { field: '', order: 'desc' },
-});
+export const sortingAtom = atom<Sorting>({ field: '', order: 'desc' });

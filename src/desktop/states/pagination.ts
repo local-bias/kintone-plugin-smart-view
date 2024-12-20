@@ -1,5 +1,5 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
-export const paginationIndexState = atom({ key: 'paginationIndexState', default: 1 });
+export const paginationIndexAtom = atom(1);
 
-export const paginationChunkState = atom({ key: 'paginationChunkState', default: 100 });
+export const paginationChunkAtom = atom(100);
