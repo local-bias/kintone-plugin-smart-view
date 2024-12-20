@@ -9,11 +9,11 @@ import {
 } from '@konomi-app/kintone-utilities-react';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { SnackbarProvider } from 'notistack';
-import React, { FC, Suspense } from 'react';
+import { FC, Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
-import Sidebar from './components/model/sidebar';
+import Sidebar from './components/sidebar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { jaJP } from '@mui/material/locale';
 import config from '../../plugin.config.mjs';
