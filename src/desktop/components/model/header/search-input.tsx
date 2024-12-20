@@ -1,10 +1,11 @@
-import React, { ChangeEvent, ChangeEventHandler, FC, FCX } from 'react';
-import type { DeepReadonly } from 'utility-types';
-import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { paginationIndexState } from '../../../states/pagination';
-import { searchTextState } from '../../../states/search-text';
+import { InputAdornment, TextField } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { ChangeEvent, ChangeEventHandler, FC, FCX, useCallback } from 'react';
+import type { DeepReadonly } from 'utility-types';
+import { paginationIndexAtom } from '../../../states/pagination';
+import { searchTextAtom } from '../../../states/search-text';
 
 type Props = DeepReadonly<{
   searchText: string;
@@ -29,15 +30,13 @@ const Component: FCX<Props> = ({ searchText, onSearchTextChange }) => (
 );
 
 const Container: FC = () => {
-  const searchText = useRecoilValue(searchTextState);
+  const searchText = useAtomValue(searchTextAtom);
 
-  const onSearchTextChange = useRecoilCallback(
-    ({ set, reset }) =>
-      (e: ChangeEvent<HTMLInputElement>) => {
-        set(searchTextState, e.target.value);
-        reset(paginationIndexState);
-      },
-    []
+  const onSearchTextChange = useAtomCallback(
+    useCallback((get, set, e: ChangeEvent<HTMLInputElement>) => {
+      set(searchTextAtom, e.target.value);
+      set(paginationIndexAtom, 1);
+    }, [])
   );
 
   return <Component {...{ searchText, onSearchTextChange }} />;

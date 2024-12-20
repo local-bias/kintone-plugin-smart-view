@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import { pluginConditionAtom, viewTypeAtom } from '@/desktop/states/plugin';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { pluginConditionState, viewTypeState } from '@/desktop/states/plugin';
 import { Button, ButtonGroup } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { FC, useCallback } from 'react';
 
 const TYPES = [
   { value: 'table', icon: <TableRowsIcon /> },
@@ -11,14 +12,12 @@ const TYPES = [
 ] satisfies { value: Plugin.ViewType; icon: JSX.Element }[];
 
 const Component: FC = () => {
-  const viewType = useRecoilValue(viewTypeState);
+  const viewType = useAtomValue(viewTypeAtom);
 
-  const onChange = useRecoilCallback(
-    ({ set }) =>
-      (value: Plugin.ViewType) => {
-        set(viewTypeState, value);
-      },
-    []
+  const onChange = useAtomCallback(
+    useCallback((get, set, value: Plugin.ViewType) => {
+      set(viewTypeAtom, value);
+    }, [])
   );
 
   return (
@@ -34,7 +33,7 @@ const Component: FC = () => {
 };
 
 const Container: FC = () => {
-  const condition = useRecoilValue(pluginConditionState);
+  const condition = useAtomValue(pluginConditionAtom);
 
   if (!condition?.isViewTypeControlEnabled) {
     return null;
