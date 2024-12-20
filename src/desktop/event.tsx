@@ -1,11 +1,14 @@
 import { listener } from '@/lib/listener';
 import { restorePluginConfig } from '@/lib/plugin';
-import { URL_SEARCH_PARAMS_TEXT, VIEW_ROOT_ID } from '@/lib/statics';
+import { VIEW_ROOT_ID } from '@/lib/statics';
+import { store } from '@/lib/store';
 import { showNotification } from '@/lib/utilities';
 import { css } from '@emotion/css';
-import React from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import App from './app';
+import { initializeRecords } from './initialize-records';
+import { paginationChunkAtom } from './states/pagination';
+import { extractedSearchConditionsAtom, pluginConditionAtom, viewTypeAtom } from './states/plugin';
 
 let cachedRoot: Root | null = null;
 
@@ -44,23 +47,21 @@ listener.add(['app.record.index.show'], async (event) => {
     value: '',
   }));
 
-  const query = new URLSearchParams(location.search);
-
-  const initSearchText = query.get(URL_SEARCH_PARAMS_TEXT) ?? '';
-
   const root = cachedRoot || createRoot(rootElement);
   if (!cachedRoot) {
     cachedRoot = root;
   }
 
-  root.render(
-    <App
-      condition={targetCondition}
-      sortCondition={[]}
-      initSearchText={initSearchText}
-      extractedSearchCondition={extractedSearchCondition}
-    />
-  );
+  store.set(pluginConditionAtom, targetCondition);
+  store.set(paginationChunkAtom, targetCondition.paginationChunk || 100);
+  store.set(viewTypeAtom, targetCondition.viewType || 'table');
+  extractedSearchCondition.forEach((con, index) => {
+    store.set(extractedSearchConditionsAtom(index), con);
+  });
+
+  initializeRecords(targetCondition);
+
+  root.render(<App />);
 
   return event;
 });
