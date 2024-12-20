@@ -1,14 +1,12 @@
-import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { propertiesReadyState } from '@/desktop/states/kintone';
-
-import { getFieldsWithoutIgnores } from '@/lib/kintone';
-import { appPropertiesState } from '@/desktop/states/kintone';
+import { appPropertiesAtom, propertiesReadyAtom } from '@/desktop/states/kintone';
 import { GUEST_SPACE_ID } from '@/lib/global';
+import { getFieldsWithoutIgnores } from '@/lib/kintone';
+import { useSetAtom } from 'jotai';
+import { useEffect } from 'react';
 
 export const useInitializeAppProperties = () => {
-  const setReady = useSetRecoilState(propertiesReadyState);
-  const setAppProperties = useSetRecoilState(appPropertiesState);
+  const setReady = useSetAtom(propertiesReadyAtom);
+  const setAppProperties = useSetAtom(appPropertiesAtom);
 
   useEffect(() => {
     (async () => {
