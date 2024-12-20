@@ -19,19 +19,6 @@ declare namespace Plugin {
 
   type ViewField = Condition['viewFields'][number];
 
-  /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig =
-    | ConfigV1
-    | ConfigV2
-    | ConfigV3
-    | ConfigV4
-    | ConfigV5
-    | ConfigV6
-    | ConfigV7
-    | ConfigV8
-    | ConfigV9
-    | ConfigV10;
-
   type ConfigV10 = {
     version: 10;
     conditions: (Omit<ConfigV9['conditions'][number], 'viewFields'> & {

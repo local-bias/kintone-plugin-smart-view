@@ -1,15 +1,15 @@
-import { getNewCondition, restorePluginConfig } from '@/lib/plugin';
+import { getNewCondition, PluginCondition, PluginConfig, restorePluginConfig } from '@/lib/plugin';
 import { produce } from 'immer';
 import { DefaultValue, RecoilState, atom, selector, selectorFamily } from 'recoil';
 
 const PREFIX = 'plugin';
 
-const updated = <T extends keyof Plugin.Condition>(
-  storage: Plugin.Config,
+const updated = <T extends keyof PluginCondition>(
+  storage: PluginConfig,
   props: {
     conditionIndex: number;
     key: T;
-    value: Plugin.Condition[T];
+    value: PluginCondition[T];
   }
 ) => {
   const { conditionIndex, key, value } = props;
@@ -18,7 +18,7 @@ const updated = <T extends keyof Plugin.Condition>(
   });
 };
 
-export const storageState = atom<Plugin.Config>({
+export const storageState = atom<PluginConfig>({
   key: `${PREFIX}storageState`,
   default: restorePluginConfig(),
 });
@@ -44,7 +44,7 @@ export const selectedConditionIdState = atom<string>({
   }),
 });
 
-export const selectedConditionState = selector<Plugin.Condition>({
+export const selectedConditionState = selector<PluginCondition>({
   key: `${PREFIX}selectedConditionState`,
   get: ({ get }) => {
     const storage = get(storageState);
@@ -70,7 +70,7 @@ export const selectedConditionState = selector<Plugin.Condition>({
   },
 });
 
-export const conditionsState = selector<Plugin.Condition[]>({
+export const conditionsState = selector<PluginCondition[]>({
   key: `${PREFIX}conditionsState`,
   get: ({ get }) => {
     const storage = get(storageState);
@@ -94,7 +94,7 @@ export const conditionLengthState = selector<number>({
   },
 });
 
-export const conditionState = selector<Plugin.Condition | null>({
+export const conditionState = selector<PluginCondition | null>({
   key: `${PREFIX}conditionState`,
   get: ({ get }) => {
     const conditionIndex = get(tabIndexState);
@@ -105,15 +105,15 @@ export const conditionState = selector<Plugin.Condition | null>({
     const conditionIndex = get(tabIndexState);
     set(storageState, (current) =>
       produce(current, (draft) => {
-        draft.conditions[conditionIndex] = newValue as Plugin.Condition;
+        draft.conditions[conditionIndex] = newValue as PluginCondition;
       })
     );
   },
 });
 
 const conditionPropertyState = selectorFamily<
-  Plugin.Condition[keyof Plugin.Condition],
-  keyof Plugin.Condition
+  PluginCondition[keyof PluginCondition],
+  keyof PluginCondition
 >({
   key: `${PREFIX}conditionPropertyState`,
   get:
@@ -137,8 +137,8 @@ const conditionPropertyState = selectorFamily<
     },
 });
 
-export const getConditionPropertyState = <T extends keyof Plugin.Condition>(property: T) =>
-  conditionPropertyState(property) as unknown as RecoilState<Plugin.Condition[T]>;
+export const getConditionPropertyState = <T extends keyof PluginCondition>(property: T) =>
+  conditionPropertyState(property) as unknown as RecoilState<PluginCondition[T]>;
 
 export const viewIdState = getConditionPropertyState('viewId');
 export const viewFieldsState = getConditionPropertyState('viewFields');
