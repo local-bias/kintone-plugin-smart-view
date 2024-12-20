@@ -1,7 +1,7 @@
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
-import React, { FC } from 'react';
-import { useRecoilValue } from 'recoil';
-import { appPropertiesState } from '../../../states/kintone';
+import { useAtomValue } from 'jotai';
+import { FC } from 'react';
+import { appPropertiesAtom } from '../../../states/kintone';
 import { SubtableDetails } from '../../ui/subtable-details';
 import { FieldValue } from '../field-value';
 import { Subtable as MySubtable, MyTableBody, MyTableHead } from './layout';
@@ -9,7 +9,7 @@ import { Subtable as MySubtable, MyTableBody, MyTableHead } from './layout';
 type Props = Readonly<{ code: string; field: kintoneAPI.Field }>;
 
 const Subtable: FC<Readonly<{ code: string; field: kintoneAPI.field.Subtable }>> = (props) => {
-  const properties = useRecoilValue(appPropertiesState);
+  const properties = useAtomValue(appPropertiesAtom);
   const found = Object.entries(properties).find(([key]) => props.code === key);
   if (!found) {
     return null;

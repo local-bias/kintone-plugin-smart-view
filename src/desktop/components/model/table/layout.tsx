@@ -1,7 +1,8 @@
+import { PluginCondition } from '@/lib/plugin';
 import styled from '@emotion/styled';
 
 export const MyTable = styled.table<{
-  condition: Plugin.Condition | null;
+  condition: PluginCondition | null;
   isDetailCellHidden?: boolean;
 }>`
   background-color: #fff;

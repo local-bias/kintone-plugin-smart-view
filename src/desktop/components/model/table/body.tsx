@@ -1,22 +1,22 @@
 import { getQueryString } from '@/lib/cybozu';
 import { isMobile } from '@konomi-app/kintone-utilities';
 import { Skeleton } from '@mui/material';
-import React, { FC, Suspense, useDeferredValue } from 'react';
-import { useRecoilValue } from 'recoil';
-import { loadingState, pluginConditionState } from '../../../states/plugin';
-import { displayingTableRowsState, areAllRecordsReadyState } from '../../../states/records';
+import { useAtomValue } from 'jotai';
+import { FC, Suspense, useDeferredValue } from 'react';
+import { loadingAtom, pluginConditionAtom } from '../../../states/plugin';
+import { areAllRecordsReadyAtom, displayingTableRowsAtom } from '../../../states/records';
+import { DocumentIcon } from '../../ui/document-icon';
 import Cell from './cell';
 import { MyTableBody } from './layout';
-import { DocumentIcon } from '../../ui/document-icon';
 
 const Component: FC = () => {
-  const records = useRecoilValue(displayingTableRowsState);
+  const records = useAtomValue(displayingTableRowsAtom);
   const deferredRecords = useDeferredValue(records);
-  const condition = useRecoilValue(pluginConditionState)!;
+  const condition = useAtomValue(pluginConditionAtom)!;
 
   return (
     <>
-      {deferredRecords.map((record, i) => (
+      {deferredRecords.map(({ record }, i) => (
         <tr key={i}>
           <td>
             <a
@@ -46,9 +46,9 @@ const Component: FC = () => {
 };
 
 const PlaceHolder: FC = () => {
-  const isFetchComplete = useRecoilValue(areAllRecordsReadyState);
-  const loading = useRecoilValue(loadingState);
-  const condition = useRecoilValue(pluginConditionState);
+  const isFetchComplete = useAtomValue(areAllRecordsReadyAtom);
+  const loading = useAtomValue(loadingAtom);
+  const condition = useAtomValue(pluginConditionAtom);
   const colCount = condition?.viewFields.length ?? 6;
 
   if (!loading || isFetchComplete) {

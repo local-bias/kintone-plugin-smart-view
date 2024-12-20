@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
-import { useRecoilValue } from 'recoil';
-import { MyTable } from './layout';
-import Head from './head';
+import { useAtomValue } from 'jotai';
+import { FC } from 'react';
+import { pluginConditionAtom } from '../../../states/plugin';
 import Body from './body';
-import { pluginConditionState } from '../../../states/plugin';
+import Head from './head';
+import { MyTable } from './layout';
 
 const Table: FC = () => {
-  const condition = useRecoilValue(pluginConditionState);
+  const condition = useAtomValue(pluginConditionAtom);
 
   return (
     <MyTable condition={condition}>
