@@ -1,8 +1,8 @@
-import { appPropertiesState } from '@/desktop/states/kintone';
+import { appPropertiesAtom } from '@/desktop/states/kintone';
 import styled from '@emotion/styled';
 import { kintoneAPI } from '@konomi-app/kintone-utilities';
-import React, { FC, FCX, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
+import { FC, FCX, Suspense } from 'react';
 import { FieldValue } from '../field-value';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const FieldLabel: FC<{ fieldCode: string }> = ({ fieldCode }) => {
-  const properties = useRecoilValue(appPropertiesState);
+  const properties = useAtomValue(appPropertiesAtom);
   const property = Object.values(properties).find((p) => p.code === fieldCode);
 
   const label = property?.label ?? fieldCode;

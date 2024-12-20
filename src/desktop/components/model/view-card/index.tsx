@@ -1,11 +1,11 @@
-import React, { FCX } from 'react';
-import { useRecoilValue } from 'recoil';
-import { displayingTableRowsState } from '../../../states/records';
-import Card from './card';
 import styled from '@emotion/styled';
+import { useAtomValue } from 'jotai';
+import { FCX } from 'react';
+import { displayingTableRowsAtom } from '../../../states/records';
+import Card from './card';
 
 const CardList: FCX = ({ className }) => {
-  const records = useRecoilValue(displayingTableRowsState);
+  const records = useAtomValue(displayingTableRowsAtom);
 
   return (
     <div className={className}>

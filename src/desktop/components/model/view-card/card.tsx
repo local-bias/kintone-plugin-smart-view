@@ -1,30 +1,31 @@
 import {
-  cardImageFieldCodeState,
-  cardViewFieldsState,
-  pluginConditionState,
+  cardImageFieldCodeAtom,
+  cardViewFieldsAtom,
+  pluginConditionAtom,
 } from '@/desktop/states/plugin';
-import { isMobile, kintoneAPI } from '@konomi-app/kintone-utilities';
-import React, { FC, FCX } from 'react';
-import { useRecoilValue } from 'recoil';
-import Image from './image';
-import styled from '@emotion/styled';
-import Field from './field';
 import { getQueryString } from '@/lib/cybozu';
-import { DocumentIcon } from '../../ui/document-icon';
+import styled from '@emotion/styled';
+import { isMobile, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { Card, IconButton, Tooltip } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { FC, FCX } from 'react';
+import { DocumentIcon } from '../../ui/document-icon';
+import Field from './field';
+import Image from './image';
+import { TableRow } from '@/desktop/static';
 
 type FileInfo = kintoneAPI.field.File['value'][number];
 
 type Props = {
-  record: kintoneAPI.RecordData;
+  record: TableRow;
 };
 
 const Component: FCX<Props> = ({ className, record }) => {
-  const condition = useRecoilValue(pluginConditionState)!;
-  const imageFieldCode = useRecoilValue(cardImageFieldCodeState);
-  const viewFields = useRecoilValue(cardViewFieldsState) ?? [];
+  const condition = useAtomValue(pluginConditionAtom)!;
+  const imageFieldCode = useAtomValue(cardImageFieldCodeAtom);
+  const viewFields = useAtomValue(cardViewFieldsAtom) ?? [];
 
-  const files = imageFieldCode ? ((record[imageFieldCode]?.value as FileInfo[]) ?? []) : [];
+  const files = imageFieldCode ? ((record.record[imageFieldCode]?.value as FileInfo[]) ?? []) : [];
 
   let image: FileInfo | null = null;
 
@@ -41,13 +42,15 @@ const Component: FCX<Props> = ({ className, record }) => {
       <div className='🐸right'>
         <div className='🐸fields'>
           {viewFields.map((field, i) => {
-            return <Field key={i} field={record[field.fieldCode]} fieldCode={field.fieldCode} />;
+            return (
+              <Field key={i} field={record.record[field.fieldCode]} fieldCode={field.fieldCode} />
+            );
           })}
         </div>
         <div className='🐸actions'>
           <a
             href={`${location.pathname}show${isMobile() ? '?' : '#'}record=${
-              record.$id.value
+              record.record.$id.value
             }&l.view=${condition.viewId}&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
             {...(condition.isOpenInNewTab ? { target: '_blank' } : {})}
           >
