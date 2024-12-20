@@ -1,12 +1,12 @@
-import React, { FCX } from 'react';
-import styled from '@emotion/styled';
 import { WindIcon } from '@/lib/components/wind';
-import { useRecoilValue } from 'recoil';
-import { errorState } from '../../../states/plugin';
+import styled from '@emotion/styled';
 import { Button } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { FCX } from 'react';
+import { errorAtom } from '../../../states/plugin';
 
 const Component: FCX = ({ className }) => {
-  const error = useRecoilValue(errorState);
+  const error = useAtomValue(errorAtom);
 
   return (
     <div {...{ className }}>

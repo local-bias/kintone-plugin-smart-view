@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
+import { errorAtom, viewTypeAtom } from '@/desktop/states/plugin';
+import { isOriginalTableShownAtom } from '@/desktop/states/records';
+import { useAtomValue } from 'jotai';
+import { FC } from 'react';
 import TableView from '../table';
 import CardView from '../view-card';
-import { useRecoilValue } from 'recoil';
-import { errorState, viewTypeState } from '@/desktop/states/plugin';
-import { isOriginalTableShownState } from '@/desktop/states/records';
-import ErrorNofitication from './error';
 import Empty from './empty';
+import ErrorNofitication from './error';
 
 const Component: FC = () => {
-  const viewType = useRecoilValue(viewTypeState);
-  const error = useRecoilValue(errorState);
-  const isOriginalTableShown = useRecoilValue(isOriginalTableShownState);
+  const viewType = useAtomValue(viewTypeAtom);
+  const error = useAtomValue(errorAtom);
+  const isOriginalTableShown = useAtomValue(isOriginalTableShownAtom);
 
   if (error) {
     return <ErrorNofitication />;
