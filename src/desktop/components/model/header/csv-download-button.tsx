@@ -1,48 +1,52 @@
-import React, { FC, FCX } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { TableRow } from '@/desktop/static';
+import { PluginCondition } from '@/lib/plugin';
 import styled from '@emotion/styled';
-import { useSnackbar } from 'notistack';
-import { Button, Tooltip } from '@mui/material';
-import GetAppIcon from '@mui/icons-material/GetApp';
-import { unparse as toCsv } from 'papaparse';
-
-import { filteredTableRowsState } from '../../../states/records';
-import { pluginConditionState } from '../../../states/plugin';
 import { getFieldValueAsString, type kintoneAPI } from '@konomi-app/kintone-utilities';
-import { appPropertiesState } from '../../../states/kintone';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import { Button, Tooltip } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { useSnackbar } from 'notistack';
+import { unparse as toCsv } from 'papaparse';
+import { FC, FCX, useCallback } from 'react';
+import { appPropertiesAtom } from '../../../states/kintone';
+import { pluginConditionAtom } from '../../../states/plugin';
+import { filteredTableRowsAtom } from '../../../states/records';
 
 const Component: FCX = ({ className }) => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const onClick = useRecoilCallback(
-    ({ snapshot }) =>
-      async () => {
-        try {
-          const records = await snapshot.getPromise(filteredTableRowsState);
+  const onClick = useAtomCallback(
+    useCallback(async (get) => {
+      try {
+        const tableRows = await get(filteredTableRowsAtom);
 
-          if (!records.length) {
-            enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {
-              variant: 'warning',
-            });
-            return;
-          }
-          const condition = await snapshot.getPromise(pluginConditionState);
-          if (!condition) {
-            enqueueSnackbar('プラグインの設定情報の取得に失敗しました', {
-              variant: 'error',
-            });
-            return;
-          }
-          const fieldProperties = await snapshot.getPromise(appPropertiesState);
-          download(condition, records, fieldProperties);
-
-          enqueueSnackbar('CSVを出力しました', { variant: 'success' });
-        } catch (error) {
-          console.error('CSV出力に失敗しました', error);
-          enqueueSnackbar('CSV出力に失敗しました', { variant: 'error' });
+        if (!tableRows.length) {
+          enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {
+            variant: 'warning',
+          });
+          return;
         }
-      },
-    []
+        const condition = await get(pluginConditionAtom);
+        if (!condition) {
+          enqueueSnackbar('プラグインの設定情報の取得に失敗しました', {
+            variant: 'error',
+          });
+          return;
+        }
+        const fieldProperties = await get(appPropertiesAtom);
+        download(
+          condition,
+          tableRows.map(({ record }) => record),
+          fieldProperties
+        );
+
+        enqueueSnackbar('CSVを出力しました', { variant: 'success' });
+      } catch (error) {
+        console.error('CSV出力に失敗しました', error);
+        enqueueSnackbar('CSV出力に失敗しました', { variant: 'error' });
+      }
+    }, [])
   );
 
   return (
@@ -70,7 +74,7 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC = () => {
-  const condition = useRecoilValue(pluginConditionState)!;
+  const condition = useAtomValue(pluginConditionAtom)!;
 
   if (condition.isCsvDownloadButtonHidden) {
     return null;
@@ -81,7 +85,7 @@ const Container: FC = () => {
 export default Container;
 
 const download = (
-  condition: Plugin.Condition,
+  condition: PluginCondition,
   records: kintoneAPI.RecordData[],
   fieldProperties: kintoneAPI.FieldProperties
 ) => {
@@ -93,7 +97,7 @@ const download = (
 
   const body = records.map((record) =>
     condition.viewFields.map(({ fieldCode }) => {
-      return getFieldValueAsString(record[fieldCode]);
+      return record[fieldCode] ? getFieldValueAsString(record[fieldCode]) : '';
     })
   );
 

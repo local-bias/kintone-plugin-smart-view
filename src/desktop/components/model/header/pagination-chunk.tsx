@@ -1,18 +1,17 @@
 import { MenuItem, TextField } from '@mui/material';
-import React, { ChangeEventHandler, FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { paginationChunkState } from '../../../states/pagination';
-import { pluginConditionState } from '../../../states/plugin';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { ChangeEventHandler, FC, useCallback } from 'react';
+import { paginationChunkAtom } from '../../../states/pagination';
+import { pluginConditionAtom } from '../../../states/plugin';
 
 const Component: FC = () => {
-  const paginationChunk = useRecoilValue(paginationChunkState);
+  const paginationChunk = useAtomValue(paginationChunkAtom);
 
-  const onChunkChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
-    ({ set }) =>
-      (props) => {
-        set(paginationChunkState, Number(props.target.value));
-      },
-    []
+  const onChunkChange: ChangeEventHandler<HTMLInputElement> = useAtomCallback(
+    useCallback((get, set, props) => {
+      set(paginationChunkAtom, Number(props.target.value));
+    }, [])
   );
 
   return (
@@ -38,7 +37,7 @@ const Component: FC = () => {
 };
 
 const Container: FC = () => {
-  const condition = useRecoilValue(pluginConditionState);
+  const condition = useAtomValue(pluginConditionAtom);
 
   if (!condition?.isPaginationChunkControlShown) {
     return null;

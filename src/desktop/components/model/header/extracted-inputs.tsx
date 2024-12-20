@@ -1,23 +1,25 @@
-import { appPropertiesState } from '@/desktop/states/kintone';
-import { extractedSearchConditionsState, pluginConditionState } from '@/desktop/states/plugin';
-import { autocompleteValuesState } from '@/desktop/states/records';
+import { appPropertiesAtom } from '@/desktop/states/kintone';
+import { extractedSearchConditionsAtom, pluginConditionAtom } from '@/desktop/states/plugin';
+import { autocompleteValuesAtom } from '@/desktop/states/records';
 import { Autocomplete, Skeleton, TextField, Tooltip } from '@mui/material';
-import React, { ChangeEventHandler, FC, Suspense } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { ChangeEventHandler, FC, Suspense, useCallback } from 'react';
 
 type Props = { input: Plugin.ExtractedInput; index: number };
 
 const ExtractedAutocomplete: FC<Props> = ({ input, index }) => {
-  const appFields = useRecoilValue(appPropertiesState);
-  const searchCondition = useRecoilValue(extractedSearchConditionsState(index))!;
-  const suggests = useRecoilValue(autocompleteValuesState(input.fieldCode));
+  const appFields = useAtomValue(appPropertiesAtom);
+  const searchCondition = useAtomValue(extractedSearchConditionsAtom(index))!;
+  const suggests = useAtomValue(autocompleteValuesAtom(input.fieldCode));
 
-  const onChange = useRecoilCallback(
-    ({ set }) =>
-      (value: string | null) => {
-        set(extractedSearchConditionsState(index), (_c, c = _c!) => ({ ...c, value: value ?? '' }));
+  const onChange = useAtomCallback(
+    useCallback(
+      (get, set, value: string | null) => {
+        set(extractedSearchConditionsAtom(index), (_c, c = _c!) => ({ ...c, value: value ?? '' }));
       },
-    [index]
+      [index]
+    )
   );
 
   const field = Object.values(appFields).find((field) => field.code === input.fieldCode);
@@ -61,18 +63,19 @@ const ExtractedAutocomplete: FC<Props> = ({ input, index }) => {
 };
 
 const ExtractedInput: FC<Props> = ({ input, index }) => {
-  const appFields = useRecoilValue(appPropertiesState);
-  const searchCondition = useRecoilValue(extractedSearchConditionsState(index))!;
+  const appFields = useAtomValue(appPropertiesAtom);
+  const searchCondition = useAtomValue(extractedSearchConditionsAtom(index))!;
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
-    ({ set }) =>
-      (event) => {
-        set(extractedSearchConditionsState(index), (_c, c = _c!) => ({
+  const onChange: ChangeEventHandler<HTMLInputElement> = useAtomCallback(
+    useCallback(
+      (get, set, event) => {
+        set(extractedSearchConditionsAtom(index), (_c, c = _c!) => ({
           ...c,
           value: event.target.value,
         }));
       },
-    [index]
+      [index]
+    )
   );
 
   const label =
@@ -117,7 +120,7 @@ const ExtractedInputContainer: FC<Props> = (props) => {
 };
 
 const Component: FC = () => {
-  const { extractedInputs } = useRecoilValue(pluginConditionState)!;
+  const { extractedInputs } = useAtomValue(pluginConditionAtom)!;
 
   return (
     <>

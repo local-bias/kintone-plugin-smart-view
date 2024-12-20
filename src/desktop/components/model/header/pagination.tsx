@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import { isMobile } from '@konomi-app/kintone-utilities';
 import { Pagination } from '@mui/material';
-import React, { FC, FCX } from 'react';
-import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
-import { paginationChunkState, paginationIndexState } from '../../../states/pagination';
-import { filteredTableRowsState } from '../../../states/records';
+import { useAtom, useAtomValue } from 'jotai';
+import { FC, FCX } from 'react';
+import { SetterOrUpdater } from 'recoil';
+import { paginationChunkAtom, paginationIndexAtom } from '../../../states/pagination';
+import { filteredTableRowsAtom } from '../../../states/records';
 
 type Props = {
   size: number;
@@ -42,9 +43,9 @@ const StyledComponent = styled(Component)`
 `;
 
 const Container: FC = () => {
-  const records = useRecoilValue(filteredTableRowsState);
-  const [index, setIndex] = useRecoilState(paginationIndexState);
-  const chunkSize = useRecoilValue(paginationChunkState);
+  const records = useAtomValue(filteredTableRowsAtom);
+  const [index, setIndex] = useAtom(paginationIndexAtom);
+  const chunkSize = useAtomValue(paginationChunkAtom);
 
   const size = records.length || 0;
 
