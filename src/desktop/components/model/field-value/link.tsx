@@ -1,13 +1,13 @@
-import { Skeleton } from '@mui/material';
-import React, { FC, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
+import { appPropertiesAtom } from '@/desktop/states/kintone';
 import { type kintoneAPI } from '@konomi-app/kintone-utilities';
-import { appPropertiesState } from '@/desktop/states/kintone';
+import { Skeleton } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { FC, Suspense } from 'react';
 
 type Props = { field: kintoneAPI.field.Link; code: string };
 
 const Component: FC<Props> = ({ field, code }) => {
-  const properties = useRecoilValue(appPropertiesState);
+  const properties = useAtomValue(appPropertiesAtom);
   const found = Object.entries(properties).find(([key]) => code === key);
 
   if (!found || ['', undefined, null].includes(field.value)) {

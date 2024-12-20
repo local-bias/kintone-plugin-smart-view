@@ -1,13 +1,13 @@
-import { Skeleton } from '@mui/material';
-import React, { FC, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
 import { getCalcFieldValueAsString, type kintoneAPI } from '@konomi-app/kintone-utilities';
-import { appPropertiesState } from '../../../states/kintone';
+import { Skeleton } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { FC, Suspense } from 'react';
+import { appPropertiesAtom } from '../../../states/kintone';
 
 type Props = { field: kintoneAPI.field.Calc; code: string };
 
 const Component: FC<Props> = ({ field, code }) => {
-  const properties = useRecoilValue(appPropertiesState);
+  const properties = useAtomValue(appPropertiesAtom);
   const found = Object.entries(properties).find(([key]) => code === key);
 
   if (!found || ['', undefined, null].includes(field.value)) {

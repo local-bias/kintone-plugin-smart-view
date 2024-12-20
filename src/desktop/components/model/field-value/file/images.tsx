@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 import { Skeleton } from '@mui/material';
-import React, { FC, FCX, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
-import { fileUrlState } from '../../../../states/kintone';
+import { useAtomValue } from 'jotai';
+import { FC, FCX, Suspense } from 'react';
+import { fileUrlAtom } from '../../../../states/kintone';
 
 type Props = { files: kintoneAPI.field.File['value'] };
 type ImageProps = { file: kintoneAPI.field.File['value'][number] };
 
 const Image: FC<ImageProps> = ({ file }) => {
-  const fileUrl = useRecoilValue(fileUrlState(file.fileKey));
+  const fileUrl = useAtomValue(fileUrlAtom(file.fileKey));
   if (!fileUrl) {
     return null;
   }
