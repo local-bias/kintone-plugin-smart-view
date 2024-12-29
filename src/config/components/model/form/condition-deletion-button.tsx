@@ -1,28 +1,28 @@
-import React, { FC, memo } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { produce } from 'immer';
 import { PluginConditionDeleteButton } from '@konomi-app/kintone-utilities-react';
-import { selectedConditionIdState, storageState } from '../../../states/plugin';
+import { produce } from 'immer';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback, useResetAtom } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
+import { FC, memo, useCallback } from 'react';
+import { pluginConfigAtom, selectedConditionIdAtom } from '../../../states/plugin';
 
 const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const storage = useRecoilValue(storageState);
+  const storage = useAtomValue(pluginConfigAtom);
+  const resetConditionId = useResetAtom(selectedConditionIdAtom);
 
-  const onClick = useRecoilCallback(
-    ({ reset, set, snapshot }) =>
-      async () => {
-        const id = await snapshot.getPromise(selectedConditionIdState);
-        set(storageState, (_, _storage = _!) =>
-          produce(_storage, (draft) => {
-            const index = draft.conditions.findIndex((condition) => condition.id === id);
-            draft.conditions.splice(index, 1);
-          })
-        );
-        reset(selectedConditionIdState);
-        enqueueSnackbar('設定を削除しました', { variant: 'success' });
-      },
-    []
+  const onClick = useAtomCallback(
+    useCallback(async (get, set) => {
+      const id = await get(selectedConditionIdAtom);
+      set(pluginConfigAtom, (_, _storage = _!) =>
+        produce(_storage, (draft) => {
+          const index = draft.conditions.findIndex((condition) => condition.id === id);
+          draft.conditions.splice(index, 1);
+        })
+      );
+      resetConditionId();
+      enqueueSnackbar('設定を削除しました', { variant: 'success' });
+    }, [])
   );
 
   if ((storage?.conditions.length ?? 0) < 2) {
