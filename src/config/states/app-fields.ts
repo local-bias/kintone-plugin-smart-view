@@ -1,46 +1,75 @@
-import { selector } from 'recoil';
+import { GUEST_SPACE_ID, isProd } from '@/lib/global';
 import { getFieldsWithoutIgnores } from '@/lib/kintone';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
-import { GUEST_SPACE_ID } from '@/lib/global';
-import { viewFieldsState } from './plugin';
+import { atom } from 'jotai';
+import { nanoid } from 'nanoid';
+import { clone } from 'remeda';
+import { allKintoneAppsAtom, dstAppFieldsAtom } from './kintone';
+import { validJoinConditionsAtom, viewFieldsAtom } from './plugin';
 
-const PREFIX = 'kintone';
+export type ViewFieldProperty = kintoneAPI.FieldProperty & {
+  appName: string | null;
+  joinConditionId: string | null;
+};
 
-export const appFieldsState = selector<kintoneAPI.FieldProperty[]>({
-  key: `${PREFIX}appFieldsState`,
-  get: async () => {
-    const properties = await getFieldsWithoutIgnores({
-      preview: true,
-      guestSpaceId: GUEST_SPACE_ID,
-    });
+export const appFieldsAtom = atom<Promise<ViewFieldProperty[]>>(async () => {
+  const properties = await getFieldsWithoutIgnores({
+    preview: true,
+    guestSpaceId: GUEST_SPACE_ID,
+  });
 
-    const values = Object.values(properties);
+  const values = Object.values(properties).map((property) => ({
+    ...property,
+    appName: null,
+    joinConditionId: null,
+  }));
 
-    return values.sort((a, b) => a.label.localeCompare(b.label, 'ja'));
-  },
+  return values.sort((a, b) => a.label.localeCompare(b.label, 'ja'));
 });
 
-export const extractedInputFieldsState = selector<kintoneAPI.FieldProperty[]>({
-  key: `${PREFIX}extractedInputFieldsState`,
-  get: async ({ get }) => {
-    const viewFields = get(viewFieldsState);
-    const fields = get(appFieldsState);
+export const selectableViewFieldsAtom = atom<Promise<ViewFieldProperty[]>>(async (get) => {
+  const rawViewFields = await get(appFieldsAtom);
+  const viewFields = clone(rawViewFields);
+  const allKintoneApps = await get(allKintoneAppsAtom);
+  const joinConditions = get(validJoinConditionsAtom);
 
-    return fields.filter((field) => {
-      if (viewFields.every((viewField) => viewField.fieldCode !== field.code)) {
-        return false;
-      }
+  for (const joinCondition of joinConditions) {
+    const dstApp = allKintoneApps.find((app) => app.appId === joinCondition.dstAppId);
+    const dstFields = await get(dstAppFieldsAtom(joinCondition.dstAppId));
+    viewFields.push(
+      ...dstFields.map((field) => ({
+        ...field,
+        id: nanoid(),
+        label: dstApp ? `${field.label}` : field.label,
+        appName: dstApp ? dstApp.name : null,
+        joinConditionId: joinCondition.id,
+      }))
+    );
+  }
 
-      return (
-        field.type === 'SINGLE_LINE_TEXT' ||
-        field.type === 'MULTI_LINE_TEXT' ||
-        field.type === 'RADIO_BUTTON' ||
-        field.type === 'DROP_DOWN' ||
-        field.type === 'CALC' ||
-        field.type === 'NUMBER' ||
-        field.type === 'DATE' ||
-        field.type === 'DATETIME'
-      );
-    });
-  },
+  !isProd && console.log({ viewFields });
+
+  return viewFields;
+});
+
+export const extractedInputFieldsAtom = atom<Promise<kintoneAPI.FieldProperty[]>>(async (get) => {
+  const viewFields = get(viewFieldsAtom);
+  const fields = await get(appFieldsAtom);
+
+  return fields.filter((field) => {
+    if (viewFields.every((viewField) => viewField.fieldCode !== field.code)) {
+      return false;
+    }
+
+    return (
+      field.type === 'SINGLE_LINE_TEXT' ||
+      field.type === 'MULTI_LINE_TEXT' ||
+      field.type === 'RADIO_BUTTON' ||
+      field.type === 'DROP_DOWN' ||
+      field.type === 'CALC' ||
+      field.type === 'NUMBER' ||
+      field.type === 'DATE' ||
+      field.type === 'DATETIME'
+    );
+  });
 });
