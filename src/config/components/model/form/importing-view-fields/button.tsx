@@ -1,28 +1,28 @@
-import React, { FC } from 'react';
-import { useRecoilCallback } from 'recoil';
-import type { DeepReadonly } from 'utility-types';
-import { Button } from '@mui/material';
+import { t } from '@/lib/i18n';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { listViewDialogShownState } from '../../../../states/importing-view-fields';
+import { Button } from '@mui/material';
+import { useSetAtom } from 'jotai';
+import { FC } from 'react';
+import { listViewDialogShownAtom } from '../../../../states/importing-view-fields';
 
-type Props = DeepReadonly<{ onClick: () => void }>;
+const ViewFieldsImportButton: FC = () => {
+  const setListViewDialogShown = useSetAtom(listViewDialogShownAtom);
 
-const Component: FC<Props> = ({ onClick }) => (
-  <Button variant='outlined' color='primary' onClick={onClick} startIcon={<ContentCopyIcon />}>
-    他の一覧の設定をインポート
-  </Button>
-);
+  const onClick = () => {
+    setListViewDialogShown(true);
+  };
 
-const Container: FC = () => {
-  const onClick = useRecoilCallback(
-    ({ set }) =>
-      async () => {
-        set(listViewDialogShownState, true);
-      },
-    []
+  return (
+    <Button
+      variant='outlined'
+      color='primary'
+      onClick={onClick}
+      startIcon={<ContentCopyIcon />}
+      sx={{ textTransform: 'lowercase' }}
+    >
+      {t('config.app.form.importViewFieldsButton.label')}
+    </Button>
   );
-
-  return <Component {...{ onClick }} />;
 };
 
-export default Container;
+export default ViewFieldsImportButton;
