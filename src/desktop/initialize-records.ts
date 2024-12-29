@@ -1,8 +1,14 @@
-import { GUEST_SPACE_ID } from '@/lib/global';
+import { GUEST_SPACE_ID, isProd } from '@/lib/global';
+import { t } from '@/lib/i18n';
 import { getQuickSearchString } from '@/lib/kintone';
-import { PluginCondition } from '@/lib/plugin';
 import { store } from '@/lib/store';
-import { getAllRecordsWithId, getQuery, getYuruChara } from '@konomi-app/kintone-utilities';
+import { PluginCondition } from '@/schema/plugin-config';
+import {
+  getAllRecordsWithId,
+  getQuery,
+  getYuruChara,
+  kintoneAPI,
+} from '@konomi-app/kintone-utilities';
 import { currentAppIdAtom } from './states/kintone';
 import { errorAtom, loadingAtom } from './states/plugin';
 import { allTableRowsAtom, areAllRecordsReadyAtom } from './states/records';
@@ -28,39 +34,37 @@ export const initializeRecords = async (condition: PluginCondition) => {
       .map(({ fieldCode }) => fieldCode);
     const fields = ['$id', ...targetFields];
 
+    const getTableRow = (record: kintoneAPI.RecordData): TableRow => {
+      const __quickSearch = getYuruChara(getQuickSearchString(record), {
+        isCaseSensitive,
+        isKatakanaSensitive,
+        isHankakuKatakanaSensitive,
+        isZenkakuEisujiSensitive,
+      });
+
+      return { record, __quickSearch };
+    };
+
     await getAllRecordsWithId({
       app,
       condition: query,
       fields,
-      onStep: (params) => {
-        const { records } = params;
-        const tableRows = records.map<TableRow>((record) => {
-          const __quickSearch = getYuruChara(getQuickSearchString(record), {
-            isCaseSensitive,
-            isKatakanaSensitive,
-            isHankakuKatakanaSensitive,
-            isZenkakuEisujiSensitive,
-          });
-
-          return { record, __quickSearch };
-        });
-        store.set(allTableRowsAtom, tableRows);
+      onStep: ({ incremental }) => {
+        const tableRows = incremental.map<TableRow>(getTableRow);
+        store.set(allTableRowsAtom, (prev) => [...prev, ...tableRows]);
       },
       guestSpaceId: GUEST_SPACE_ID,
-      debug: process?.env?.NODE_ENV === 'development',
+      debug: !isProd,
     });
 
     store.set(areAllRecordsReadyAtom, true);
   } catch (error: any) {
     if (error?.code === 'GAIA_TM12') {
-      store.set(
-        errorAtom,
-        'ご利用中のドメインにおけるカーソルの作成数の上限に達しました。しばらく時間をおいてから再度お試しください。'
-      );
+      store.set(errorAtom, t('desktop.error.domainCursorCreationLimitReachedError'));
     } else if (error instanceof Error) {
       store.set(errorAtom, error.message);
     } else {
-      store.set(errorAtom, 'エラーが発生しました');
+      store.set(errorAtom, t('desktop.error.unknownError'));
     }
     throw error;
   } finally {
