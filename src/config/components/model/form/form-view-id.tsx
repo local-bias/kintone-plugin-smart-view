@@ -1,23 +1,20 @@
-import React, { ChangeEventHandler, FC, memo, Suspense } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { viewIdState } from '../../../states/plugin';
+import { t } from '@/lib/i18n';
 import { MenuItem, Skeleton, TextField } from '@mui/material';
-import { customViewsState } from '../../../states/kintone';
+import { useAtom, useAtomValue } from 'jotai';
+import { ChangeEventHandler, FC, Suspense } from 'react';
+import { customViewsAtom } from '../../../states/kintone';
+import { viewIdAtom } from '../../../states/plugin';
 
-const Component: FC = () => {
-  const views = useRecoilValue(customViewsState);
-  const viewId = useRecoilValue(viewIdState);
+const ViewIdForm: FC = () => {
+  const views = useAtomValue(customViewsAtom);
+  const [viewId, setViewId] = useAtom(viewIdAtom);
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
-    ({ set }) =>
-      (e) => {
-        set(viewIdState, e.target.value);
-      },
-    []
-  );
+  const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setViewId(e.target.value);
+  };
 
   return (
-    <TextField select label='一覧の名前' value={viewId} {...{ onChange }}>
+    <TextField select label={t('config.app.form.view-id.label')} value={viewId} {...{ onChange }}>
       {Object.entries(views)
         .sort(([, a], [, b]) => Number(a.index) - Number(b.index))
         .map(([name, { id }], i) => (
@@ -29,14 +26,14 @@ const Component: FC = () => {
   );
 };
 
-const Container: FC = () => {
+const ViewIdFormContainer: FC = () => {
   return (
     <div className='[&_>div]:w-[250px]'>
       <Suspense fallback={<Skeleton variant='rounded' width={250} height={56} />}>
-        <Component />
+        <ViewIdForm />
       </Suspense>
     </div>
   );
 };
 
-export default memo(Container);
+export default ViewIdFormContainer;
