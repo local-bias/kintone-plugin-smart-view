@@ -1,12 +1,13 @@
 import { GUEST_SPACE_ID } from '@/lib/global';
+import { t } from '@/lib/i18n';
 import { downloadFile, getAppId, kintoneAPI } from '@konomi-app/kintone-utilities';
-import { atomFamily } from 'jotai/utils';
 import { atom } from 'jotai';
+import { atomFamily } from 'jotai/utils';
 
 export const currentAppIdAtom = atom(() => {
   const appId = getAppId();
   if (!appId) {
-    throw new Error('アプリ情報が取得できませんでした');
+    throw new Error(t('desktop.error.appInfoRetrievalFailedError'));
   }
   return appId;
 });
