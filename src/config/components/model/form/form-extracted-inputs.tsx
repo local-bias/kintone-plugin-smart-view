@@ -1,20 +1,28 @@
-import { Autocomplete, IconButton, Skeleton, TextField, Tooltip, MenuItem } from '@mui/material';
-import React, { FC, memo, Suspense } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { produce } from 'immer';
-
-import { extractedInputsState } from '../../../states/plugin';
-import { extractedInputFieldsState } from '../../../states/app-fields';
 import styled from '@emotion/styled';
+import AddIcon from '@mui/icons-material/Add';
+import {
+  Autocomplete,
+  Box,
+  IconButton,
+  MenuItem,
+  Skeleton,
+  TextField,
+  Tooltip,
+} from '@mui/material';
+import { produce } from 'immer';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { FC, memo, Suspense, useCallback } from 'react';
+import { extractedInputFieldsAtom } from '../../../states/app-fields';
+import { extractedInputsAtom } from '../../../states/plugin';
+import { t } from '@/lib/i18n';
 
 const INPUT_TYPES: { type: Plugin.ExtractedInputType; label: string }[] = [
-  { type: 'text', label: 'テキスト' },
-  { type: 'autocomplete', label: 'ドロップダウン' },
-  { type: 'date', label: '日付' },
-  { type: 'month', label: '月' },
-  { type: 'year', label: '年' },
+  { type: 'text', label: t('config.app.form.extractedInputs.type.text') },
+  { type: 'autocomplete', label: t('config.app.form.extractedInputs.type.dropdown') },
+  { type: 'date', label: t('config.app.form.extractedInputs.type.date') },
+  { type: 'month', label: t('config.app.form.extractedInputs.type.month') },
+  { type: 'year', label: t('config.app.form.extractedInputs.type.year') },
 ];
 
 const Row = styled.div`
@@ -38,31 +46,27 @@ const Row = styled.div`
 `;
 
 const Component: FC = () => {
-  const extractedInputs = useRecoilValue(extractedInputsState);
-  const fields = useRecoilValue(extractedInputFieldsState);
+  const extractedInputs = useAtomValue(extractedInputsAtom);
+  const fields = useAtomValue(extractedInputFieldsAtom);
 
-  const onTypeChange = useRecoilCallback(
-    ({ set }) =>
-      (rowIndex: number, value: Plugin.ExtractedInputType) => {
-        set(extractedInputsState, (current) =>
-          produce(current, (draft) => {
-            draft[rowIndex].type = value;
-          })
-        );
-      },
-    []
+  const onTypeChange = useAtomCallback(
+    useCallback((_, set, rowIndex: number, value: Plugin.ExtractedInputType) => {
+      set(extractedInputsAtom, (current) =>
+        produce(current, (draft) => {
+          draft[rowIndex].type = value;
+        })
+      );
+    }, [])
   );
 
-  const onFieldCodeChange = useRecoilCallback(
-    ({ set }) =>
-      (rowIndex: number, value: string) => {
-        set(extractedInputsState, (current) =>
-          produce(current, (draft) => {
-            draft[rowIndex].fieldCode = value;
-          })
-        );
-      },
-    []
+  const onFieldCodeChange = useAtomCallback(
+    useCallback((_, set, rowIndex: number, value: string) => {
+      set(extractedInputsAtom, (current) =>
+        produce(current, (draft) => {
+          draft[rowIndex].fieldCode = value;
+        })
+      );
+    }, [])
   );
 
   return (
@@ -71,7 +75,7 @@ const Component: FC = () => {
         <Row key={i}>
           <TextField
             select
-            label='検索タイプ'
+            label={t('config.app.form.extractedInputs.type.label')}
             color='primary'
             value={type}
             sx={{ width: '200px' }}
@@ -90,14 +94,24 @@ const Component: FC = () => {
             isOptionEqualToValue={(option, v) => option.code === v.code}
             getOptionLabel={(option) => `${option.label}(${option.code})`}
             onChange={(_, field) => onFieldCodeChange(i, field?.code ?? '')}
+            renderOption={(props, option) => {
+              const { key, ...optionProps } = props;
+              return (
+                <Box key={key} component='li' {...optionProps}>
+                  <div className='grid'>
+                    <div className='text-xs text-gray-400'>
+                      {t('common.autocomplete.options.fieldCode', option.code)}
+                    </div>
+                    {option.label}
+                  </div>
+                </Box>
+              );
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label='対象フィールド'
-                InputLabelProps={{
-                  ...params.InputLabelProps,
-                  shrink: true,
-                }}
+                label={t('config.app.form.extractedInputs.fieldCode.label')}
+                slotProps={{ inputLabel: { shrink: true } }}
                 variant='outlined'
                 color='primary'
               />
@@ -110,15 +124,6 @@ const Component: FC = () => {
               </IconButton>
             </div>
           </Tooltip>
-          {extractedInputs.length > 1 && (
-            <Tooltip title='無料版では１件のみ設定可能です'>
-              <div>
-                <IconButton size='small' disabled>
-                  <DeleteIcon fontSize='small' />
-                </IconButton>
-              </div>
-            </Tooltip>
-          )}
         </Row>
       ))}
     </>
