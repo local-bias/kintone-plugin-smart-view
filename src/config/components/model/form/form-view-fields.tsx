@@ -1,39 +1,44 @@
+import { selectableViewFieldsAtom, ViewFieldProperty } from '@/config/states/app-fields';
+import { selectedViewFieldDetailSettingIndexAtom, viewFieldsAtom } from '@/config/states/plugin';
+import { t } from '@/lib/i18n';
+import { getNewViewField } from '@/lib/plugin';
+import { cn } from '@/lib/utils';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import {
+  JotaiDndContext,
+  JotaiSortableContext,
+  useArray,
+} from '@konomi-app/kintone-utilities-jotai';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Autocomplete,
+  Box,
   IconButton,
+  InputAdornment,
   Skeleton,
   TextField,
   Tooltip,
-  InputAdornment,
 } from '@mui/material';
-import React, { FC, memo, Suspense } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { produce } from 'immer';
-import { selectedViewFieldDetailSettingIndexState, viewFieldsState } from '@/config/states/plugin';
-import { appFieldsState } from '../../../states/app-fields';
-import { useRecoilRow } from '@konomi-app/kintone-utilities-react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { cn } from '@/lib/utils';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
 import { GripVertical } from 'lucide-react';
-import { RecoilDndContext } from '@/lib/components/recoil-dnd-context';
-import { RecoilSortableContext } from '@/lib/components/recoil-sortable-context';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { FC, Suspense, useCallback } from 'react';
 import Dialog from './dialog';
-import { getNewViewField } from '@/lib/plugin';
 
 const FieldSelect: FC<{
   value: Plugin.ViewField;
   index: number;
-  onFieldCodeChange: (index: number, value: string) => void;
+  onFieldChange: (index: number, value: ViewFieldProperty | null) => void;
   addRow: (index: number) => void;
   deleteRow: (index: number) => void;
   onWidthChange: (index: number, value: string) => void;
   deletable: boolean;
-}> = ({ value, index, onFieldCodeChange, addRow, deleteRow, onWidthChange, deletable }) => {
-  const fields = useRecoilValue(appFieldsState);
+}> = ({ value, index, onFieldChange, addRow, deleteRow, onWidthChange, deletable }) => {
+  const fields = useAtomValue(selectableViewFieldsAtom);
   const {
     isDragging,
     setActivatorNodeRef,
@@ -44,12 +49,13 @@ const FieldSelect: FC<{
     transition,
   } = useSortable({ id: value.id });
 
-  const onDialogOpen = useRecoilCallback(
-    ({ set }) =>
-      () => {
-        set(selectedViewFieldDetailSettingIndexState, index);
+  const onDialogOpen = useAtomCallback(
+    useCallback(
+      (_, set) => {
+        set(selectedViewFieldDetailSettingIndexAtom, index);
       },
-    [index]
+      [index]
+    )
   );
 
   return (
@@ -79,13 +85,35 @@ const FieldSelect: FC<{
         value={fields.find((field) => field.code === value.fieldCode) ?? null}
         sx={{ width: '350px' }}
         options={fields}
-        isOptionEqualToValue={(option, v) => option.code === v.code}
-        getOptionLabel={(option) => `${option.label}(${option.code})`}
-        onChange={(_, field) => onFieldCodeChange(index, field?.code ?? '')}
+        isOptionEqualToValue={(option, v) =>
+          option.code === v.code && option.joinConditionId === v.joinConditionId
+        }
+        getOptionLabel={(option) =>
+          `${option.appName ? `【${option.appName}】` : ''}${option.label}(${option.code})`
+        }
+        onChange={(_, field) => onFieldChange(index, field)}
+        renderOption={(props, option) => {
+          const { key, ...optionProps } = props;
+          return (
+            <Box key={key} component='li' {...optionProps}>
+              <div className='grid'>
+                {option.appName && (
+                  <div className='text-xs text-blue-400'>
+                    {t('common.autocomplete.options.appName', option.appName)}
+                  </div>
+                )}
+                <div className='text-xs text-gray-400'>
+                  {t('common.autocomplete.options.fieldCode', option.code)}
+                </div>
+                {option.label}
+              </div>
+            </Box>
+          );
+        }}
         renderInput={(params) => (
           <TextField
             {...params}
-            label='対象フィールド'
+            label={t('config.app.form.view-fields.fieldCode.label')}
             slotProps={{ inputLabel: { shrink: true } }}
             variant='outlined'
             color='primary'
@@ -93,7 +121,7 @@ const FieldSelect: FC<{
         )}
       />
       <TextField
-        label='表示幅'
+        label={t('config.app.form.view-fields.width.label')}
         type='number'
         color='primary'
         value={value.width}
@@ -105,18 +133,18 @@ const FieldSelect: FC<{
         }}
         onChange={(e) => onWidthChange(index, e.target.value)}
       />
-      <Tooltip title='このフィールドの詳細設定を開く'>
+      <Tooltip title={t('config.app.form.view-fields.tooltip.showDetail')}>
         <IconButton onClick={onDialogOpen}>
           <SettingsIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title='表示フィールドを追加する'>
+      <Tooltip title={t('config.app.form.view-fields.tooltip.addField')}>
         <IconButton size='small' onClick={() => addRow(index)}>
           <AddIcon fontSize='small' />
         </IconButton>
       </Tooltip>
       {deletable && (
-        <Tooltip title='この表示フィールドを削除する'>
+        <Tooltip title={t('config.app.form.view-fields.tooltip.deleteField')}>
           <IconButton size='small' onClick={() => deleteRow(index)}>
             <DeleteIcon fontSize='small' />
           </IconButton>
@@ -127,34 +155,31 @@ const FieldSelect: FC<{
 };
 
 const Component: FC = () => {
-  const { addRow, deleteRow } = useRecoilRow({
-    state: viewFieldsState,
-    getNewRow: () => getNewViewField(),
-  });
-  const selectedFields = useRecoilValue(viewFieldsState);
+  const { addItem, deleteItem, updateItem } = useArray(viewFieldsAtom);
+  const selectedFields = useAtomValue(viewFieldsAtom);
 
-  const onWidthChange = useRecoilCallback(
-    ({ set }) =>
-      (rowIndex: number, value: string) => {
-        set(viewFieldsState, (current) =>
-          produce(current, (draft) => {
-            draft[rowIndex].width = Number(value);
-          })
-        );
-      },
-    []
+  const onWidthChange = useAtomCallback(
+    useCallback((_, set, rowIndex: number, value: string) => {
+      set(viewFieldsAtom, (current) =>
+        produce(current, (draft) => {
+          draft[rowIndex].width = Number(value);
+        })
+      );
+    }, [])
   );
 
-  const onFieldCodeChange = useRecoilCallback(
-    ({ set }) =>
-      (rowIndex: number, value: string) => {
-        set(viewFieldsState, (current) =>
-          produce(current, (draft) => {
-            draft[rowIndex].fieldCode = value;
-          })
-        );
-      },
-    []
+  const onFieldChange = useAtomCallback(
+    useCallback((_, set, rowIndex: number, value: ViewFieldProperty | null) => {
+      set(viewFieldsAtom, (current) =>
+        produce(current, (draft) => {
+          if (value === null) {
+            draft[rowIndex].fieldCode = '';
+          } else {
+            draft[rowIndex].fieldCode = value.code;
+          }
+        })
+      );
+    }, [])
   );
 
   return (
@@ -164,9 +189,9 @@ const Component: FC = () => {
           key={value.id}
           value={value}
           index={i}
-          onFieldCodeChange={onFieldCodeChange}
-          addRow={addRow}
-          deleteRow={deleteRow}
+          onFieldChange={onFieldChange}
+          addRow={() => addItem({ index: i + 1, newItem: getNewViewField() })}
+          deleteRow={deleteItem}
           onWidthChange={onWidthChange}
           deletable={selectedFields.length > 1}
         />
@@ -183,8 +208,14 @@ const Container: FC = () => {
           <>
             {new Array(3).fill('').map((_, i) => (
               <div key={i} className='flex items-center gap-4'>
+                <div className='grid place-items-center p-4 outline-none'>
+                  <GripVertical className='w-5 h-5 text-gray-400' />
+                </div>
                 <Skeleton variant='rounded' width={350} height={56} />
                 <Skeleton variant='rounded' width={120} height={56} />
+                <IconButton disabled>
+                  <SettingsIcon />
+                </IconButton>
                 <IconButton size='small' disabled>
                   <AddIcon fontSize='small' />
                 </IconButton>
@@ -205,11 +236,11 @@ const Container: FC = () => {
 const DnDContainer: FC = () => {
   return (
     <>
-      <RecoilDndContext state={viewFieldsState}>
-        <RecoilSortableContext state={viewFieldsState}>
+      <JotaiDndContext atom={viewFieldsAtom}>
+        <JotaiSortableContext atom={viewFieldsAtom}>
           <Container />
-        </RecoilSortableContext>
-      </RecoilDndContext>
+        </JotaiSortableContext>
+      </JotaiDndContext>
       <Dialog />
     </>
   );
