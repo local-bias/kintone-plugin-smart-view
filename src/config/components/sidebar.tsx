@@ -1,22 +1,27 @@
-import { conditionsState, selectedConditionIdState } from '@/config/states/plugin';
-import { getNewCondition, PluginCondition, validatePluginCondition } from '@/lib/plugin';
+import { pluginConditionsAtom, selectedConditionIdAtom } from '@/config/states/plugin';
+import { t } from '@/lib/i18n';
+import { getNewCondition, validatePluginCondition } from '@/lib/plugin';
+import { PluginCondition } from '@/schema/plugin-config';
 import { BundledSidebar } from '@konomi-app/kintone-utilities-react';
 import { Skeleton } from '@mui/material';
+import { useAtom, useAtomValue } from 'jotai';
 import { useSnackbar } from 'notistack';
 import { FC, Suspense } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { customViewsState } from '../states/kintone';
+import { customViewsAtom } from '../states/kintone';
 
 const AwaitedLabel: FC<{ condition: PluginCondition }> = ({ condition }) => {
-  const views = useRecoilValue(customViewsState);
+  const views = useAtomValue(customViewsAtom);
   const found = Object.values(views).find((view) => view.id === condition.viewId);
-  return <>{`${found?.name ?? '未設定'}`}</>;
+  return <>{`${found?.name ?? t('config.app.sidebar.label.default')}`}</>;
 };
 
 const Label: FC<{ condition: PluginCondition; index: number }> = ({ condition, index }) => {
   return (
     <div>
-      <div className='text-[11px] leading-4 text-gray-400'>設定{index + 1}</div>
+      <div className='text-[11px] leading-4 text-gray-400'>
+        {t('config.app.sidebar.label.heading')}
+        {index + 1}
+      </div>
       <div className='text-sm text-gray-600'>
         <Suspense fallback={<Skeleton variant='text' width={120} />}>
           <AwaitedLabel condition={condition} />
@@ -28,8 +33,8 @@ const Label: FC<{ condition: PluginCondition; index: number }> = ({ condition, i
 
 const Sidebar: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const [conditions, setConditions] = useRecoilState(conditionsState);
-  const [selectedConditionId, setSelectedConditionId] = useRecoilState(selectedConditionIdState);
+  const [conditions, setConditions] = useAtom(pluginConditionsAtom);
+  const [selectedConditionId, setSelectedConditionId] = useAtom(selectedConditionIdAtom);
   const label = (params: { condition: PluginCondition; index: number }) => <Label {...params} />;
 
   const onSelectedConditionChange = (condition: PluginCondition | null) => {
@@ -37,11 +42,12 @@ const Sidebar: FC = () => {
   };
 
   const onConditionDelete = () => {
-    enqueueSnackbar('設定情報を削除しました', { variant: 'success' });
+    enqueueSnackbar(t('config.app.sidebar.toast.delete'), { variant: 'success' });
   };
 
   return (
     <BundledSidebar
+      appendButtonLabel={t('config.app.sidebar.append-button.label')}
       conditions={conditions}
       setConditions={setConditions}
       getNewCondition={getNewCondition}
@@ -52,14 +58,14 @@ const Sidebar: FC = () => {
       context={{
         onCopy: () => {
           console.log('copied');
-          enqueueSnackbar('設定情報をコピーしました', { variant: 'success' });
+          enqueueSnackbar(t('config.app.sidebar.toast.copy'), { variant: 'success' });
         },
         onPaste: () => {
-          enqueueSnackbar('設定情報を貼り付けました', { variant: 'success' });
+          enqueueSnackbar(t('config.app.sidebar.toast.paste'), { variant: 'success' });
           return null;
         },
         onPasteFailure: () => {
-          enqueueSnackbar('設定情報の形式が正しくありません', { variant: 'error' });
+          enqueueSnackbar(t('config.app.sidebar.toast.paste.failure'), { variant: 'error' });
         },
         onPasteValidation: (condition) => {
           try {
@@ -70,7 +76,9 @@ const Sidebar: FC = () => {
           return true;
         },
         onPasteValidationError: () => {
-          enqueueSnackbar('設定情報の形式が正しくありません', { variant: 'error' });
+          enqueueSnackbar(t('config.app.sidebar.toast.paste.error.validation'), {
+            variant: 'error',
+          });
         },
       }}
     />
