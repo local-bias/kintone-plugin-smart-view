@@ -1,30 +1,27 @@
-import { getConditionPropertyState } from '@/config/states/plugin';
+import { getConditionPropertyAtom } from '@/config/states/plugin';
+import { t } from '@/lib/i18n';
 import { MenuItem, TextField } from '@mui/material';
-import React, { ChangeEventHandler, FC, memo } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useAtom } from 'jotai';
+import { ChangeEventHandler, FC } from 'react';
 
 const VIEW_TYPES = [
-  { value: 'table', label: '表形式' },
-  { value: 'card', label: 'カード形式' },
+  { value: 'table', label: t('config.app.form.view-type.table') },
+  { value: 'card', label: t('config.app.form.view-type.card') },
 ] satisfies { value: Plugin.ViewType; label: string }[];
 
-const state = getConditionPropertyState('viewType');
+const state = getConditionPropertyAtom('viewType');
 
-const Component: FC = () => {
-  const viewType = useRecoilValue(state);
+const ViewTypeForm: FC = () => {
+  const [viewType, setViewType] = useAtom(state);
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
-    ({ set }) =>
-      (e) => {
-        set(state, e.target.value as Plugin.ViewType);
-      },
-    []
-  );
+  const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setViewType(e.target.value as Plugin.ViewType);
+  };
 
   return (
     <div style={{ marginTop: '.75rem' }}>
       <TextField
-        label='表示タイプ'
+        label={t('config.app.form.view-type.label')}
         select
         variant='outlined'
         color='primary'
@@ -42,4 +39,4 @@ const Component: FC = () => {
   );
 };
 
-export default memo(Component);
+export default ViewTypeForm;
