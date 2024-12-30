@@ -1,7 +1,8 @@
 import {
-  selectedConditionState,
-  selectedViewFieldDetailSettingIndexState,
+  selectedConditionAtom,
+  selectedViewFieldDetailSettingIndexAtom,
 } from '@/config/states/plugin';
+import { t } from '@/lib/i18n';
 import {
   PluginFormDescription,
   PluginFormSection,
@@ -18,68 +19,63 @@ import {
   TextField,
 } from '@mui/material';
 import { produce } from 'immer';
-import React, { type FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { useCallback, type FC } from 'react';
 
 const Component: FC = () => {
-  const selectedIndex = useRecoilValue(selectedViewFieldDetailSettingIndexState);
-  const condition = useRecoilValue(selectedConditionState);
+  const selectedIndex = useAtomValue(selectedViewFieldDetailSettingIndexAtom);
+  const condition = useAtomValue(selectedConditionAtom);
   const open = selectedIndex !== null;
   const viewField = selectedIndex !== null ? condition.viewFields[selectedIndex] : null;
   const index = selectedIndex ?? 0;
 
-  const onClose = useRecoilCallback(
-    ({ reset }) =>
-      () => {
-        reset(selectedViewFieldDetailSettingIndexState);
-      },
-    []
+  const onClose = useAtomCallback(
+    useCallback((_, set) => {
+      set(selectedViewFieldDetailSettingIndexAtom, null);
+    }, [])
   );
 
-  const onEditableChange = useRecoilCallback(
-    ({ set }) =>
-      (index: number, value: boolean) => {
-        set(selectedConditionState, (prev) =>
-          produce(prev, (draft) => {
-            draft.viewFields[index].isEditable = value;
-          })
-        );
-      },
-    []
+  const onEditableChange = useAtomCallback(
+    useCallback((_, set, index: number, value: boolean) => {
+      set(selectedConditionAtom, (prev) =>
+        produce(prev, (draft) => {
+          draft.viewFields[index].isEditable = value;
+        })
+      );
+    }, [])
   );
 
-  const onDisplayNameChange = useRecoilCallback(
-    ({ set }) =>
-      (index: number, value: string) => {
-        set(selectedConditionState, (prev) =>
-          produce(prev, (draft) => {
-            draft.viewFields[index].displayName = value || null;
-          })
-        );
-      },
-    []
+  const onDisplayNameChange = useAtomCallback(
+    useCallback((_, set, index: number, value: string) => {
+      set(selectedConditionAtom, (prev) =>
+        produce(prev, (draft) => {
+          draft.viewFields[index].displayName = value || null;
+        })
+      );
+    }, [])
   );
 
-  const onNowrapChange = useRecoilCallback(
-    ({ set }) =>
-      (index: number, value: boolean) => {
-        set(selectedConditionState, (prev) =>
-          produce(prev, (draft) => {
-            draft.viewFields[index].nowrap = value;
-          })
-        );
-      },
-    []
+  const onNowrapChange = useAtomCallback(
+    useCallback((_, set, index: number, value: boolean) => {
+      set(selectedConditionAtom, (prev) =>
+        produce(prev, (draft) => {
+          draft.viewFields[index].nowrap = value;
+        })
+      );
+    }, [])
   );
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{viewField?.fieldCode}の詳細設定</DialogTitle>
+      <DialogTitle>
+        {t('config.app.form.view-fields.detailSetting.title', viewField?.fieldCode ?? '')}
+      </DialogTitle>
       <DialogContent>
         <PluginFormSection>
-          <PluginFormTitle>編集画面での表示</PluginFormTitle>
+          <PluginFormTitle>{t('config.app.form.view-fields.isEditable.title')}</PluginFormTitle>
           <PluginFormDescription last>
-            スイッチをオフにした場合、編集画面には表示されません。
+            {t('config.app.form.view-fields.isEditable.description')}
           </PluginFormDescription>
           <FormControlLabel
             control={
@@ -88,27 +84,24 @@ const Component: FC = () => {
                 onChange={(_, checked) => onEditableChange(index, checked)}
               />
             }
-            label='編集画面に表示'
+            label={t('config.app.form.view-fields.isEditable.label')}
           />
         </PluginFormSection>
         <PluginFormSection>
-          <PluginFormTitle>表示名</PluginFormTitle>
+          <PluginFormTitle>{t('config.app.form.view-fields.displayName.title')}</PluginFormTitle>
           <PluginFormDescription last>
-            値を設定した場合、標準のフィールド名ではなく、こちらの値が表示されます。
+            {t('config.app.form.view-fields.displayName.description')}
           </PluginFormDescription>
           <TextField
-            label='表示名'
+            label={t('config.app.form.view-fields.displayName.label')}
             value={viewField?.displayName ?? ''}
             onChange={(e) => onDisplayNameChange(index, e.target.value)}
           />
         </PluginFormSection>
         <PluginFormSection>
-          <PluginFormTitle>折り返しの設定</PluginFormTitle>
-          <PluginFormDescription>
-            フィールドの幅を設定している場合にのみ有効になります。スイッチをオフにした場合、既定の幅に収まらないテキストは折り返されます。
-          </PluginFormDescription>
+          <PluginFormTitle>{t('config.app.form.view-fields.nowrap.title')}</PluginFormTitle>
           <PluginFormDescription last>
-            スイッチをオンにした場合、テキストは折り返されず、既定の幅に収まらない場合はスクロールバーが表示されます。
+            {t('config.app.form.view-fields.nowrap.description')}
           </PluginFormDescription>
           <FormControlLabel
             control={
@@ -117,12 +110,12 @@ const Component: FC = () => {
                 onChange={(_, checked) => onNowrapChange(index, checked)}
               />
             }
-            label='セル内のテキストを折り返さない'
+            label={t('config.app.form.view-fields.nowrap.label')}
           />
         </PluginFormSection>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>閉じる</Button>
+        <Button onClick={onClose}>{t('common.close')}</Button>
       </DialogActions>
     </Dialog>
   );
