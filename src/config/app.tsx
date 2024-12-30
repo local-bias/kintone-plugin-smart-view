@@ -10,17 +10,14 @@ import {
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { SnackbarProvider } from 'notistack';
 import { FC, Suspense } from 'react';
-import { RecoilRoot } from 'recoil';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
 import Sidebar from './components/sidebar';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { jaJP } from '@mui/material/locale';
 import config from '../../plugin.config.mjs';
-import { useInitialize } from './hooks/use-initialize';
+import { ThemeProvider } from '@/lib/components/theme-provider';
+import { t } from '@/lib/i18n';
 
 const Component: FC = () => {
-  useInitialize();
   return (
     <>
       <Sidebar />
@@ -36,22 +33,20 @@ const Component: FC = () => {
 };
 
 const Container: FC = () => (
-  <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
-    <ThemeProvider theme={createTheme({}, jaJP)}>
-      <RecoilRoot>
-        <PluginErrorBoundary>
-          <PluginConfigProvider config={config}>
-            <Notification />
-            <SnackbarProvider maxSnack={1}>
-              <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています...' />}>
-                <PluginLayout>
-                  <Component />
-                </PluginLayout>
-              </Suspense>
-            </SnackbarProvider>
-          </PluginConfigProvider>
-        </PluginErrorBoundary>
-      </RecoilRoot>
+  <Suspense fallback={<LoaderWithLabel label={t('config.app.root.loading')} />}>
+    <ThemeProvider>
+      <PluginErrorBoundary>
+        <PluginConfigProvider config={config}>
+          <Notification />
+          <SnackbarProvider maxSnack={1}>
+            <Suspense fallback={<LoaderWithLabel label={t('config.app.config.loading')} />}>
+              <PluginLayout>
+                <Component />
+              </PluginLayout>
+            </Suspense>
+          </SnackbarProvider>
+        </PluginConfigProvider>
+      </PluginErrorBoundary>
     </ThemeProvider>
     <iframe title='promotion' loading='lazy' src={URL_PROMOTION} className='border-0 w-full h-16' />
   </Suspense>
