@@ -1,4 +1,5 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import { createConfig } from '@/lib/plugin';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {
   Button,
   Dialog,
@@ -9,11 +10,10 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { useRecoilCallback } from 'recoil';
-import { storageState } from '../../../states/plugin';
-import { createConfig } from '@/lib/plugin';
+import { useAtomCallback } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
+import { FC, memo, useCallback, useState } from 'react';
+import { pluginConfigAtom } from '../../../states/plugin';
 
 const Component: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -23,14 +23,12 @@ const Component: FC = () => {
     setOpen(true);
   }, []);
 
-  const onDecisionButtonClick = useRecoilCallback(
-    ({ set }) =>
-      () => {
-        set(storageState, createConfig());
-        setOpen(false);
-        enqueueSnackbar('設定をリセットしました', { variant: 'success' });
-      },
-    []
+  const onDecisionButtonClick = useAtomCallback(
+    useCallback((get, set) => {
+      set(pluginConfigAtom, createConfig());
+      setOpen(false);
+      enqueueSnackbar('設定をリセットしました', { variant: 'success' });
+    }, [])
   );
 
   const onClose = useCallback(() => {
