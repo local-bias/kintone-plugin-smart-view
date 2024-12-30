@@ -1,20 +1,21 @@
 import { getNewViewField } from '@/lib/plugin';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { DialogContent, List, ListItem, ListItemButton, Skeleton } from '@mui/material';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
-import React, { FC, FCX, Suspense } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { FC, FCX, Suspense, useCallback } from 'react';
 import type { DeepReadonly } from 'utility-types';
-import { listViewDialogShownState } from '../../../../../states/importing-view-fields';
-import { listViewsState } from '../../../../../states/kintone';
-import { getConditionPropertyState } from '../../../../../states/plugin';
+import { listViewDialogShownAtom } from '../../../../../states/importing-view-fields';
+import { listViewsAtom } from '../../../../../states/kintone';
+import { getConditionPropertyAtom } from '../../../../../states/plugin';
 
 type Props = DeepReadonly<{
   onListItemClick: (id: string) => void;
 }>;
 
 const Component: FCX<Props> = (props) => {
-  const listViews = useRecoilValue(listViewsState);
+  const listViews = useAtomValue(listViewsAtom);
 
   if (!listViews) {
     return (
@@ -40,37 +41,35 @@ const Component: FCX<Props> = (props) => {
 const Container: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const onListItemClick = useRecoilCallback(
-    ({ reset, snapshot, set }) =>
-      async (id: string) => {
-        try {
-          const viewsSnapshot = await snapshot.getPromise(listViewsState);
+  const onListItemClick = useAtomCallback(
+    useCallback(async (get, set, id: string) => {
+      try {
+        const viewsSnapshot = await get(listViewsAtom);
 
-          if (!viewsSnapshot) {
-            return;
-          }
-
-          const selectedView = Object.values(viewsSnapshot).find((view) => view.id === id);
-
-          if (!selectedView) {
-            enqueueSnackbar('フィールド情報の取得に失敗しました', { variant: 'error' });
-            return;
-          }
-
-          if (selectedView.type === 'LIST') {
-            set(
-              getConditionPropertyState('viewFields'),
-              selectedView.fields.map((fieldCode) => ({
-                ...getNewViewField(),
-                fieldCode,
-              }))
-            );
-          }
-        } finally {
-          reset(listViewDialogShownState);
+        if (!viewsSnapshot) {
+          return;
         }
-      },
-    []
+
+        const selectedView = Object.values(viewsSnapshot).find((view) => view.id === id);
+
+        if (!selectedView) {
+          enqueueSnackbar('フィールド情報の取得に失敗しました', { variant: 'error' });
+          return;
+        }
+
+        if (selectedView.type === 'LIST') {
+          set(
+            getConditionPropertyAtom('viewFields'),
+            selectedView.fields.map((fieldCode) => ({
+              ...getNewViewField(),
+              fieldCode,
+            }))
+          );
+        }
+      } finally {
+        set(listViewDialogShownAtom, false);
+      }
+    }, [])
   );
 
   return (
