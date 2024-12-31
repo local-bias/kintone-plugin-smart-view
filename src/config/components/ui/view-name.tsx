@@ -1,12 +1,12 @@
-import React, { FC, memo, Suspense } from 'react';
-import { useRecoilValue } from 'recoil';
-import { customViewsState } from '../../states/kintone';
 import { Skeleton } from '@mui/material';
-import { viewIdState } from '../../states/plugin';
+import { useAtomValue } from 'jotai';
+import { FC, memo, Suspense } from 'react';
+import { customViewsAtom } from '../../states/kintone';
+import { viewIdAtom } from '../../states/plugin';
 
 const Component: FC = () => {
-  const views = useRecoilValue(customViewsState);
-  const viewId = useRecoilValue(viewIdState);
+  const views = useAtomValue(customViewsAtom);
+  const viewId = useAtomValue(viewIdAtom);
 
   const found = Object.values(views).find((view) => view.id === viewId);
 
