@@ -1,23 +1,20 @@
+import { t } from '@/lib/i18n';
 import { MenuItem, TextField } from '@mui/material';
-import React, { ChangeEventHandler, FC, memo } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { paginationChunkState } from '../../../states/plugin';
+import { useAtom } from 'jotai';
+import { ChangeEventHandler, FC } from 'react';
+import { paginationChunkAtom } from '../../../states/plugin';
 
-const Component: FC = () => {
-  const paginationChunk = useRecoilValue(paginationChunkState);
+const PaginationChunkForm: FC = () => {
+  const [paginationChunk, setPaginationChunk] = useAtom(paginationChunkAtom);
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
-    ({ set }) =>
-      (e) => {
-        set(paginationChunkState, Number(e.target.value));
-      },
-    []
-  );
+  const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setPaginationChunk(Number(e.target.value));
+  };
 
   return (
     <div style={{ marginTop: '.75rem' }}>
       <TextField
-        label='1ページあたりの表示件数'
+        label={t('config.app.form.paginationChunk.label')}
         select
         variant='outlined'
         color='primary'
@@ -35,4 +32,4 @@ const Component: FC = () => {
   );
 };
 
-export default memo(Component);
+export default PaginationChunkForm;
