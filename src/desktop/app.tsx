@@ -8,12 +8,10 @@ import Header from './components/model/header';
 import Layout from './components/model/layout';
 import View from './components/model/view';
 import { DocumentIconSymbol } from './components/ui/document-icon';
-import { useInitializeAppProperties } from './hooks/use-initialize-app-properties';
 import { searchTextEffect } from './states/search-text';
 
-const Component: FC = () => {
+const App: FC = () => {
   useAtom(searchTextEffect);
-  useInitializeAppProperties();
 
   return (
     <>
@@ -26,15 +24,15 @@ const Component: FC = () => {
   );
 };
 
-const Container: FC = () => (
+const AppContainer: FC = () => (
   <Provider store={store}>
     <DocumentIconSymbol />
     <SnackbarProvider maxSnack={1}>
       <PluginErrorBoundary>
-        <Component />
+        <App />
       </PluginErrorBoundary>
     </SnackbarProvider>
   </Provider>
 );
 
-export default Container;
+export default AppContainer;
