@@ -1,22 +1,20 @@
-import React, { Suspense, FCX } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { t } from '@/lib/i18n';
 import { CircularProgress, Dialog, DialogTitle } from '@mui/material';
-import { listViewDialogShownState } from '../../../../../states/importing-view-fields';
+import { useAtom } from 'jotai';
+import { FCX, Suspense } from 'react';
+import { listViewDialogShownAtom } from '../../../../../states/importing-view-fields';
 import Content from './content';
 
 const Component: FCX = () => {
-  const open = useRecoilValue(listViewDialogShownState);
+  const [open, setOpen] = useAtom(listViewDialogShownAtom);
 
-  const onDialogClose = useRecoilCallback(
-    ({ reset }) =>
-      () =>
-        reset(listViewDialogShownState),
-    []
-  );
+  const onDialogClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Dialog open={open} onClose={onDialogClose}>
-      <DialogTitle>フィールド情報をインポートする一覧を選択</DialogTitle>
+      <DialogTitle>{t('config.app.form.importViewFields.dialog.title')}</DialogTitle>
       <Suspense fallback={<CircularProgress />}>
         <Content />
       </Suspense>
