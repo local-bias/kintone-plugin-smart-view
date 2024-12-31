@@ -1,21 +1,35 @@
+import { PluginCondition } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 
-const StyledComponent = styled.div`
+const StyledComponent = styled.div<{ condition: PluginCondition }>`
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${({ condition }) =>
+    condition.extractedInputs.length > 2 &&
+    `
+    display: grid;
+    justify-content: stretch;
+    gap: 8px;
+    
+    & > div:nth-of-type(2) {
+      justify-self: end;
+    }
+  `}
 
   position: sticky;
   left: 0;
 
   padding: 0 2vw;
-  max-width: 96vw;
+  max-width: 100vw;
   @media screen and (min-width: 800px) {
     padding: 0 16px;
-    max-width: calc(100vw - 48px);
   }
 
   & > div {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -32,7 +46,10 @@ const StyledComponent = styled.div`
       padding: 8px 0;
       background: linear-gradient(135deg, #fff7 60%, #ddd7);
       backdrop-filter: blur(8px);
-      box-shadow: 0px 3px 1px -2px #0003, 0px 2px 2px 0px #0002, 0px 1px 5px 0px #0002,
+      box-shadow:
+        0px 3px 1px -2px #0003,
+        0px 2px 2px 0px #0002,
+        0px 1px 5px 0px #0002,
         inset 2px 2px 3px -1px #fffc;
       border-radius: 8px;
     }
