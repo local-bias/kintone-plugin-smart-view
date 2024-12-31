@@ -1,6 +1,3 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
-export const listViewDialogShownState = atom<boolean>({
-  key: 'listViewDialogShownState',
-  default: false,
-});
+export const listViewDialogShownAtom = atom<boolean>(false);
