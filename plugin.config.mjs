@@ -24,7 +24,7 @@ export default /** @type { const } */ ({
   manifest: {
     base: {
       manifest_version: 1,
-      version: '3.13.1',
+      version: '4.2.1',
       type: 'APP',
       name: {
         en: 'faster search plugin',
