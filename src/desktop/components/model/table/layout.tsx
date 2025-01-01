@@ -1,4 +1,4 @@
-import { PluginCondition } from '@/lib/plugin';
+import { PluginCondition } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 
 export const MyTable = styled.table<{
@@ -9,9 +9,8 @@ export const MyTable = styled.table<{
   font-size: 88%;
 
   display: grid;
-  grid-template-columns: ${({ isDetailCellHidden = false }) => (isDetailCellHidden ? '' : 'auto')} ${({
-      condition,
-    }) => {
+  grid-template-columns: ${({ isDetailCellHidden = false }) =>
+      isDetailCellHidden ? '' : 'auto'} ${({ condition }) => {
       const viewFields = condition?.viewFields ?? [];
       return viewFields
         .map(({ width }) => {
