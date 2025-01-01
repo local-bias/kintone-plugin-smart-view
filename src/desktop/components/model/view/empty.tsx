@@ -1,7 +1,8 @@
-import React, { FCX } from 'react';
+import { t } from '@/lib/i18n';
 import styled from '@emotion/styled';
+import { FCX } from 'react';
 
-const Component: FCX = ({ className }) => (
+const EmptyStateViewComponent: FCX = ({ className }) => (
   <div {...{ className }}>
     <svg height='200' viewBox='0 0 512 512' width='200'>
       <g>
@@ -22,15 +23,15 @@ const Component: FCX = ({ className }) => (
         <path d='m313.209 372.217-57.209-90.872 198.791-65.895 57.209 90.872z' fill='#ccc' />
       </g>
     </svg>
-    <h2>条件に一致するレコードが見つかりませんでした。</h2>
+    <h2>{t('desktop.app.empty.title')}</h2>
     <div>
-      <p>入力されている検索条件の他、一覧の絞り込み条件も適用されています。</p>
-      <p>お探しのレコードが見つからない場合は、絞り込み条件をご確認ください。</p>
+      <p>{t('desktop.app.empty.description.1')}</p>
+      <p>{t('desktop.app.empty.description.2')}</p>
     </div>
   </div>
 );
 
-const StyledComponent = styled(Component)`
+const EmptyStateView = styled(EmptyStateViewComponent)`
   min-height: 400px;
   display: flex;
   flex-direction: column;
@@ -57,4 +58,4 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-export default StyledComponent;
+export default EmptyStateView;
