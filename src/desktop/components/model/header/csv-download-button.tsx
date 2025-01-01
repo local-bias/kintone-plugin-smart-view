@@ -1,5 +1,6 @@
 import { TableRow } from '@/desktop/static';
-import { PluginCondition } from '@/lib/plugin';
+import { t } from '@/lib/i18n';
+import { PluginCondition } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 import { getFieldValueAsString, type kintoneAPI } from '@konomi-app/kintone-utilities';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -22,14 +23,14 @@ const Component: FCX = ({ className }) => {
         const tableRows = await get(filteredTableRowsAtom);
 
         if (!tableRows.length) {
-          enqueueSnackbar('対象レコードが存在しないため、CSVを出力できませんでした。', {
+          enqueueSnackbar(t('desktop.app.toast.recordNotFound'), {
             variant: 'warning',
           });
           return;
         }
         const condition = await get(pluginConditionAtom);
         if (!condition) {
-          enqueueSnackbar('プラグインの設定情報の取得に失敗しました', {
+          enqueueSnackbar(t('desktop.app.toast.pluginConditionRetrievalError'), {
             variant: 'error',
           });
           return;
@@ -41,16 +42,16 @@ const Component: FCX = ({ className }) => {
           fieldProperties
         );
 
-        enqueueSnackbar('CSVを出力しました', { variant: 'success' });
+        enqueueSnackbar(t('desktop.app.toast.csvExport'), { variant: 'success' });
       } catch (error) {
         console.error('CSV出力に失敗しました', error);
-        enqueueSnackbar('CSV出力に失敗しました', { variant: 'error' });
+        enqueueSnackbar(t('desktop.app.toast.csvExportFailed'), { variant: 'error' });
       }
     }, [])
   );
 
   return (
-    <Tooltip title='現在の検索条件でCSVファイルを出力します'>
+    <Tooltip title={t('desktop.app.tooltip.csvExport')}>
       <Button
         {...{ className }}
         variant='contained'
