@@ -2,15 +2,14 @@ import styled from '@emotion/styled';
 import { isMobile } from '@konomi-app/kintone-utilities';
 import { Pagination } from '@mui/material';
 import { useAtom, useAtomValue } from 'jotai';
-import { FC, FCX } from 'react';
-import { SetterOrUpdater } from 'recoil';
+import { FC, FCX, SetStateAction } from 'react';
 import { paginationChunkAtom, paginationIndexAtom } from '../../../states/pagination';
 import { filteredTableRowsAtom } from '../../../states/records';
 
 type Props = {
   size: number;
   index: number;
-  setIndex: SetterOrUpdater<number>;
+  setIndex: (action: SetStateAction<number>) => void;
   chunkSize: number;
 };
 
