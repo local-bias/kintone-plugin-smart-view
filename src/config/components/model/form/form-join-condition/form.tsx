@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import AddIcon from '@mui/icons-material/Add';
 import { IconButton, TextField, Tooltip } from '@mui/material';
 import { GripVertical, Link2Icon } from 'lucide-react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 const Container: FC = () => {
   return (
