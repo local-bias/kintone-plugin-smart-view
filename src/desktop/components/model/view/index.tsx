@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai';
 import { FC } from 'react';
 import TableView from '../table';
 import CardView from '../view-card';
-import Empty from './empty';
+import EmptyStateView from './empty';
 import ErrorNofitication from './error';
 
 const Component: FC = () => {
@@ -16,7 +16,7 @@ const Component: FC = () => {
     return <ErrorNofitication />;
   }
   if (!isOriginalTableShown) {
-    return <Empty />;
+    return <EmptyStateView />;
   }
   if (viewType === 'card') {
     return <CardView />;
