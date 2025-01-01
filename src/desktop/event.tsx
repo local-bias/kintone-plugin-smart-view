@@ -6,6 +6,7 @@ import { showNotification } from '@/lib/utilities';
 import { css } from '@emotion/css';
 import { Root, createRoot } from 'react-dom/client';
 import App from './app';
+import { initializeAppProperties } from './initialize-app-properties';
 import { initializeRecords } from './initialize-records';
 import { paginationChunkAtom } from './states/pagination';
 import { extractedSearchConditionsAtom, pluginConditionAtom, viewTypeAtom } from './states/plugin';
@@ -60,6 +61,7 @@ listener.add(['app.record.index.show'], async (event) => {
   });
 
   initializeRecords(targetCondition);
+  initializeAppProperties();
 
   root.render(<App />);
 
