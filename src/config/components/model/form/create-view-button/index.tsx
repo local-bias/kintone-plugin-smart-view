@@ -4,7 +4,7 @@ import { GUEST_SPACE_ID } from '@/lib/global';
 import { t } from '@/lib/i18n';
 import { VIEW_ROOT_ID } from '@/lib/statics';
 import { getAppId, getViews, kintoneAPI, updateViews } from '@konomi-app/kintone-utilities';
-import { LoadingButton } from '@mui/lab';
+import { Button } from '@mui/material';
 import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
@@ -70,15 +70,9 @@ const ViewCreateButton: FC = () => {
   );
 
   return (
-    <LoadingButton
-      variant='outlined'
-      color='primary'
-      size='large'
-      onClick={onClick}
-      loading={loading}
-    >
+    <Button variant='outlined' color='primary' size='large' onClick={onClick} loading={loading}>
       {t('config.app.form.createViewButton.label')}
-    </LoadingButton>
+    </Button>
   );
 };
 
