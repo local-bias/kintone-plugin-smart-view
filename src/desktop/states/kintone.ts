@@ -13,8 +13,10 @@ export const currentAppIdAtom = atom(() => {
 });
 
 export const appPropertiesAtom = atom<kintoneAPI.FieldProperties>({});
+export const appFormLayoutAtom = atom<kintoneAPI.Layout>([]);
 
 export const propertiesReadyAtom = atom(false);
+export const formLayoutReadyAtom = atom(false);
 
 export const fileUrlAtom = atomFamily((fileKey: string) =>
   atom<Promise<string | null>>(async () => {
