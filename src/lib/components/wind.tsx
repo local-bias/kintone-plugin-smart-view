@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
+import { ComponentProps, forwardRef } from 'react';
 
-type Props = JSX.IntrinsicElements['svg'];
+type Props = ComponentProps<'svg'>;
 
 const Component = forwardRef<SVGSVGElement, Props>((props, ref) => {
   return (
