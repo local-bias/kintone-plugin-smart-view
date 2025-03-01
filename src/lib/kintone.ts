@@ -5,7 +5,7 @@ import {
   getAppId,
 } from '@konomi-app/kintone-utilities';
 
-const IGNORE_FIELDS: kintoneAPI.FieldPropertyType[] = ['GROUP'];
+const IGNORE_FIELDS: kintoneAPI.FieldPropertyType[] = ['GROUP', 'REFERENCE_TABLE'];
 
 export const getAppFields = async (
   options?: Partial<{ targetApp: string | number; preview: boolean; guestSpaceId?: string }>
