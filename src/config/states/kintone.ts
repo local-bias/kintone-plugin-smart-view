@@ -11,7 +11,6 @@ import {
 } from '@konomi-app/kintone-utilities';
 import { atom } from 'jotai';
 import { atomFamily, atomWithDefault, loadable } from 'jotai/utils';
-import { joinConditionsAtom } from './plugin';
 
 export const currentAppIdAtom = atom(() => {
   const appId = getAppId();
@@ -27,16 +26,6 @@ export const allKintoneAppsAtom = atom(async () => {
     debug: !isProd,
   });
   return apps;
-});
-export const joinableKintoneAppsAtom = atom(async (get) => {
-  const apps = await get(allKintoneAppsAtom);
-  const currentApp = String(get(currentAppIdAtom));
-
-  const selectedApps = get(joinConditionsAtom).map((condition) => condition.dstAppId);
-
-  return apps.filter((app) => {
-    return app.appId !== currentApp && !selectedApps.includes(app.appId);
-  });
 });
 
 export const kintoneSpacesAtom = atom<Promise<kintoneAPI.rest.space.GetSpaceResponse[]>>(
