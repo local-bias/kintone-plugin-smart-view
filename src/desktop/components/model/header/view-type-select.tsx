@@ -4,12 +4,12 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { Button, ButtonGroup } from '@mui/material';
 import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
-import { FC, useCallback } from 'react';
+import { FC, ReactNode, useCallback } from 'react';
 
 const TYPES = [
   { value: 'table', icon: <TableRowsIcon /> },
   { value: 'card', icon: <ViewModuleIcon /> },
-] satisfies { value: Plugin.ViewType; icon: JSX.Element }[];
+] satisfies { value: Plugin.ViewType; icon: ReactNode }[];
 
 const Component: FC = () => {
   const viewType = useAtomValue(viewTypeAtom);
