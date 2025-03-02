@@ -5,7 +5,7 @@ import { pluginConditionAtom } from './plugin';
 
 export type HeaderCell = { label: string; property: kintoneAPI.FieldProperty | null };
 
-export const headerCellsAtom = atom<Promise<HeaderCell[]>>(async (get) => {
+export const headerCellsAtom = atom<HeaderCell[]>((get) => {
   const condition = get(pluginConditionAtom);
   const appFields = get(appPropertiesAtom);
   const propertiesReady = get(propertiesReadyAtom);
