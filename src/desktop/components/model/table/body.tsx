@@ -1,5 +1,3 @@
-import { getQueryString } from '@/lib/cybozu';
-import { isMobile } from '@konomi-app/kintone-utilities';
 import { Skeleton } from '@mui/material';
 import { useAtomValue } from 'jotai';
 import { FC, Suspense, useDeferredValue } from 'react';
@@ -7,6 +5,7 @@ import { loadingAtom, pluginConditionAtom } from '../../../states/plugin';
 import { areAllRecordsReadyAtom, displayingTableRowsAtom } from '../../../states/records';
 import { DocumentIcon } from '../../ui/document-icon';
 import Cell from './cell';
+import DetailsLinkCell from './cell-details-link';
 import { MyTableBody } from './layout';
 
 const Component: FC = () => {
@@ -19,14 +18,7 @@ const Component: FC = () => {
       {deferredRecords.map(({ record }, i) => (
         <tr key={i}>
           <td>
-            <a
-              href={`${location.pathname}show${isMobile() ? '?' : '#'}record=${
-                record.$id.value
-              }&l.view=${condition.viewId}&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
-              {...(condition.isOpenInNewTab ? { target: '_blank' } : {})}
-            >
-              <DocumentIcon />
-            </a>
+            <DetailsLinkCell recordId={record.$id.value as string} />
           </td>
           {condition.viewFields.map(({ fieldCode, width }, j) => (
             <td
