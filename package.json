@@ -17,7 +17,7 @@
     "@konomi-app/kintone-utilities": "^5.12.1",
     "@konomi-app/kintone-utilities-jotai": "^1.0.2",
     "@konomi-app/kintone-utilities-react": "^2.1.0",
-    "@konomi-app/ui-react": "^1.1.1",
+    "@konomi-app/ui-react": "2.0.0",
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
     "dompurify": "^3.2.4",
