@@ -3,6 +3,7 @@ import { PluginCondition, PluginConfig } from '@/schema/plugin-config';
 import { produce } from 'immer';
 import { atom, SetStateAction } from 'jotai';
 import { atomWithDefault } from 'jotai/utils';
+import { ViewFieldProperty } from './app-fields';
 
 export const pluginConfigAtom = atom<PluginConfig>(restorePluginConfig());
 
@@ -67,6 +68,33 @@ export const getConditionPropertyAtom = <T extends keyof PluginCondition>(proper
 
 export const viewIdAtom = getConditionPropertyAtom('viewId');
 export const viewFieldsAtom = getConditionPropertyAtom('viewFields');
+export const handleViewFieldChangeAtom = atom(
+  null,
+  (_, set, rowIndex: number, value: ViewFieldProperty | null) => {
+    set(viewFieldsAtom, (current) =>
+      produce(current, (draft) => {
+        if (value === null) {
+          draft[rowIndex].fieldCode = '';
+          draft[rowIndex].joinConditionId = null;
+        } else {
+          draft[rowIndex].fieldCode = value.code;
+          draft[rowIndex].joinConditionId = value.joinConditionId;
+        }
+      })
+    );
+  }
+);
+export const handleViewFieldWidthChangeAtom = atom(
+  null,
+  (_, set, rowIndex: number, value: string) => {
+    set(viewFieldsAtom, (current) =>
+      produce(current, (draft) => {
+        draft[rowIndex].width = Number(value);
+      })
+    );
+  }
+);
+
 export const paginationChunkAtom = getConditionPropertyAtom('paginationChunk');
 export const extractedInputsAtom = getConditionPropertyAtom('extractedInputs');
 export const joinConditionsAtom = getConditionPropertyAtom('joinConditions');
