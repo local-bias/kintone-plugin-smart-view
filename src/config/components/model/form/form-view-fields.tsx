@@ -1,5 +1,10 @@
-import { selectableViewFieldsAtom, ViewFieldProperty } from '@/config/states/app-fields';
-import { selectedViewFieldDetailSettingIndexAtom, viewFieldsAtom } from '@/config/states/plugin';
+import { selectableViewFieldsAtom } from '@/config/states/app-fields';
+import {
+  handleViewFieldChangeAtom,
+  handleViewFieldWidthChangeAtom,
+  selectedViewFieldDetailSettingIndexAtom,
+  viewFieldsAtom,
+} from '@/config/states/plugin';
 import { t } from '@/lib/i18n';
 import { getNewViewField } from '@/lib/plugin';
 import { cn } from '@/lib/utils';
@@ -22,23 +27,43 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { produce } from 'immer';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { GripVertical } from 'lucide-react';
 import { FC, Suspense, useCallback } from 'react';
 import Dialog from './dialog';
 
+const Placeholder: FC = () => {
+  return (
+    <div className='flex items-center gap-4'>
+      <div className='grid place-items-center p-4 outline-none'>
+        <GripVertical className='w-5 h-5 text-gray-400' />
+      </div>
+      <Skeleton variant='rounded' width={350} height={56} />
+      <Skeleton variant='rounded' width={120} height={56} />
+      <IconButton disabled>
+        <SettingsIcon />
+      </IconButton>
+      <IconButton size='small' disabled>
+        <AddIcon fontSize='small' />
+      </IconButton>
+      <IconButton size='small' disabled>
+        <DeleteIcon fontSize='small' />
+      </IconButton>
+    </div>
+  );
+};
+
 const FieldSelect: FC<{
   value: Plugin.ViewField;
   index: number;
-  onFieldChange: (index: number, value: ViewFieldProperty | null) => void;
   addRow: (index: number) => void;
   deleteRow: (index: number) => void;
-  onWidthChange: (index: number, value: string) => void;
   deletable: boolean;
-}> = ({ value, index, onFieldChange, addRow, deleteRow, onWidthChange, deletable }) => {
+}> = ({ value, index, addRow, deleteRow, deletable }) => {
   const fields = useAtomValue(selectableViewFieldsAtom);
+  const onFieldChange = useSetAtom(handleViewFieldChangeAtom);
+  const onWidthChange = useSetAtom(handleViewFieldWidthChangeAtom);
   const {
     isDragging,
     setActivatorNodeRef,
@@ -155,46 +180,21 @@ const FieldSelect: FC<{
 };
 
 const Component: FC = () => {
-  const { addItem, deleteItem, updateItem } = useArray(viewFieldsAtom);
+  const { addItem, deleteItem } = useArray(viewFieldsAtom);
   const selectedFields = useAtomValue(viewFieldsAtom);
-
-  const onWidthChange = useAtomCallback(
-    useCallback((_, set, rowIndex: number, value: string) => {
-      set(viewFieldsAtom, (current) =>
-        produce(current, (draft) => {
-          draft[rowIndex].width = Number(value);
-        })
-      );
-    }, [])
-  );
-
-  const onFieldChange = useAtomCallback(
-    useCallback((_, set, rowIndex: number, value: ViewFieldProperty | null) => {
-      set(viewFieldsAtom, (current) =>
-        produce(current, (draft) => {
-          if (value === null) {
-            draft[rowIndex].fieldCode = '';
-          } else {
-            draft[rowIndex].fieldCode = value.code;
-          }
-        })
-      );
-    }, [])
-  );
 
   return (
     <>
       {selectedFields.map((value, i) => (
-        <FieldSelect
-          key={value.id}
-          value={value}
-          index={i}
-          onFieldChange={onFieldChange}
-          addRow={() => addItem({ index: i + 1, newItem: getNewViewField() })}
-          deleteRow={deleteItem}
-          onWidthChange={onWidthChange}
-          deletable={selectedFields.length > 1}
-        />
+        <Suspense key={value.id} fallback={<Placeholder />}>
+          <FieldSelect
+            value={value}
+            index={i}
+            addRow={() => addItem({ index: i + 1, newItem: getNewViewField() })}
+            deleteRow={deleteItem}
+            deletable={selectedFields.length > 1}
+          />
+        </Suspense>
       ))}
     </>
   );
@@ -207,22 +207,7 @@ const Container: FC = () => {
         fallback={
           <>
             {new Array(3).fill('').map((_, i) => (
-              <div key={i} className='flex items-center gap-4'>
-                <div className='grid place-items-center p-4 outline-none'>
-                  <GripVertical className='w-5 h-5 text-gray-400' />
-                </div>
-                <Skeleton variant='rounded' width={350} height={56} />
-                <Skeleton variant='rounded' width={120} height={56} />
-                <IconButton disabled>
-                  <SettingsIcon />
-                </IconButton>
-                <IconButton size='small' disabled>
-                  <AddIcon fontSize='small' />
-                </IconButton>
-                <IconButton size='small' disabled>
-                  <DeleteIcon fontSize='small' />
-                </IconButton>
-              </div>
+              <Placeholder key={i} />
             ))}
           </>
         }
