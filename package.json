@@ -1,5 +1,5 @@
 {
-  "name": "kintone-plugin-smart-view-plus",
+  "name": "kintone-plugin-smart-view",
   "version": "1.0.0",
   "scripts": {
     "init": "plugin init && plugin genkey",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@kintone/dts-gen": "^8.1.1",
-    "@konomi-app/k2": "^1.8.1",
+    "@konomi-app/k2": "^1.8.2",
     "@types/dompurify": "^3.2.0",
     "@types/luxon": "^3.4.2",
     "@types/papaparse": "^5.3.15",
