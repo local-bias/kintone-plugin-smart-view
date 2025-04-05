@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
-import type { DeepReadonly } from 'utility-types';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
+import { FC } from 'react';
+import type { DeepReadonly } from 'utility-types';
 
 type Props = DeepReadonly<{ field: kintoneAPI.field.Category }>;
 
-const Component: FC<Props> = (props) => {
+const CategoryFieldValue: FC<Props> = (props) => {
   return (
     <>
       {props.field.value.map((value, i) => (
@@ -14,4 +14,4 @@ const Component: FC<Props> = (props) => {
   );
 };
 
-export default Component;
+export default CategoryFieldValue;
