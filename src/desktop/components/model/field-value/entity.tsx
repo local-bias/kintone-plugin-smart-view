@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import type { DeepReadonly } from 'utility-types';
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
+import { FC } from 'react';
+import type { DeepReadonly } from 'utility-types';
 
 type Props = DeepReadonly<{
   field:
@@ -10,7 +10,7 @@ type Props = DeepReadonly<{
     | kintoneAPI.field.StatusAssignee;
 }>;
 
-const Component: FC<Props> = ({ field }) => {
+const EntityFieldValue: FC<Props> = ({ field }) => {
   return (
     <>
       {field.value.map((value, i) => (
@@ -20,4 +20,4 @@ const Component: FC<Props> = ({ field }) => {
   );
 };
 
-export default Component;
+export default EntityFieldValue;
