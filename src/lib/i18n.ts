@@ -110,9 +110,9 @@ export const ui = {
       '絞り込みの際、全角英数字と半角英数字を区別する',
     'config.app.form.pageTransition.title': 'ページ遷移の設定',
     'config.app.form.isOpenInNewTab.label': 'レコードの詳細画面を新しいタブで開く',
-    'config.app.form.joinConditions.title': 'JOIN - 他アプリとの結合条件の設定',
+    'config.app.form.joinConditions.title': 'JOIN - 他アプリのレコードを参照・更新する',
     'config.app.form.joinConditions.description':
-      '特定のキーを基準に、他のアプリのレコードを参照することができます。結合設定を有効にすると、「テーブルに表示するフィールドの設定」で結合したアプリのフィールドを追加することができます。現在のバージョンでは、各レコードについてキー情報に一致した最初のレコードが参照されます。',
+      '特定のキーを基準に、他のアプリのレコードを参照・更新することができます。結合設定を追加にすると、「テーブルに表示するフィールドの設定」で結合したアプリのフィールドを追加することができます。現在のバージョンでは、各レコードについてキー情報に一致した最初のレコードが参照されます。',
 
     'config.app.form.createViewButton.label': '新しい一覧を作成',
     'config.app.toast.createView': '一覧を作成しました',
@@ -150,7 +150,10 @@ export const ui = {
     'desktop.app.editor.save': '保存',
     'desktop.app.editor.cancel': 'キャンセル',
     'desktop.app.toast.recordUpdated': 'レコードを更新しました',
+    'desktop.app.toast.partialRecordUpdated':
+      'レコードの更新しましたが、{0}件のレコードは更新できませんでした({1})',
     'desktop.app.toast.recordUpdateFailed': 'レコードの更新に失敗しました',
+    'desktop.app.toast.recordUpdateFailedWithMessage': 'レコードの更新に失敗しました({0})',
     'desktop.app.toast.csvExport': 'CSVを出力しました',
     'desktop.app.toast.csvExportFailed': 'CSVの出力に失敗しました',
     'desktop.app.toast.pluginConditionRetrievalError': 'プラグインの設定情報の取得に失敗しました',
