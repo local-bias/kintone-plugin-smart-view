@@ -3,12 +3,12 @@ import { getNumberFieldValueAsString, type kintoneAPI } from '@konomi-app/kinton
 import { Skeleton } from '@mui/material';
 import { useAtomValue } from 'jotai';
 import { FC, Suspense } from 'react';
-import { appPropertiesAtom } from '../../../states/kintone';
+import { fieldPropertiesAtom } from '../../../states/kintone';
 
-type Props = { field: kintoneAPI.field.Number; code: string };
+type Props = { field: kintoneAPI.field.Number; code: string; appId: string };
 
-const NumberFieldValue: FC<Props> = ({ field, code }) => {
-  const properties = useAtomValue(appPropertiesAtom);
+const NumberFieldValue: FC<Props> = ({ field, code, appId }) => {
+  const properties = useAtomValue(fieldPropertiesAtom(appId));
   const found = Object.entries(properties).find(([key]) => code === key) as
     | [string, kintoneAPI.property.Number]
     | undefined;
