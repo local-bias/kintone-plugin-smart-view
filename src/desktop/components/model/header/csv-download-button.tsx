@@ -1,54 +1,47 @@
-import { TableRow } from '@/desktop/static';
 import { t } from '@/lib/i18n';
 import { PluginCondition } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 import { getFieldValueAsString, type kintoneAPI } from '@konomi-app/kintone-utilities';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Button, Tooltip } from '@mui/material';
-import { useAtomValue } from 'jotai';
-import { useAtomCallback } from 'jotai/utils';
-import { useSnackbar } from 'notistack';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { enqueueSnackbar } from 'notistack';
 import { unparse as toCsv } from 'papaparse';
-import { FC, FCX, useCallback } from 'react';
-import { appPropertiesAtom } from '../../../states/kintone';
+import { FC, FCX } from 'react';
+import { currentAppFieldPropertiesAtom } from '../../../states/kintone';
 import { pluginConditionAtom } from '../../../states/plugin';
 import { filteredTableRowsAtom } from '../../../states/records';
+import { TableRow } from '@/desktop/static';
 
-const Component: FCX = ({ className }) => {
-  const { enqueueSnackbar } = useSnackbar();
+const handleDownloadAtom = atom(null, async (get) => {
+  try {
+    const tableRows = await get(filteredTableRowsAtom);
 
-  const onClick = useAtomCallback(
-    useCallback(async (get) => {
-      try {
-        const tableRows = await get(filteredTableRowsAtom);
+    if (!tableRows.length) {
+      enqueueSnackbar(t('desktop.app.toast.recordNotFound'), {
+        variant: 'warning',
+      });
+      return;
+    }
+    const condition = await get(pluginConditionAtom);
+    if (!condition) {
+      enqueueSnackbar(t('desktop.app.toast.pluginConditionRetrievalError'), {
+        variant: 'error',
+      });
+      return;
+    }
+    const fieldProperties = await get(currentAppFieldPropertiesAtom);
+    download(condition, tableRows, fieldProperties);
 
-        if (!tableRows.length) {
-          enqueueSnackbar(t('desktop.app.toast.recordNotFound'), {
-            variant: 'warning',
-          });
-          return;
-        }
-        const condition = await get(pluginConditionAtom);
-        if (!condition) {
-          enqueueSnackbar(t('desktop.app.toast.pluginConditionRetrievalError'), {
-            variant: 'error',
-          });
-          return;
-        }
-        const fieldProperties = await get(appPropertiesAtom);
-        download(
-          condition,
-          tableRows.map(({ record }) => record),
-          fieldProperties
-        );
+    enqueueSnackbar(t('desktop.app.toast.csvExport'), { variant: 'success' });
+  } catch (error) {
+    console.error('CSV出力に失敗しました', error);
+    enqueueSnackbar(t('desktop.app.toast.csvExportFailed'), { variant: 'error' });
+  }
+});
 
-        enqueueSnackbar(t('desktop.app.toast.csvExport'), { variant: 'success' });
-      } catch (error) {
-        console.error('CSV出力に失敗しました', error);
-        enqueueSnackbar(t('desktop.app.toast.csvExportFailed'), { variant: 'error' });
-      }
-    }, [])
-  );
+const CsvDownloadButtonComponent: FCX = ({ className }) => {
+  const download = useSetAtom(handleDownloadAtom);
 
   return (
     <Tooltip title={t('desktop.app.tooltip.csvExport')}>
@@ -57,7 +50,7 @@ const Component: FCX = ({ className }) => {
         variant='contained'
         color='inherit'
         endIcon={<GetAppIcon />}
-        onClick={onClick}
+        onClick={download}
       >
         CSV
       </Button>
@@ -65,7 +58,7 @@ const Component: FCX = ({ className }) => {
   );
 };
 
-const StyledComponent = styled(Component)`
+const StyledCsvDownloadButtonComponent = styled(CsvDownloadButtonComponent)`
   color: #1976d2;
   background-color: #f1f1f7;
   &:hover,
@@ -74,20 +67,20 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: FC = () => {
+const CsvDownloadButton: FC = () => {
   const condition = useAtomValue(pluginConditionAtom)!;
 
   if (condition.isCsvDownloadButtonHidden) {
     return null;
   }
-  return <StyledComponent />;
+  return <StyledCsvDownloadButtonComponent />;
 };
 
-export default Container;
+export default CsvDownloadButton;
 
 const download = (
   condition: PluginCondition,
-  records: kintoneAPI.RecordData[],
+  records: TableRow[],
   fieldProperties: kintoneAPI.FieldProperties
 ) => {
   const targetFieldCodes = condition.viewFields.map(({ fieldCode }) => fieldCode);
@@ -96,7 +89,7 @@ const download = (
     (fieldCode) => fieldProperties[fieldCode]?.label ?? fieldCode
   );
 
-  const body = records.map((record) =>
+  const body = records.map(({ record }) =>
     condition.viewFields.map(({ fieldCode }) => {
       return record[fieldCode] ? getFieldValueAsString(record[fieldCode]) : '';
     })
@@ -113,5 +106,5 @@ const download = (
   link.href = url;
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
+  document.body?.removeChild(link);
 };
