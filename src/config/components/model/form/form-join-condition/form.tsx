@@ -13,15 +13,6 @@ const Container: FC = () => {
             <GripVertical className='w-5 h-5 text-gray-400' />
           </div>
           <div className=''>
-            <div className='mb-4'>
-              <TextField
-                label='対象アプリ'
-                variant='outlined'
-                color='primary'
-                sx={{ width: '350px' }}
-                disabled
-              />
-            </div>
             <div className='flex items-center gap-2'>
               <TextField
                 label='このアプリのキーフィールド'
@@ -31,13 +22,24 @@ const Container: FC = () => {
                 disabled
               />
               <Link2Icon />
-              <TextField
-                label='結合先アプリのキーフィールド'
-                variant='outlined'
-                color='primary'
-                sx={{ width: '350px' }}
-                disabled
-              />
+              <div className='space-y-4'>
+                <div>
+                  <TextField
+                    label='結合するアプリ'
+                    variant='outlined'
+                    color='primary'
+                    sx={{ width: '350px' }}
+                    disabled
+                  />
+                </div>
+                <TextField
+                  label='結合するアプリのキーフィールド'
+                  variant='outlined'
+                  color='primary'
+                  sx={{ width: '350px' }}
+                  disabled
+                />
+              </div>
             </div>
           </div>
           <Tooltip title='表示フィールドを追加する'>
