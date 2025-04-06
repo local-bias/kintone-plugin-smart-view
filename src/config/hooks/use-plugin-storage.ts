@@ -1,65 +1,13 @@
 import { t } from '@/lib/i18n';
-import { migrateConfig } from '@/lib/plugin';
 import { PLUGIN_NAME } from '@/lib/statics';
-import { onFileLoad, storePluginConfig } from '@konomi-app/kintone-utilities';
 import { useAtomCallback } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
-import { ChangeEventHandler, ReactNode, useCallback } from 'react';
-import invariant from 'tiny-invariant';
+import { useCallback } from 'react';
 import { loadingCountAtom, pluginConfigAtom } from '../states/plugin';
-
-export const useSavePluginConfig = (actionComponent: ReactNode) => {
-  const { enqueueSnackbar } = useSnackbar();
-
-  return useAtomCallback(
-    useCallback(
-      async (get, set) => {
-        try {
-          set(loadingCountAtom, (c) => c + 1);
-          const pluginConfig = get(pluginConfigAtom);
-          storePluginConfig(pluginConfig, {
-            callback: () => true,
-            flatProperties: ['conditions'],
-            debug: true,
-          });
-          enqueueSnackbar(t('config.toast.save'), {
-            variant: 'success',
-            action: actionComponent,
-          });
-        } finally {
-          set(loadingCountAtom, (c) => c - 1);
-        }
-      },
-      [actionComponent, enqueueSnackbar]
-    )
-  );
-};
+import { storePluginConfig } from '@konomi-app/kintone-utilities';
 
 export const usePluginStorage = () => {
   const { enqueueSnackbar } = useSnackbar();
-
-  const importStorage: ChangeEventHandler<HTMLInputElement> = useAtomCallback(
-    useCallback(
-      async (get, set, event) => {
-        try {
-          set(loadingCountAtom, (c) => c + 1);
-          const { files } = event.target;
-          invariant(files?.length, 'ファイルが見つかりませんでした');
-          const [file] = Array.from(files);
-          const fileEvent = await onFileLoad(file!);
-          const text = (fileEvent.target?.result ?? '') as string;
-          set(pluginConfigAtom, migrateConfig(JSON.parse(text)));
-          enqueueSnackbar(t('config.toast.import'), { variant: 'success' });
-        } catch (error) {
-          enqueueSnackbar(t('config.error.import'), { variant: 'error' });
-          throw error;
-        } finally {
-          set(loadingCountAtom, (c) => c - 1);
-        }
-      },
-      [enqueueSnackbar]
-    )
-  );
 
   const exportStorage = useAtomCallback(
     useCallback(
@@ -89,5 +37,5 @@ export const usePluginStorage = () => {
     )
   );
 
-  return { importStorage, exportStorage };
+  return { exportStorage };
 };
