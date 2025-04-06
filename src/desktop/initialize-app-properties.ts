@@ -1,7 +1,7 @@
 import { GUEST_SPACE_ID, isProd } from '@/lib/global';
 import { getFieldsWithoutIgnores } from '@/lib/kintone';
 import { store } from '@/lib/store';
-import { appPropertiesAtom, propertiesReadyAtom } from './states/kintone';
+import { currentAppIdAtom, fieldPropertiesAtom, propertiesReadyAtom } from './states/kintone';
 import { PLUGIN_NAME } from '@/lib/statics';
 
 export const initializeAppProperties = async () => {
@@ -11,8 +11,9 @@ export const initializeAppProperties = async () => {
       return;
     }
 
+    const appId = store.get(currentAppIdAtom);
     const properties = await getFieldsWithoutIgnores({ guestSpaceId: GUEST_SPACE_ID });
-    store.set(appPropertiesAtom, properties);
+    store.set(fieldPropertiesAtom(appId), properties);
     !isProd && console.log(`✨ App properties initialized:`, properties);
   } catch (error) {
     console.error(`[${PLUGIN_NAME}] Failed to initialize app properties:`, error);
