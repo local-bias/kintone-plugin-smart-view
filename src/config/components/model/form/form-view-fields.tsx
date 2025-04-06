@@ -27,11 +27,17 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useAtomCallback } from 'jotai/utils';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { atomFamily } from 'jotai/utils';
 import { GripVertical } from 'lucide-react';
-import { FC, Suspense, useCallback } from 'react';
+import { FC, Suspense } from 'react';
 import Dialog from './dialog';
+
+const handleDialogOpenAtom = atomFamily((index: number) =>
+  atom(null, (_, set) => {
+    set(selectedViewFieldDetailSettingIndexAtom, index);
+  })
+);
 
 const Placeholder: FC = () => {
   return (
@@ -62,6 +68,7 @@ const FieldSelect: FC<{
   deletable: boolean;
 }> = ({ value, index, addRow, deleteRow, deletable }) => {
   const fields = useAtomValue(selectableViewFieldsAtom);
+  const onDialogOpen = useSetAtom(handleDialogOpenAtom(index));
   const onFieldChange = useSetAtom(handleViewFieldChangeAtom);
   const onWidthChange = useSetAtom(handleViewFieldWidthChangeAtom);
   const {
@@ -73,15 +80,6 @@ const FieldSelect: FC<{
     transform,
     transition,
   } = useSortable({ id: value.id });
-
-  const onDialogOpen = useAtomCallback(
-    useCallback(
-      (_, set) => {
-        set(selectedViewFieldDetailSettingIndexAtom, index);
-      },
-      [index]
-    )
-  );
 
   return (
     <div
@@ -107,7 +105,12 @@ const FieldSelect: FC<{
         <GripVertical className='w-5 h-5 text-gray-400' />
       </div>
       <Autocomplete
-        value={fields.find((field) => field.code === value.fieldCode) ?? null}
+        value={
+          fields.find(
+            (field) =>
+              field.code === value.fieldCode && field.joinConditionId === value.joinConditionId
+          ) ?? null
+        }
         sx={{ width: '350px' }}
         options={fields}
         isOptionEqualToValue={(option, v) =>
