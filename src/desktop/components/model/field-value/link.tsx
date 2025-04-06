@@ -1,4 +1,4 @@
-import { appPropertiesAtom } from '@/desktop/states/kintone';
+import { currentAppFieldPropertiesAtom } from '@/desktop/states/kintone';
 import { type kintoneAPI } from '@konomi-app/kintone-utilities';
 import { Skeleton } from '@mui/material';
 import { useAtomValue } from 'jotai';
@@ -7,7 +7,7 @@ import { FC, Suspense } from 'react';
 type Props = { field: kintoneAPI.field.Link; code: string };
 
 const Component: FC<Props> = ({ field, code }) => {
-  const properties = useAtomValue(appPropertiesAtom);
+  const properties = useAtomValue(currentAppFieldPropertiesAtom);
   const found = Object.entries(properties).find(([key]) => code === key);
 
   if (!found || ['', undefined, null].includes(field.value)) {
