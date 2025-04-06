@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 export const SubtableDetails = styled.details`
-  padding: 4px 8px;
   cursor: pointer;
   summary {
     position: relative;
