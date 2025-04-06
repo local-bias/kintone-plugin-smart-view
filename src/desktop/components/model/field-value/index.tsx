@@ -1,5 +1,5 @@
-import { getFieldValueAsString, kintoneAPI } from '@konomi-app/kintone-utilities';
-import React, { FC } from 'react';
+import { getAppId, getFieldValueAsString, kintoneAPI } from '@konomi-app/kintone-utilities';
+import { FC } from 'react';
 import Calc from './calc';
 import Category from './category';
 import Checkbox from './checkbox';
@@ -15,17 +15,17 @@ import RichText from './rich-text';
 import SingleLineText from './single-line-text';
 import User from './user';
 
-type Props = { code: string; field: kintoneAPI.Field };
+type Props = { code: string; field: kintoneAPI.Field; appId?: string };
 
 export const FieldValue: FC<Props> = (props) => {
-  const { field, code } = props;
+  const { field, code, appId = String(getAppId()) } = props;
   if (!field) {
     return null;
   }
 
   switch (field.type) {
     case 'CALC':
-      return <Calc code={code} field={field} />;
+      return <Calc code={code} field={field} appId={appId} />;
     case 'CATEGORY':
       return <Category field={field} />;
     case 'CHECK_BOX':
@@ -40,7 +40,7 @@ export const FieldValue: FC<Props> = (props) => {
     case 'MULTI_SELECT':
       return <MultiSelect field={field} />;
     case 'NUMBER':
-      return <Number code={code} field={field} />;
+      return <Number code={code} field={field} appId={appId} />;
     case 'RICH_TEXT':
       return <RichText field={field} />;
     case 'DATE':
