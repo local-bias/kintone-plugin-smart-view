@@ -2,8 +2,9 @@ import { getFieldValueAsString, getYuruChara } from '@konomi-app/kintone-utiliti
 import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import type { TableRow } from '../static';
+import { currentAppIdAtom } from './kintone';
 import { paginationChunkAtom, paginationIndexAtom } from './pagination';
-import { extractedSearchConditionsAtom, pluginConditionAtom } from './plugin';
+import { extractedSearchConditionsAtom, pluginConditionAtom, yuruCharaOptionsAtom } from './plugin';
 import { searchTextAtom } from './search-text';
 import { sortingAtom } from './sorting';
 
@@ -51,23 +52,12 @@ export const filteredTableRowsAtom = atom<TableRow[]>((get) => {
   const records = get(sortedTableRowsAtom);
   const text = get(searchTextAtom);
   const condition = get(pluginConditionAtom)!;
+  const yuruCharaOptions = get(yuruCharaOptionsAtom);
   const extractedSearchConditions = condition.extractedInputs.map((_, i) =>
     get(extractedSearchConditionsAtom(i))
   ) as Plugin.ExtractedSearchCondition[];
 
-  const {
-    isCaseSensitive = false,
-    isKatakanaSensitive = false,
-    isHankakuKatakanaSensitive = false,
-    isZenkakuEisujiSensitive = false,
-  } = condition || {};
-
-  const input = getYuruChara(text, {
-    isCaseSensitive,
-    isKatakanaSensitive,
-    isHankakuKatakanaSensitive,
-    isZenkakuEisujiSensitive,
-  });
+  const input = getYuruChara(text, yuruCharaOptions);
 
   const words = input.split(/\s+/g);
 
@@ -87,19 +77,9 @@ export const filteredTableRowsAtom = atom<TableRow[]>((get) => {
 
       switch (type) {
         case 'text': {
-          const input = getYuruChara(value, {
-            isCaseSensitive,
-            isKatakanaSensitive,
-            isHankakuKatakanaSensitive,
-            isZenkakuEisujiSensitive,
-          });
+          const input = getYuruChara(value, yuruCharaOptions);
 
-          const fieldValue = getYuruChara(getFieldValueAsString(field), {
-            isCaseSensitive,
-            isKatakanaSensitive,
-            isHankakuKatakanaSensitive,
-            isZenkakuEisujiSensitive,
-          });
+          const fieldValue = getYuruChara(getFieldValueAsString(field), yuruCharaOptions);
 
           const words = input.split(/\s+/g);
 
@@ -141,7 +121,11 @@ export const displayingTableRowsAtom = atom<TableRow[]>((get) => {
   return records.slice((index - 1) * chunk, index * chunk);
 });
 
-export const areAllRecordsReadyAtom = atom<boolean>(false);
+export const areAllRecordsReadyAtom = atomFamily((_appId: string) => atom<boolean>(false));
+
+export const areAllCurrentAppRecordsReadyAtom = atom<boolean>((get) => {
+  return get(areAllRecordsReadyAtom(get(currentAppIdAtom)));
+});
 
 export const isRecordPresentAtom = atom<boolean>((get) => {
   const records = get(filteredTableRowsAtom);
@@ -149,7 +133,7 @@ export const isRecordPresentAtom = atom<boolean>((get) => {
 });
 
 export const isOriginalTableShownAtom = atom<boolean>((get) => {
-  const areAllRecordsReady = get(areAllRecordsReadyAtom);
+  const areAllRecordsReady = get(areAllCurrentAppRecordsReadyAtom);
   const isRecordPresent = get(isRecordPresentAtom);
   return !areAllRecordsReady || isRecordPresent;
 });
