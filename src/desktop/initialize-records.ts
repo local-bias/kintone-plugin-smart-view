@@ -10,13 +10,14 @@ import {
   kintoneAPI,
 } from '@konomi-app/kintone-utilities';
 import { currentAppIdAtom } from './states/kintone';
-import { errorAtom, loadingAtom } from './states/plugin';
+import { errorAtom } from './states/plugin';
 import { allTableRowsAtom, areAllRecordsReadyAtom } from './states/records';
+import { loadingEndAtom, loadingStartAtom } from './states/ui';
 import { TableRow } from './static';
 
 export const initializeRecords = async (condition: PluginCondition) => {
   try {
-    store.set(loadingAtom, true);
+    store.set(loadingStartAtom);
     const app = store.get(currentAppIdAtom);
 
     const {
@@ -57,7 +58,7 @@ export const initializeRecords = async (condition: PluginCondition) => {
       debug: !isProd,
     });
 
-    store.set(areAllRecordsReadyAtom, true);
+    store.set(areAllRecordsReadyAtom(app), true);
   } catch (error: any) {
     if (error?.code === 'GAIA_TM12') {
       store.set(errorAtom, t('desktop.error.domainCursorCreationLimitReachedError'));
@@ -68,6 +69,6 @@ export const initializeRecords = async (condition: PluginCondition) => {
     }
     throw error;
   } finally {
-    store.set(loadingAtom, false);
+    store.set(loadingEndAtom);
   }
 };
