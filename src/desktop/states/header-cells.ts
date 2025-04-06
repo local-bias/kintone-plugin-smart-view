@@ -1,25 +1,24 @@
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
 import { atom } from 'jotai';
-import { appPropertiesAtom, propertiesReadyAtom } from './kintone';
-import { pluginConditionAtom } from './plugin';
+import { fieldPropertiesAtom, propertiesReadyAtom } from './kintone';
+import { resolvedTableColumnsAtom } from './plugin';
 
 export type HeaderCell = { label: string; property: kintoneAPI.FieldProperty | null };
 
 export const headerCellsAtom = atom<HeaderCell[]>((get) => {
-  const condition = get(pluginConditionAtom);
-  const appFields = get(appPropertiesAtom);
+  const tableColumns = get(resolvedTableColumnsAtom);
   const propertiesReady = get(propertiesReadyAtom);
 
-  if (!condition?.viewFields.length) {
-    return [];
-  }
-
   if (!propertiesReady) {
-    return condition.viewFields.map((field) => ({ label: field.fieldCode, property: null }));
+    return tableColumns.map((field) => ({
+      label: field.fieldCode,
+      property: null,
+    }));
   }
 
-  const cells = condition.viewFields.map<HeaderCell>(({ fieldCode, displayName }) => {
-    const found = Object.values(appFields).find((property) => property.code === fieldCode);
+  const cells = tableColumns.map<HeaderCell>(({ appId, fieldCode, displayName }) => {
+    const properties = get(fieldPropertiesAtom(appId));
+    const found = Object.values(properties).find((property) => property.code === fieldCode);
 
     if (found) {
       return { label: displayName || found.label, property: found };
