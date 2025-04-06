@@ -46,6 +46,15 @@ const Component: FC = () => {
         </div>
         <ViewDisplayingFieldsForm />
       </PluginFormSection>
+
+      <PluginFormSection>
+        <PluginFormTitle>{t('config.app.form.joinConditions.title')}</PluginFormTitle>
+        <PluginFormDescription last>
+          {t('config.app.form.joinConditions.description')}
+        </PluginFormDescription>
+        <JoinConditionForm />
+      </PluginFormSection>
+
       <PluginFormSection>
         <PluginFormTitle>{t('config.app.form.view-type.title')}</PluginFormTitle>
         <PluginFormDescription last>
@@ -155,14 +164,6 @@ const Component: FC = () => {
           {t('config.app.form.extractedInputs.description')}
         </PluginFormDescription>
         <ExtractedInputsForm />
-      </PluginFormSection>
-
-      <PluginFormSection>
-        <PluginFormTitle>{t('config.app.form.joinConditions.title')}</PluginFormTitle>
-        <PluginFormDescription last>
-          {t('config.app.form.joinConditions.description')}
-        </PluginFormDescription>
-        <JoinConditionForm />
       </PluginFormSection>
 
       <PluginFormSection>
