@@ -3,8 +3,10 @@ import {
   LatestPluginConditionSchema,
   PluginCondition,
   PluginConfig,
+  PluginJoinCondition,
+  PluginViewField,
 } from '@/schema/plugin-config';
-import { restoreStorage } from '@konomi-app/kintone-utilities';
+import { restorePluginConfig as primitiveRestore } from '@konomi-app/kintone-utilities';
 import { nanoid } from 'nanoid';
 import { PLUGIN_ID } from './global';
 
@@ -21,7 +23,7 @@ export const validatePluginCondition = (condition: unknown): boolean => {
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): PluginConfig => ({
-  version: 10,
+  version: 11,
   conditions: [getNewCondition()],
 });
 
@@ -142,17 +144,19 @@ export const migrateConfig = (config: AnyPluginConfig): PluginConfig => {
       });
     }
     case 10:
+      return migrateConfig({ ...config, version: 11 });
+    case 11:
     default:
       return config;
   }
 };
 
 export const restorePluginConfig = (): PluginConfig => {
-  const config = restoreStorage<AnyPluginConfig>(PLUGIN_ID) ?? createConfig();
+  const config = primitiveRestore<AnyPluginConfig>(PLUGIN_ID) ?? createConfig();
   return migrateConfig(config);
 };
 
-export const getNewJoinCondition = (): Plugin.JoinCondition => ({
+export const getNewJoinCondition = (): PluginJoinCondition => ({
   id: nanoid(),
   srcKeyFieldCode: '',
   dstAppId: '',
@@ -161,7 +165,7 @@ export const getNewJoinCondition = (): Plugin.JoinCondition => ({
   dstKeyFieldCode: '',
 });
 
-export const getNewViewField = (): Plugin.ViewField => ({
+export const getNewViewField = (): PluginViewField => ({
   id: nanoid(),
   fieldCode: '',
   width: 0,
