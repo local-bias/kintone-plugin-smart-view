@@ -1,7 +1,8 @@
-import { KintoneEventListener } from '@konomi-app/kintone-utilities';
+import { KintoneEventManager } from '@konomi-app/kintone-utilities';
+import { isDev, isProd } from './global';
 import { PLUGIN_NAME } from './statics';
 
-export const listener = new KintoneEventListener({
+export const listener = new KintoneEventManager({
   errorHandler: (error, props) => {
     const { event } = props;
     event.error = `プラグイン「${PLUGIN_NAME}」の処理内でエラーが発生しました。`;
@@ -9,8 +10,7 @@ export const listener = new KintoneEventListener({
     return event;
   },
   logPrefix: `[${PLUGIN_NAME}] `,
-  logDisabled: process.env.NODE_ENV === 'production',
+  logDisabled: isProd,
 });
 
-process.env.NODE_ENV === 'development' &&
-  console.info('[plugin] Event listener has been initialized');
+isDev && console.info('[plugin] Event listener has been initialized');

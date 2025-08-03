@@ -1,9 +1,10 @@
 import {
+  getAppId,
   getFieldValueAsString,
   getFormFields,
   kintoneAPI,
-  getAppId,
 } from '@konomi-app/kintone-utilities';
+import { isDev } from './global';
 
 const IGNORE_FIELDS: kintoneAPI.FieldPropertyType[] = ['GROUP', 'REFERENCE_TABLE'];
 
@@ -18,12 +19,7 @@ export const getAppFields = async (
     throw new Error('アプリのフィールド情報が取得できませんでした');
   }
 
-  const { properties } = await getFormFields({
-    app,
-    guestSpaceId,
-    preview,
-    debug: process.env.NODE_ENV === 'development',
-  });
+  const { properties } = await getFormFields({ app, guestSpaceId, preview, debug: isDev });
 
   return properties;
 };
