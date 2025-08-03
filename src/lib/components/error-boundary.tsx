@@ -1,16 +1,18 @@
-import React, { FC, useState } from 'react';
-import { Alert, AlertTitle, Button } from '@mui/material';
-import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
-import { URL_INQUIRY } from '@/lib/statics';
-import { LoaderWithLabel } from '@konomi-app/ui-react';
 import styled from '@emotion/styled';
+import { LoaderWithLabel } from '@konomi-app/ui-react';
+import { Alert, AlertTitle, Button } from '@mui/material';
 import config from 'plugin.config.mjs';
+import { PropsWithChildren, useState } from 'react';
+import { FallbackProps, ErrorBoundary as PrimitiveErrorBoundary } from 'react-error-boundary';
+import { t } from '../i18n';
+import { URL_INQUIRY } from '../statics';
 
-const Component: FC<FallbackProps & { className?: string }> = ({
-  className,
-  error,
-  resetErrorBoundary,
-}) => {
+type FallbackComponentProps = FallbackProps & {
+  className?: string;
+};
+
+function ErrorFallbackComponent(props: FallbackComponentProps) {
+  const { error, resetErrorBoundary, className } = props;
   const [loading, setLoading] = useState(false);
 
   const onRetry = () => {
@@ -22,62 +24,70 @@ const Component: FC<FallbackProps & { className?: string }> = ({
   };
 
   if (loading) {
-    return <LoaderWithLabel label='再試行中' />;
+    return <LoaderWithLabel label={t('common.loading.retry')} />;
   }
 
   return (
     <div className={className}>
       <Alert severity='error'>
-        <AlertTitle title={error.message}>エラーが発生しました</AlertTitle>
-        <h2>解決方法</h2>
+        <AlertTitle title={error.message}>{t('common.error.occurred')}</AlertTitle>
+        <h2>{t('common.error.hints')}</h2>
         <ol>
           <li>
-            <h3>処理をリトライ</h3>
-            <p>以下の「リトライ」ボタンをクリックして、処理を再実行してください。</p>
+            <h3>{t('common.error.retry.title')}</h3>
+            <p>{t('common.error.retry.description')}</p>
             <Button variant='contained' color='error' onClick={onRetry}>
-              リトライ
+              {t('common.error.retry.button')}
             </Button>
           </li>
           {!!config.pluginReleasePageUrl && (
             <li>
-              <h3>最新版のプラグインをインストール</h3>
+              <h3>{t('common.error.latestVersion.title')}</h3>
               <p>
-                プラグインの最新版をインストールすることで、問題が解決する可能性があります。
+                {t('common.error.latestVersion.description1')}
                 <br />
-                以下のリンクから最新版のプラグインをダウンロードし、再度インストールしてください。
+                {t('common.error.latestVersion.description2')}
               </p>
               <Button
                 variant='contained'
                 color='error'
                 onClick={() => window.open(config.pluginReleasePageUrl, '_blank')}
               >
-                最新版をダウンロード
+                {t('common.error.latestVersion.button')}
               </Button>
             </li>
           )}
           <li>
-            <h3>プラグイン設定を更新</h3>
+            <h3>{t('common.error.updateSettings.title')}</h3>
             <p>
-              保存されているプラグイン設定情報が古くなっている可能性があります。
-              <br />
-              アプリ設定からこのプラグインの設定を開き、再度保存した上でアプリを更新してください。
+              {t('common.error.updateSettings.description')}
+              <ul>
+                <li>{t('common.error.updateSettings.steps.1')}</li>
+                <li>{t('common.error.updateSettings.steps.2')}</li>
+                <li>{t('common.error.updateSettings.steps.3')}</li>
+                <li>{t('common.error.updateSettings.steps.4')}</li>
+                <li>{t('common.error.updateSettings.steps.5')}</li>
+                <li>{t('common.error.updateSettings.steps.6')}</li>
+                <li>{t('common.error.updateSettings.steps.7')}</li>
+                <li>{t('common.error.updateSettings.steps.8')}</li>
+                <li>{t('common.error.updateSettings.steps.9')}</li>
+              </ul>
             </p>
           </li>
           <li>
-            <h3>お問い合わせ</h3>
-            <p>
-              上記全てを試しても解決しない場合、下記のエラー内容を添えて開発者までお問い合わせください。
-            </p>
+            <h3>{t('common.error.inquiry.title')}</h3>
+            <p>{t('common.error.inquiry.description')}</p>
             <pre>
               <code>
                 {JSON.stringify(
                   {
-                    プラグインID: config.id,
-                    プラグイン名: config.manifest.base.name.ja,
-                    バージョン: config.manifest.base.version,
-                    エラーメッセージ: error?.message ?? '不明なエラー ',
-                    エラースタック: error?.stack,
-                    エラー詳細: error,
+                    [t('common.error.pluginId')]: config.id,
+                    [t('common.error.pluginName')]: config.manifest.base.name.ja,
+                    [t('common.error.version')]: config.manifest.base.version,
+                    [t('common.error.errorMessage')]:
+                      error?.message ?? t('common.error.unknownError'),
+                    [t('common.error.errorStack')]: error?.stack,
+                    [t('common.error.errorDetails')]: error,
                   },
                   null,
                   2
@@ -85,21 +95,20 @@ const Component: FC<FallbackProps & { className?: string }> = ({
               </code>
             </pre>
             <Button
-              size='large'
               variant='contained'
               color='error'
               onClick={() => window.open(URL_INQUIRY, '_blank')}
             >
-              お問い合わせ
+              {t('common.error.inquiry.button')}
             </Button>
           </li>
         </ol>
       </Alert>
     </div>
   );
-};
+}
 
-const StyledComponent = styled(Component)`
+const StyledErrorFallback = styled(ErrorFallbackComponent)`
   margin: 8px;
 
   h2 {
@@ -117,8 +126,17 @@ const StyledComponent = styled(Component)`
   }
 
   ol {
+    list-style: decimal;
     display: grid;
     gap: 32px;
+    padding-inline-start: 16px;
+  }
+
+  ul {
+    padding: 8px 0;
+    list-style: disc;
+    display: grid;
+    gap: 8px;
     padding-inline-start: 16px;
   }
 
@@ -137,8 +155,11 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Container: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ErrorBoundary FallbackComponent={StyledComponent}>{children}</ErrorBoundary>
-);
-
-export const PluginErrorBoundary = Container;
+export function PluginErrorBoundary(props: PropsWithChildren<{}>) {
+  const { children } = props;
+  return (
+    <PrimitiveErrorBoundary fallbackRender={(props) => <StyledErrorFallback {...props} />}>
+      {children}
+    </PrimitiveErrorBoundary>
+  );
+}
