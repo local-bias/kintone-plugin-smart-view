@@ -1,4 +1,4 @@
-import { GUEST_SPACE_ID } from '@/lib/global';
+import { GUEST_SPACE_ID, isDev } from '@/lib/global';
 import { t } from '@/lib/i18n';
 import { migrateConfig } from '@/lib/plugin';
 import { PLUGIN_NAME, VIEW_ROOT_ID } from '@/lib/statics';
@@ -30,7 +30,7 @@ export const updatePluginConfigAtom = atom(null, async (get, set) => {
       app,
       preview: true,
       guestSpaceId: GUEST_SPACE_ID,
-      debug: process.env.NODE_ENV === 'development',
+      debug: isDev,
     });
 
     const newViews = produce(views, (draft) => {
@@ -50,7 +50,7 @@ export const updatePluginConfigAtom = atom(null, async (get, set) => {
         app,
         views: newViews,
         guestSpaceId: GUEST_SPACE_ID,
-        debug: process.env.NODE_ENV === 'development',
+        debug: isDev,
       });
     } catch (error: any) {
       console.error(error);
