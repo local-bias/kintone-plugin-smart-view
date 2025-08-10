@@ -10,7 +10,13 @@ import { initializeAppFormLayout } from './initialize-app-form-layout';
 import { initializeAppProperties } from './initialize-app-properties';
 import { initializeRecords } from './initialize-records';
 import { paginationChunkAtom } from './states/pagination';
-import { extractedSearchConditionsAtom, pluginConditionAtom, viewTypeAtom } from './states/plugin';
+import {
+  defaultSortConditionAtom,
+  extractedSearchConditionsAtom,
+  pluginConditionAtom,
+  viewTypeAtom,
+} from './states/plugin';
+import { getQuery, getSortFromQuery } from '@konomi-app/kintone-utilities';
 
 let cachedRoot: Root | null = null;
 
@@ -48,6 +54,11 @@ listener.add(['app.record.index.show'], async (event) => {
     ...input,
     value: '',
   }));
+
+  if (targetCondition.isViewSortConditionEnabled) {
+    const sortCondition = getSortFromQuery(getQuery() ?? '');
+    store.set(defaultSortConditionAtom, sortCondition);
+  }
 
   const root = cachedRoot || createRoot(rootElement);
   if (!cachedRoot) {
