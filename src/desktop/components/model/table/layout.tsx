@@ -6,7 +6,8 @@ export const MyTable = styled.table<{
   isDetailCellHidden?: boolean;
 }>`
   background-color: #fff;
-  font-size: 88%;
+  font-size: 14px;
+  line-height: 30px;
 
   display: grid;
   grid-template-columns: ${({ isDetailCellHidden = false }) =>
@@ -65,12 +66,12 @@ export const MyTable = styled.table<{
 
   th,
   td {
+    box-sizing: border-box;
     &:not(:first-of-type) {
       padding: 8px 15px;
     }
     &:first-of-type {
       padding: 8px 10px;
-      width: 24px;
       border-left: 1px solid #0002;
     }
     &:last-of-type {
@@ -117,7 +118,6 @@ export const MyTableHead = styled.thead<{ sticky?: number }>`
       background-color: #fff;
       border-bottom: 1px solid #0002;
       border-top: 1px solid #0002;
-      height: 24px;
       @media screen {
         ${({ sticky }) => sticky !== undefined && 'position: sticky;'}
         ${({ sticky }) => sticky !== undefined && `top: ${sticky}px;`}
@@ -144,8 +144,6 @@ export const MyTableHead = styled.thead<{ sticky?: number }>`
 
 export const MyTableBody = styled.tbody`
   tr {
-    line-height: 30px;
-
     td {
       background-color: #fff;
       transition: filter 0.1s ease;
@@ -156,11 +154,12 @@ export const MyTableBody = styled.tbody`
 
       &:nth-of-type(1) {
         a {
-          display: flex;
-          justify-content: center;
+          vertical-align: middle;
+          display: inline-flex;
           align-items: center;
           svg {
-            font-size: 18px;
+            width: 20px;
+            height: 20px;
           }
         }
       }
