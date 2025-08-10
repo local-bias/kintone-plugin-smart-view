@@ -22,6 +22,7 @@ import { produce } from 'immer';
 import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback, type FC } from 'react';
+import ViewFieldDetailDialogMinigraphForm from './dialog-minigraph';
 
 const Component: FC = () => {
   const selectedIndex = useAtomValue(selectedViewFieldDetailSettingIndexAtom);
@@ -67,7 +68,7 @@ const Component: FC = () => {
   );
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} scroll='paper'>
       <DialogTitle>
         {t('config.app.form.view-fields.detailSetting.title', viewField?.fieldCode ?? '')}
       </DialogTitle>
@@ -113,6 +114,7 @@ const Component: FC = () => {
             label={t('config.app.form.view-fields.nowrap.label')}
           />
         </PluginFormSection>
+        <ViewFieldDetailDialogMinigraphForm />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t('common.close')}</Button>
