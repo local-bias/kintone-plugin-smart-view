@@ -17,6 +17,16 @@ export const fieldPropertiesAtom = atomFamily((_appId: string) =>
   atom<kintoneAPI.FieldProperties>({})
 );
 
+export const appFormPropertyAtom = atomFamily(
+  (params: { appId: string; fieldCode: string }) =>
+    atom<kintoneAPI.FieldProperty | null>((get) => {
+      const formFields = get(fieldPropertiesAtom(params.appId));
+      const field = formFields[params.fieldCode];
+      return field ?? null;
+    }),
+  (a, b) => a.appId === b.appId && a.fieldCode === b.fieldCode
+);
+
 /**
  * 現在のアプリのフィールドプロパティを取得するatom
  *
