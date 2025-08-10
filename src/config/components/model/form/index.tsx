@@ -93,15 +93,12 @@ const Component: FC = () => {
           {t('config.app.form.isViewSortConditionEnabled.description')}
         </PluginFormDescription>
 
-        <Tooltip title='この機能は一覧高速検索プラグイン プラスでのみご利用いただけます'>
-          <div>
-            <JotaiSwitch
-              disabled={true}
-              atom={getConditionPropertyAtom('isViewSortConditionEnabled')}
-              label={t('config.app.form.isViewSortConditionEnabled.label')}
-            />
-          </div>
-        </Tooltip>
+        <div>
+          <JotaiSwitch
+            atom={getConditionPropertyAtom('isViewSortConditionEnabled')}
+            label={t('config.app.form.isViewSortConditionEnabled.label')}
+          />
+        </div>
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>{t('config.app.form.isSortable.title')}</PluginFormTitle>

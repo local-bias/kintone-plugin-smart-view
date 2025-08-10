@@ -1,3 +1,4 @@
+import { t } from '@/lib/i18n';
 import { createConfig } from '@/lib/plugin';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {
@@ -27,7 +28,7 @@ const Component: FC = () => {
     useCallback((get, set) => {
       set(pluginConfigAtom, createConfig());
       setOpen(false);
-      enqueueSnackbar('設定をリセットしました', { variant: 'success' });
+      enqueueSnackbar(t('common.config.resetSuccess'), { variant: 'success' });
     }, [])
   );
 
@@ -38,22 +39,20 @@ const Component: FC = () => {
   return (
     <>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>設定のリセット</DialogTitle>
+        <DialogTitle>{t('common.config.resetDialog.title')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            このプラグインの設定を初期状態に戻します。よろしいですか？
-          </DialogContentText>
+          <DialogContentText>{t('common.config.resetDialog.message')}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button color='primary' variant='contained' onClick={onDecisionButtonClick}>
-            実行
+            {t('common.config.resetDialog.execute')}
           </Button>
           <Button color='inherit' variant='contained' onClick={onClose}>
-            キャンセル
+            {t('common.config.resetDialog.cancel')}
           </Button>
         </DialogActions>
       </Dialog>
-      <Tooltip title='プラグインの設定をリセット'>
+      <Tooltip title={t('common.config.resetButton.tooltip')}>
         <IconButton onClick={onIconButtonClick}>
           <RestartAltIcon />
         </IconButton>

@@ -1,6 +1,6 @@
 import { allAppViewsAtom } from '@/config/states/kintone';
 import { loadingAtom, loadingCountAtom, viewIdAtom } from '@/config/states/plugin';
-import { GUEST_SPACE_ID } from '@/lib/global';
+import { GUEST_SPACE_ID, isDev } from '@/lib/global';
 import { t } from '@/lib/i18n';
 import { VIEW_ROOT_ID } from '@/lib/statics';
 import { getAppId, getViews, kintoneAPI, updateViews } from '@konomi-app/kintone-utilities';
@@ -9,6 +9,7 @@ import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
 import { FC, useCallback } from 'react';
+import invariant from 'tiny-invariant';
 
 const ViewCreateButton: FC = () => {
   const loading = useAtomValue(loadingAtom);
@@ -41,19 +42,11 @@ const ViewCreateButton: FC = () => {
           },
         };
 
-        await updateViews({
-          app: getAppId()!,
-          views: newViews,
-          debug: process.env.NODE_ENV === 'development',
-          guestSpaceId: GUEST_SPACE_ID,
-        });
-
-        const latestViews = await getViews({
-          app: getAppId()!,
-          preview: true,
-          guestSpaceId: GUEST_SPACE_ID,
-          debug: process.env.NODE_ENV === 'development',
-        });
+        const app = getAppId();
+        invariant(app, 'アプリIDが取得できませんでした');
+        const guestSpaceId = GUEST_SPACE_ID;
+        await updateViews({ app, views: newViews, debug: isDev, guestSpaceId });
+        const latestViews = await getViews({ app, preview: true, guestSpaceId, debug: isDev });
 
         const viewId = latestViews.views[viewName].id;
 
@@ -61,7 +54,7 @@ const ViewCreateButton: FC = () => {
         set(viewIdAtom, viewId);
         enqueueSnackbar(t('config.app.toast.createView'), { variant: 'success' });
       } catch (error) {
-        process.env.NODE_ENV === 'development' && console.error(error);
+        isDev && console.error(error);
         enqueueSnackbar(t('config.app.toast.createViewFailed'), { variant: 'error' });
       } finally {
         set(loadingCountAtom, (c) => c - 1);

@@ -1,3 +1,5 @@
+import { t } from '@/lib/i18n';
+import { PluginExtractedInputType } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 import AddIcon from '@mui/icons-material/Add';
 import {
@@ -15,9 +17,8 @@ import { useAtomCallback } from 'jotai/utils';
 import { FC, memo, Suspense, useCallback } from 'react';
 import { extractedInputFieldsAtom } from '../../../states/app-fields';
 import { extractedInputsAtom } from '../../../states/plugin';
-import { t } from '@/lib/i18n';
 
-const INPUT_TYPES: { type: Plugin.ExtractedInputType; label: string }[] = [
+const INPUT_TYPES: { type: PluginExtractedInputType; label: string }[] = [
   { type: 'text', label: t('config.app.form.extractedInputs.type.text') },
   { type: 'autocomplete', label: t('config.app.form.extractedInputs.type.dropdown') },
   { type: 'date', label: t('config.app.form.extractedInputs.type.date') },
@@ -50,7 +51,7 @@ const Component: FC = () => {
   const fields = useAtomValue(extractedInputFieldsAtom);
 
   const onTypeChange = useAtomCallback(
-    useCallback((_, set, rowIndex: number, value: Plugin.ExtractedInputType) => {
+    useCallback((_, set, rowIndex: number, value: PluginExtractedInputType) => {
       set(extractedInputsAtom, (current) =>
         produce(current, (draft) => {
           draft[rowIndex].type = value;
@@ -79,7 +80,7 @@ const Component: FC = () => {
             color='primary'
             value={type}
             sx={{ width: '200px' }}
-            onChange={(e) => onTypeChange(i, e.target.value as Plugin.ExtractedInputType)}
+            onChange={(e) => onTypeChange(i, e.target.value as PluginExtractedInputType)}
           >
             {INPUT_TYPES.map(({ type, label }) => (
               <MenuItem key={type} value={type}>

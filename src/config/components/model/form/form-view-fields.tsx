@@ -8,6 +8,7 @@ import {
 import { t } from '@/lib/i18n';
 import { getNewViewField } from '@/lib/plugin';
 import { cn } from '@/lib/utils';
+import { PluginViewField } from '@/schema/plugin-config';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import {
@@ -61,7 +62,7 @@ const Placeholder: FC = () => {
 };
 
 const FieldSelect: FC<{
-  value: Plugin.ViewField;
+  value: PluginViewField;
   index: number;
   addRow: (index: number) => void;
   deleteRow: (index: number) => void;
