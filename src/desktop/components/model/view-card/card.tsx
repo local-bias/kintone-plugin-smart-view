@@ -3,6 +3,7 @@ import {
   cardViewFieldsAtom,
   pluginConditionAtom,
 } from '@/desktop/states/plugin';
+import { TableRow } from '@/desktop/static';
 import { getQueryString } from '@/lib/cybozu';
 import styled from '@emotion/styled';
 import { isMobile, kintoneAPI } from '@konomi-app/kintone-utilities';
@@ -12,7 +13,6 @@ import { FC, FCX } from 'react';
 import { DocumentIcon } from '../../ui/document-icon';
 import Field from './field';
 import Image from './image';
-import { TableRow } from '@/desktop/static';
 
 type FileInfo = kintoneAPI.field.File['value'][number];
 
@@ -56,7 +56,7 @@ const Component: FCX<Props> = ({ className, record }) => {
           >
             <Tooltip title='レコード詳細'>
               <IconButton>
-                <DocumentIcon />
+                <DocumentIcon className='w-5 h-5' />
               </IconButton>
             </Tooltip>
           </a>
