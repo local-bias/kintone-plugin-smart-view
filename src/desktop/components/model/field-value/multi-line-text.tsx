@@ -1,16 +1,13 @@
 import type { kintoneAPI } from '@konomi-app/kintone-utilities';
-import { FC } from 'react';
 
 type Props = { field: kintoneAPI.field.MultiLineText };
 
-const MultiLineTextFieldValue: FC<Props> = (props) => {
+export default function MultiLineTextFieldValue({ field }: Props) {
   return (
     <>
-      {props.field.value.split(/\r?\n/g).map((text, i) => (
+      {field.value.split(/\r?\n/g).map((text, i) => (
         <div key={i}>{text}</div>
       ))}
     </>
   );
-};
-
-export default MultiLineTextFieldValue;
+}
