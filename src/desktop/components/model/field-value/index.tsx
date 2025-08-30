@@ -57,7 +57,7 @@ export const FieldValue: FC<Props> = (props) => {
     case 'FILE':
       return <File field={field} />;
     case 'LINK':
-      return <Link code={code} field={field} />;
+      return <Link code={code} field={field} appId={appId} />;
     default:
       return <>{getFieldValueAsString(field)}</>;
   }
