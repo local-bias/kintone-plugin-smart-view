@@ -1,4 +1,4 @@
-import { GUEST_SPACE_ID, isProd } from '@/lib/global';
+import { GUEST_SPACE_ID, isDev, isProd } from '@/lib/global';
 import { t } from '@/lib/i18n';
 import { getAppId, getFormFields, getViews, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { atom } from 'jotai';
@@ -29,7 +29,7 @@ export const allAppViewsAtom = atomWithDefault<
     app,
     preview: true,
     guestSpaceId: GUEST_SPACE_ID,
-    debug: process.env.NODE_ENV === 'development',
+    debug: isDev,
   });
 
   return views;
@@ -111,8 +111,13 @@ export const dstAppFieldsAtom = atomFamily((appId: string) =>
 
     const allowedFields: kintoneAPI.FieldPropertyType[] = [
       'SINGLE_LINE_TEXT',
+      'MULTI_LINE_TEXT',
+      'RICH_TEXT',
       'CALC',
       'NUMBER',
+      'DATE',
+      'DATETIME',
+      'TIME',
       'RECORD_NUMBER',
       'CREATOR',
       'MODIFIER',
