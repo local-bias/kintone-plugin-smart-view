@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useAtomCallback } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { pluginConfigAtom } from '../../../states/plugin';
 
 const Component: FC = () => {
@@ -61,4 +61,5 @@ const Component: FC = () => {
   );
 };
 
-export default memo(Component);
+// React 19: Component will be automatically optimized by React Compiler
+export default Component;

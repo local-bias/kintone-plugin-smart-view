@@ -1,9 +1,9 @@
+import { pluginConditionAtom } from '@/desktop/states/plugin';
 import { getQueryString } from '@/lib/cybozu';
 import { isMobile } from '@konomi-app/kintone-utilities';
-import { memo, type FC } from 'react';
-import { DocumentIcon } from '../../ui/document-icon';
 import { useAtomValue } from 'jotai';
-import { pluginConditionAtom } from '@/desktop/states/plugin';
+import { type FC } from 'react';
+import { DocumentIcon } from '../../ui/document-icon';
 
 type Props = Readonly<{ recordId: string }>;
 
@@ -12,9 +12,9 @@ const DetailsLinkCell: FC<Props> = ({ recordId }) => {
 
   return (
     <a
-      href={`${location.pathname}show${isMobile() ? '?' : '#'}record=${
-        recordId
-      }&l.view=${condition.viewId}&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
+      href={`${location.pathname}show${isMobile() ? '?' : '#'}record=${recordId}&l.view=${
+        condition.viewId
+      }&l.q${getQueryString() ? `=${getQueryString()}` : ''}`}
       {...(condition.isOpenInNewTab ? { target: '_blank' } : {})}
     >
       <DocumentIcon />
@@ -22,4 +22,5 @@ const DetailsLinkCell: FC<Props> = ({ recordId }) => {
   );
 };
 
-export default memo(DetailsLinkCell);
+// React 19: Component will be automatically optimized by React Compiler
+export default DetailsLinkCell;
