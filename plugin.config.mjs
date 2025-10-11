@@ -24,7 +24,7 @@ export default /** @type { const } */ ({
   manifest: {
     base: {
       manifest_version: 1,
-      version: '5.3.0',
+      version: '5.4.0',
       type: 'APP',
       name: {
         en: 'faster search plugin',
@@ -47,8 +47,14 @@ export default /** @type { const } */ ({
       },
       icon: 'icon.png',
       homepage_url: { ja: HP, en: HP },
-      desktop: { js: [`${cdn}/common/desktop.js`], css: [`${cdn}/common/desktop.css`] },
-      mobile: { js: [`${cdn}/common/desktop.js`], css: [`${cdn}/common/desktop.css`] },
+      desktop: {
+        js: [`${cdn}/common/desktop.js`],
+        css: [`${cdn}/common/desktop.css`],
+      },
+      mobile: {
+        js: [`${cdn}/common/desktop.js`],
+        css: [`${cdn}/common/desktop.css`],
+      },
       config: {
         html: 'config.html',
         js: [`${cdn}/common/config.js`],
@@ -57,9 +63,18 @@ export default /** @type { const } */ ({
       },
     },
     prod: {
-      desktop: { js: [`${cdn}/${key}/desktop.js`], css: [`${cdn}/${key}/desktop.css`] },
-      mobile: { js: [`${cdn}/${key}/desktop.js`], css: [`${cdn}/${key}/desktop.css`] },
-      config: { js: [`${cdn}/${key}/config.js`], css: [`${cdn}/${key}/config.css`] },
+      desktop: {
+        js: [`${cdn}/${key}/desktop.js`],
+        css: [`${cdn}/${key}/desktop.css`],
+      },
+      mobile: {
+        js: [`${cdn}/${key}/desktop.js`],
+        css: [`${cdn}/${key}/desktop.css`],
+      },
+      config: {
+        js: [`${cdn}/${key}/config.js`],
+        css: [`${cdn}/${key}/config.css`],
+      },
     },
     standalone: {
       desktop: { js: ['desktop.js'], css: ['desktop.css'] },
