@@ -1,6 +1,6 @@
 import { Skeleton } from '@mui/material';
 import { useAtomValue } from 'jotai';
-import { FC, memo, Suspense } from 'react';
+import { FC, Suspense } from 'react';
 import { customViewsAtom } from '../../states/kintone';
 import { viewIdAtom } from '../../states/plugin';
 
@@ -25,4 +25,5 @@ const Container: FC = () => {
   );
 };
 
-export default memo(Container);
+// React 19: Component will be automatically optimized by React Compiler
+export default Container;
