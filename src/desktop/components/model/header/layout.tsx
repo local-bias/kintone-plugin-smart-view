@@ -1,23 +1,11 @@
 import { PluginCondition } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 
-const StyledComponent = styled.div<{ condition: PluginCondition }>`
+const StyledComponent = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  ${({ condition }) =>
-    condition.extractedInputs.length > 2 &&
-    `
-    display: grid;
-    justify-content: stretch;
-    gap: 8px;
-    
-    & > div:nth-of-type(2) {
-      justify-self: end;
-    }
-  `}
 
   position: sticky;
   left: 0;
