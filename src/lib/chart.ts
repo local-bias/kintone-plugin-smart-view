@@ -34,7 +34,6 @@ export function createChartData(params: {
   }
 
   let total = 0;
-  let max = 0;
   const data: Record<string, { value: number }> = {};
   field.value.forEach((row) => {
     const amount = getAmount(row.value[col.miniGraphValueFieldCode ?? '']);
@@ -43,7 +42,6 @@ export function createChartData(params: {
     const label = labelField
       ? getFieldValueAsString(labelField) || labelPlaceholder
       : labelPlaceholder;
-    max = Math.max(max, amount);
     total += amount;
     if (data[label]) {
       data[label].value += amount;
@@ -55,7 +53,7 @@ export function createChartData(params: {
   // 配列に直し、大きい順にソート
   return {
     total,
-    max,
+    max: Math.max(...Object.values(data).map((item) => item.value), 0),
     data: Object.entries(data)
       .map(([label, { value }]) => ({ label, value }))
       .sort((a, b) => b.value - a.value)
