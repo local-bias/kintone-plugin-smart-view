@@ -1,4 +1,4 @@
-import { appPropertiesAtom } from '@/desktop/states/kintone';
+import { currentAppFieldPropertiesAtom } from '@/desktop/states/kintone';
 import styled from '@emotion/styled';
 import { kintoneAPI } from '@konomi-app/kintone-utilities';
 import { useAtomValue } from 'jotai';
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const FieldLabel: FC<{ fieldCode: string }> = ({ fieldCode }) => {
-  const properties = useAtomValue(appPropertiesAtom);
+  const properties = useAtomValue(currentAppFieldPropertiesAtom);
   const property = Object.values(properties).find((p) => p.code === fieldCode);
 
   const label = property?.label ?? fieldCode;
