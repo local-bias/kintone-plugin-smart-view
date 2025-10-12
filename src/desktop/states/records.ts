@@ -1,17 +1,58 @@
-import { getFieldValueAsString, getYuruChara } from '@konomi-app/kintone-utilities';
+import { isDev } from '@/lib/global';
+import { getQuickSearchString } from '@/lib/kintone';
+import { PluginExtractedSearchCondition } from '@/schema/plugin-config';
+import {
+  getFieldValueAsString,
+  getYuruChara,
+  kintoneAPI,
+  sortField,
+} from '@konomi-app/kintone-utilities';
 import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import type { TableRow } from '../static';
 import { currentAppIdAtom } from './kintone';
 import { paginationChunkAtom, paginationIndexAtom } from './pagination';
-import { extractedSearchConditionsAtom, pluginConditionAtom, yuruCharaOptionsAtom } from './plugin';
+import {
+  defaultSortConditionAtom,
+  extractedSearchConditionsAtom,
+  pluginConditionAtom,
+  yuruCharaOptionsAtom,
+} from './plugin';
 import { searchTextAtom } from './search-text';
 import { sortingAtom } from './sorting';
 
 export const allTableRowsAtom = atom<TableRow[]>([]);
 
-const sortedTableRowsAtom = atom<TableRow[]>((get) => {
+const viewSortAppliedTableRowsAtom = atom<TableRow[]>((get) => {
   const records = get(allTableRowsAtom);
+  const defaultSort = get(defaultSortConditionAtom);
+
+  isDev && console.time('default sorting');
+
+  const sorted = [...records].sort((a, b) => {
+    for (const { field, order } of defaultSort) {
+      const aValue = a.record[field] as kintoneAPI.Field | undefined;
+      const bValue = b.record[field] as kintoneAPI.Field | undefined;
+      if (!aValue || !bValue || aValue.value === bValue.value) {
+        continue;
+      }
+      const compared = sortField(aValue, bValue);
+      if (order === 'asc') {
+        return compared;
+      } else {
+        return compared * -1;
+      }
+    }
+    return 0;
+  });
+
+  isDev && console.timeEnd('default sorting');
+
+  return sorted;
+});
+
+const columnSortAppliedTableRowsAtom = atom<TableRow[]>((get) => {
+  const records = get(viewSortAppliedTableRowsAtom);
   const sorting = get(sortingAtom);
   const condition = get(pluginConditionAtom);
 
@@ -19,7 +60,7 @@ const sortedTableRowsAtom = atom<TableRow[]>((get) => {
     return records;
   }
 
-  process.env.NODE_ENV === 'development' && console.time('sorting');
+  isDev && console.time('sorting');
 
   const sorted = [...records].sort((dataA, dataB) => {
     const recordA = dataA.record;
@@ -43,25 +84,25 @@ const sortedTableRowsAtom = atom<TableRow[]>((get) => {
     return a.localeCompare(b, 'ja');
   });
 
-  process.env.NODE_ENV === 'development' && console.timeEnd('sorting');
+  isDev && console.timeEnd('sorting');
 
   return sorted;
 });
 
 export const filteredTableRowsAtom = atom<TableRow[]>((get) => {
-  const records = get(sortedTableRowsAtom);
+  const records = get(columnSortAppliedTableRowsAtom);
   const text = get(searchTextAtom);
   const condition = get(pluginConditionAtom)!;
   const yuruCharaOptions = get(yuruCharaOptionsAtom);
   const extractedSearchConditions = condition.extractedInputs.map((_, i) =>
     get(extractedSearchConditionsAtom(i))
-  ) as Plugin.ExtractedSearchCondition[];
+  ) as PluginExtractedSearchCondition[];
 
   const input = getYuruChara(text, yuruCharaOptions);
 
   const words = input.split(/\s+/g);
 
-  process.env.NODE_ENV === 'development' && console.time('filtering');
+  isDev && console.time('filtering');
 
   const firstFiltered = records.filter(({ __quickSearch }) =>
     words.every((word) => ~__quickSearch.indexOf(word))
@@ -108,9 +149,14 @@ export const filteredTableRowsAtom = atom<TableRow[]>((get) => {
     })
   );
 
-  process.env.NODE_ENV === 'development' && console.timeEnd('filtering');
+  isDev && console.timeEnd('filtering');
 
   return lastFiltered;
+});
+
+export const tableRowLengthAtom = atom<number>((get) => {
+  const records = get(filteredTableRowsAtom);
+  return records.length;
 });
 
 export const displayingTableRowsAtom = atom<TableRow[]>((get) => {
