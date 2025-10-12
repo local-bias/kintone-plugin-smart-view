@@ -1,20 +1,16 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
-import Layout from './layout';
-import SearchInput from './search-input';
 import CSVDownloadButton from './csv-download-button';
+import ExtractedInputs from './extracted-inputs';
+import Layout from './layout';
 import Pagination from './pagination';
 import PaginationChunk from './pagination-chunk';
-import ExtractedInputs from './extracted-inputs';
+import SearchInput from './search-input';
 import ViewTypeSelect from './view-type-select';
-import { useAtomValue } from 'jotai';
-import { pluginConditionAtom } from '@/desktop/states/plugin';
 
 const Component: FC = () => {
-  const condition = useAtomValue(pluginConditionAtom)!;
-
   return (
-    <Layout condition={condition}>
+    <Layout>
       <div className='flex flex-wrap gap-4 items-center'>
         <SearchInput />
         <ExtractedInputs />
