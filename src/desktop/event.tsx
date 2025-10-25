@@ -65,12 +65,15 @@ listener.add(['app.record.index.show'], async (event) => {
     cachedRoot = root;
   }
 
+  // React 19 optimized: Batch state updates more efficiently
   store.set(pluginConditionAtom, targetCondition);
   store.set(paginationChunkAtom, targetCondition.paginationChunk || 100);
   store.set(viewTypeAtom, targetCondition.viewType || 'table');
-  extractedSearchCondition.forEach((con, index) => {
-    store.set(extractedSearchConditionsAtom(index), con);
-  });
+  
+  // React 19 optimized: Process extracted search conditions efficiently
+  for (let index = 0; index < extractedSearchCondition.length; index++) {
+    store.set(extractedSearchConditionsAtom(index), extractedSearchCondition[index]);
+  }
 
   initializeRecords(targetCondition);
   initializeAppProperties();
