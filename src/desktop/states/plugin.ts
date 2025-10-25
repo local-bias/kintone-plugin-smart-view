@@ -1,13 +1,20 @@
-import { PluginCondition } from '@/schema/plugin-config';
+import {
+  PluginCondition,
+  PluginExtractedSearchCondition,
+  PluginViewField,
+  PluginViewType,
+} from '@/schema/plugin-config';
 import { getSortFromQuery, GetYuruCharaOptions, kintoneAPI } from '@konomi-app/kintone-utilities';
 import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
+import { ChangeEvent } from 'react';
 import { currentAppFieldPropertiesAtom, currentAppIdAtom } from './kintone';
+import { paginationIndexAtom } from './pagination';
 
 /**
  * プラグインの設定情報から、画面表示に必要な情報を補完したテーブルのカラム情報
  */
-export type ResolvedTableColumnProps = Plugin.ViewField & {
+export type ResolvedTableColumnProps = PluginViewField & {
   appId: string;
 };
 
@@ -20,6 +27,8 @@ export const yuruCharaOptionsAtom = atom<GetYuruCharaOptions>((get) => {
     isKatakanaSensitive: condition?.isKatakanaSensitive ?? false,
     isHankakuKatakanaSensitive: condition?.isHankakuKatakanaSensitive ?? false,
     isZenkakuEisujiSensitive: condition?.isZenkakuEisujiSensitive ?? false,
+    isHebonSensitive: false,
+    isHyphenSensitive: false,
   };
 });
 
@@ -37,10 +46,34 @@ export const resolvedTableColumnsAtom = atom<ResolvedTableColumnProps[]>((get) =
 export const defaultSortConditionAtom = atom<ReturnType<typeof getSortFromQuery>>([]);
 
 export const extractedSearchConditionsAtom = atomFamily((index: number) =>
-  atom<Plugin.ExtractedSearchCondition | null>(null)
+  atom<PluginExtractedSearchCondition | null>(null)
 );
 
-export const viewTypeAtom = atom<Plugin.ViewType>('table');
+export const handleExtractedSearchInputChangeAtom = atomFamily((index: number) =>
+  atom(null, (_, set, event: ChangeEvent<HTMLInputElement>) => {
+    set(extractedSearchConditionsAtom(index), (_c, c = _c!) => ({
+      ...c,
+      value: event.target.value,
+    }));
+    set(paginationIndexAtom, 1);
+  })
+);
+
+export const handleExtractedSearchAutocompleteChangeAtom = atomFamily((index: number) =>
+  atom(null, (_, set, __: unknown, value: string | null) => {
+    set(extractedSearchConditionsAtom(index), (_c, c = _c!) => ({
+      ...c,
+      value: value ?? '',
+    }));
+    set(paginationIndexAtom, 1);
+  })
+);
+
+export const viewTypeAtom = atom<PluginViewType>('table');
+
+export const handleViewTypeChangeAtom = atom(null, (_, set, value: PluginViewType) => {
+  set(viewTypeAtom, value);
+});
 
 export const cardImageFieldCodeAtom = atom<string | null>((get) => {
   const tableColumns = get(resolvedTableColumnsAtom);
