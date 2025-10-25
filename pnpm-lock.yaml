@@ -118,8 +118,11 @@ importers:
         specifier: ^8.1.3
         version: 8.1.3(@types/eslint@9.6.1)(@typescript-eslint/utils@8.44.1(eslint@9.36.0(jiti@1.21.7))(typescript@5.9.2))(eslint-import-resolver-node@0.3.9)(jiti@1.21.7)(typescript@5.9.2)
       '@konomi-app/k2':
-        specifier: ^1.12.1
-        version: 1.12.1(jiti@1.21.7)(typescript@5.9.2)(yaml@2.8.1)
+        specifier: ^1.12.2
+        version: 1.12.2(jiti@1.21.7)(typescript@5.9.2)(yaml@2.8.1)
+      '@konomi-app/prettier-config':
+        specifier: ^1.1.2
+        version: 1.1.2
       '@types/dompurify':
         specifier: ^3.2.0
         version: 3.2.0
@@ -144,9 +147,15 @@ importers:
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
+      tailwindcss:
+        specifier: ^4.1.14
+        version: 4.1.14
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.2)(webpack@5.101.3(esbuild@0.25.10))
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -635,8 +644,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@konomi-app/k2@1.12.1':
-    resolution: {integrity: sha512-KoXwX3QbTXI6lMvcHoc9fsp4bYJb25qhbzIW6U4DqGMbhJCLQQYxkm7vbFlcMN0vlipvyEFd1PN+qvyuOXQbQg==}
+  '@konomi-app/k2@1.12.2':
+    resolution: {integrity: sha512-1mPaEm2Sjl27IekJ2r6nnFJxd2trsYuKI1ul3VT6s0yAmAN014LtoFujctFxK6uqoRZJjIqvKsjBxISxr4h/cw==}
     hasBin: true
 
   '@konomi-app/kintone-utilities-jotai@1.3.0':
@@ -647,6 +656,9 @@ packages:
 
   '@konomi-app/kintone-utilities@5.17.0':
     resolution: {integrity: sha512-caGmQ4vEMc6aLqSBzw7/3Wtpg3EIxazPRaP978w/633no6JC2jfGy8P8rl9GEWT7G7Cvx8Pmn+lZiTa2IrH0Jg==}
+
+  '@konomi-app/prettier-config@1.1.2':
+    resolution: {integrity: sha512-iVLA2EsavD2QU2+z6VNHh1/3R8UgqP8e7tP1EiDlk8SL51kpV3z0x2+p4oLInMME7cvLpalB03ZKIrE12R8HNg==}
 
   '@konomi-app/ui-react@2.0.0':
     resolution: {integrity: sha512-/eQjs1/M0v7+dcCveSYspoHWiX1L62inGg/NRuuqNr23AlTk7VEUFfTx5ZwLBddNSETwyrplt+Ey/43kGShUFg==}
@@ -3991,6 +4003,9 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
+  tailwindcss@4.1.14:
+    resolution: {integrity: sha512-b7pCxjGO98LnxVkKjaZSDeNuljC4ueKUddjENJOADtubtdo8llTaJy7HwBMeLNSSo2N5QIAgklslK1+Ir8r6CA==}
+
   tapable@2.2.3:
     resolution: {integrity: sha512-ZL6DDuAlRlLGghwcfmSn9sK3Hr6ArtyudlSAiCqQ6IfE+b+HHbydbYDIG15IfS5do+7XQQBdBiubF/cV2dnDzg==}
     engines: {node: '>=6'}
@@ -4107,6 +4122,9 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  tw-animate-css@1.4.0:
+    resolution: {integrity: sha512-7bziOlRqH0hJx80h/3mbicLW7o8qLsH5+RaLR2t+OHM3D0JlWGODQKQ4cxbK7WlvmUxpcj6Kgu6EKqjrGFe3QQ==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -4825,7 +4843,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@konomi-app/k2@1.12.1(jiti@1.21.7)(typescript@5.9.2)(yaml@2.8.1)':
+  '@konomi-app/k2@1.12.2(jiti@1.21.7)(typescript@5.9.2)(yaml@2.8.1)':
     dependencies:
       '@eslint/js': 9.36.0
       '@kintone/plugin-packer': 8.2.1
@@ -4934,6 +4952,8 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
+
+  '@konomi-app/prettier-config@1.1.2': {}
 
   '@konomi-app/ui-react@2.0.0(@types/react@19.1.15)':
     dependencies:
@@ -8406,6 +8426,8 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
+  tailwindcss@4.1.14: {}
+
   tapable@2.2.3: {}
 
   tar-stream@3.1.7:
@@ -8539,6 +8561,8 @@ snapshots:
       - supports-color
       - tsx
       - yaml
+
+  tw-animate-css@1.4.0: {}
 
   type-check@0.4.0:
     dependencies:
