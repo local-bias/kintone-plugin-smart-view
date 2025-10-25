@@ -61,16 +61,77 @@ const Placeholder: FC = () => {
   );
 };
 
-const FieldSelect: FC<{
+type FieldCodeSelectProps = {
+  index: number;
+  value: PluginViewField;
+};
+
+function FieldCodeSelect({ index, value }: FieldCodeSelectProps) {
+  const fields = useAtomValue(selectableViewFieldsAtom);
+  const onFieldChange = useSetAtom(handleViewFieldChangeAtom);
+  return (<Autocomplete
+    value={
+      fields.find(
+        (field) =>
+          field.code === value.fieldCode && field.joinConditionId === value.joinConditionId
+      ) ?? null
+    }
+    sx={{ width: '350px' }}
+    options={fields}
+    isOptionEqualToValue={(option, v) =>
+      option.code === v.code && option.joinConditionId === v.joinConditionId
+    }
+    getOptionLabel={(option) =>
+      `${option.appName ? `【${option.appName}】` : ''}${option.label}(${option.code})`
+    }
+    onChange={(_, field) => onFieldChange(index, field)}
+    renderOption={(props, option) => {
+      const { key, ...optionProps } = props;
+      return (
+        <Box key={key} component='li' {...optionProps}>
+          <div className='grid'>
+            {option.appName && (
+              <div className='text-xs text-blue-400'>
+                {t('common.autocomplete.options.appName', option.appName)}
+              </div>
+            )}
+            <div className='text-xs text-gray-400'>
+              {t('common.autocomplete.options.fieldCode', option.code)}
+            </div>
+            {option.label}
+          </div>
+        </Box>
+      );
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label={t('config.app.form.view-fields.fieldCode.label')}
+        slotProps={{ inputLabel: { shrink: true } }}
+        variant='outlined'
+        color='primary'
+      />
+    )}
+  />);
+}
+
+function FieldCodeSelectContainer(props: FieldCodeSelectProps) {
+  return (
+    <Suspense fallback={<Skeleton variant='rounded' width={350} height={56} />}>
+      <FieldCodeSelect {...props} />
+    </Suspense>
+  );
+}
+
+
+const FieldRow: FC<{
   value: PluginViewField;
   index: number;
   addRow: (index: number) => void;
   deleteRow: (index: number) => void;
   deletable: boolean;
 }> = ({ value, index, addRow, deleteRow, deletable }) => {
-  const fields = useAtomValue(selectableViewFieldsAtom);
   const onDialogOpen = useSetAtom(handleDialogOpenAtom(index));
-  const onFieldChange = useSetAtom(handleViewFieldChangeAtom);
   const onWidthChange = useSetAtom(handleViewFieldWidthChangeAtom);
   const {
     isDragging,
@@ -105,50 +166,7 @@ const FieldSelect: FC<{
       >
         <GripVertical className='w-5 h-5 text-gray-400' />
       </div>
-      <Autocomplete
-        value={
-          fields.find(
-            (field) =>
-              field.code === value.fieldCode && field.joinConditionId === value.joinConditionId
-          ) ?? null
-        }
-        sx={{ width: '350px' }}
-        options={fields}
-        isOptionEqualToValue={(option, v) =>
-          option.code === v.code && option.joinConditionId === v.joinConditionId
-        }
-        getOptionLabel={(option) =>
-          `${option.appName ? `【${option.appName}】` : ''}${option.label}(${option.code})`
-        }
-        onChange={(_, field) => onFieldChange(index, field)}
-        renderOption={(props, option) => {
-          const { key, ...optionProps } = props;
-          return (
-            <Box key={key} component='li' {...optionProps}>
-              <div className='grid'>
-                {option.appName && (
-                  <div className='text-xs text-blue-400'>
-                    {t('common.autocomplete.options.appName', option.appName)}
-                  </div>
-                )}
-                <div className='text-xs text-gray-400'>
-                  {t('common.autocomplete.options.fieldCode', option.code)}
-                </div>
-                {option.label}
-              </div>
-            </Box>
-          );
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={t('config.app.form.view-fields.fieldCode.label')}
-            slotProps={{ inputLabel: { shrink: true } }}
-            variant='outlined'
-            color='primary'
-          />
-        )}
-      />
+      <FieldCodeSelectContainer index={index} value={value} />
       <TextField
         label={t('config.app.form.view-fields.width.label')}
         type='number'
@@ -191,7 +209,7 @@ const Component: FC = () => {
     <>
       {selectedFields.map((value, i) => (
         <Suspense key={value.id} fallback={<Placeholder />}>
-          <FieldSelect
+          <FieldRow
             value={value}
             index={i}
             addRow={() => addItem({ index: i + 1, newItem: getNewViewField() })}
