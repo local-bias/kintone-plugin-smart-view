@@ -13,6 +13,7 @@ export const headerCellsAtom = atom<HeaderCell[]>((get) => {
     return tableColumns.map((field) => ({
       label: field.fieldCode,
       property: null,
+      isExternalAppField: false,
     }));
   }
 
