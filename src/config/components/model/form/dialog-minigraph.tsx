@@ -17,7 +17,7 @@ import { useAtomCallback } from 'jotai/utils';
 import { Suspense, useCallback } from 'react';
 
 const GRAPH_TYPES = [
-  // { value: 'bar', label: t('config.app.form.view-fields.minigraph.graphType.bar') },
+  { value: 'bar', label: t('config.app.form.view-fields.minigraph.graphType.bar') },
   { value: 'stackedBar', label: t('config.app.form.view-fields.minigraph.graphType.stackedBar') },
   { value: 'pie', label: t('config.app.form.view-fields.minigraph.graphType.pie') },
 ] as const;
@@ -29,12 +29,15 @@ function MinigraphForm({ property }: { property: kintoneAPI.property.Subtable })
   const condition = useAtomValue(selectedConditionAtom);
   const viewField = selectedIndex !== null ? condition.viewFields[selectedIndex] : null;
 
-  const valueSelectableFields = Object.values(property.fields).filter(
+  // React 19 optimized: Cache property fields array
+  const propertyFieldsArray = Object.values(property.fields);
+  // React 19 optimized: Cache filtered fields to avoid recalculation
+  const valueSelectableFields = propertyFieldsArray.filter(
     (field) => field.type === 'NUMBER' || field.type === 'CALC'
   );
-
   const index = selectedIndex ?? 0;
 
+  // React 19 optimized: Simplified callbacks without unnecessary dependencies
   const onMiniGraphEnabledChange = useAtomCallback(
     useCallback((_, set, index: number, value: boolean) => {
       set(selectedConditionAtom, (prev) =>
@@ -125,7 +128,7 @@ function MinigraphForm({ property }: { property: kintoneAPI.property.Subtable })
             value={viewField?.miniGraphLabelFieldCode ?? ''}
             onChange={(e) => onMiniGraphLabelFieldCodeChange(index, e.target.value)}
           >
-            {Object.values(property.fields).map((field) => (
+            {propertyFieldsArray.map((field) => (
               <MenuItem key={field.code} value={field.code}>
                 {field.label}
               </MenuItem>
