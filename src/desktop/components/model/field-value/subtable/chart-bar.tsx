@@ -2,7 +2,7 @@ import { ResolvedTableColumnProps } from '@/desktop/states/plugin';
 import { createChartData } from '@/lib/chart';
 import styled from '@emotion/styled';
 import { kintoneAPI } from '@konomi-app/kintone-utilities';
-import { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { SubtableChartLabels } from './chart-labels';
 import { ChartContainer } from './chart-container';
 
@@ -22,13 +22,37 @@ const Total = styled.div`
 `;
 
 const StyledBarChart = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+  gap: 4px;
   width: 100%;
-  height: 16px;
-  border-radius: calc(infinity * 1px);
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  margin-bottom: 12px;
+
+  .bar {
+    border-radius: calc(infinity * 1px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    height: 14px;
+    position: relative;
+  }
+
+  .value-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    white-space: nowrap;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    &.right {
+      left: 100%;
+      transform: translateX(8px) translateY(-50%);
+      color: rgb(156 163 175);
+      text-shadow: none;
+    }
+  }
 `;
 
 export default function BarChart(props: {
@@ -49,35 +73,31 @@ export default function BarChart(props: {
     );
   }
 
-  let ratioTotal = 0;
-  let gradients: string[] = [];
-  let labels: ReactNode[] = [];
-  chartData.data.forEach((data, i) => {
-    const { label, value, color } = data;
-    const per = (value / chartData.total) * 100;
-    gradients.push(`${color} ${ratioTotal + 0.2}%, ${color} ${ratioTotal + per}%`);
-    ratioTotal += per;
-    labels.push(
-      <div key={i}>
-        <div className='sample' style={{ backgroundColor: color }} />
-        <div>{label}</div>
-      </div>
-    );
-  });
-
   return (
-    <div className='flex'>
+    <ChartContainer>
       <StyledBarChart>
-        {chartData.data.map((c) => (
-          <div
-            key={c.label}
-            title={`${c.label}: ${c.value.toLocaleString()}`}
-            style={{ backgroundColor: c.color, flex: c.value }}
-          >
-            <SubtableChartLabels>{labels}</SubtableChartLabels>
-          </div>
-        ))}
+        {chartData.data.map((c) => {
+          const per = (c.value / chartData.max) * 100;
+          const additionalClass = per < 40 ? 'right' : '';
+          return (
+            <Fragment key={c.label}>
+              <SubtableChartLabels className='truncate justify-self-end'>
+                {c.label}
+              </SubtableChartLabels>
+              <div
+                title={`${c.label}: ${c.value.toLocaleString()}`}
+                className='bar'
+                style={{
+                  backgroundColor: c.color,
+                  width: chartData.max ? `${(c.value / chartData.max) * 100}%` : '0%',
+                }}
+              >
+                <div className={`value-label ${additionalClass}`}>{c.value.toLocaleString()}</div>
+              </div>
+            </Fragment>
+          );
+        })}
       </StyledBarChart>
-    </div>
+    </ChartContainer>
   );
 }
