@@ -1,24 +1,23 @@
-import { pluginConditionAtom, viewTypeAtom } from '@/desktop/states/plugin';
+import {
+  handleViewTypeChangeAtom,
+  pluginConditionAtom,
+  viewTypeAtom,
+} from '@/desktop/states/plugin';
+import { PluginViewType } from '@/schema/plugin-config';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { Button, ButtonGroup } from '@mui/material';
-import { useAtomValue } from 'jotai';
-import { useAtomCallback } from 'jotai/utils';
-import { FC, ReactNode, useCallback } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { FC, ReactNode } from 'react';
 
 const TYPES = [
   { value: 'table', icon: <TableRowsIcon /> },
   { value: 'card', icon: <ViewModuleIcon /> },
-] satisfies { value: Plugin.ViewType; icon: ReactNode }[];
+] satisfies { value: PluginViewType; icon: ReactNode }[];
 
 const Component: FC = () => {
   const viewType = useAtomValue(viewTypeAtom);
-
-  const onChange = useAtomCallback(
-    useCallback((get, set, value: Plugin.ViewType) => {
-      set(viewTypeAtom, value);
-    }, [])
-  );
+  const onChange = useSetAtom(handleViewTypeChangeAtom);
 
   return (
     <ButtonGroup>
