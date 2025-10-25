@@ -1,18 +1,16 @@
 import { MenuItem, TextField } from '@mui/material';
-import { useAtomValue } from 'jotai';
-import { useAtomCallback } from 'jotai/utils';
-import { ChangeEventHandler, FC, useCallback } from 'react';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { ChangeEvent, FC } from 'react';
 import { paginationChunkAtom } from '../../../states/pagination';
 import { pluginConditionAtom } from '../../../states/plugin';
 
+const handleChunkChangeAtom = atom(null, (_, set, event: ChangeEvent<HTMLInputElement>) => {
+  set(paginationChunkAtom, Number(event.target.value));
+});
+
 const Component: FC = () => {
   const paginationChunk = useAtomValue(paginationChunkAtom);
-
-  const onChunkChange: ChangeEventHandler<HTMLInputElement> = useAtomCallback(
-    useCallback((get, set, props) => {
-      set(paginationChunkAtom, Number(props.target.value));
-    }, [])
-  );
+  const onChunkChange = useSetAtom(handleChunkChangeAtom);
 
   return (
     <div>
