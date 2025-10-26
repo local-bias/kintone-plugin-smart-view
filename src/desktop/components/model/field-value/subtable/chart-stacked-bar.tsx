@@ -42,7 +42,7 @@ export default function StackedBarChart(props: {
   if (chartData.total === 0) {
     return (
       <ChartContainer>
-        <StyledStackedBarChart className='bg-gray-100 justify-center items-center text-gray-400'>
+        <StyledStackedBarChart className='rad:bg-gray-100 rad:justify-center rad:items-center rad:text-gray-400'>
           No Data
         </StyledStackedBarChart>
       </ChartContainer>

@@ -66,7 +66,7 @@ export default function BarChart(props: {
   if (chartData.total === 0) {
     return (
       <ChartContainer>
-        <StyledBarChart className='bg-gray-100 justify-center items-center text-gray-400'>
+        <StyledBarChart className='rad:bg-gray-100 rad:justify-center rad:items-center rad:text-gray-400'>
           No Data
         </StyledBarChart>
       </ChartContainer>
@@ -81,7 +81,7 @@ export default function BarChart(props: {
           const additionalClass = per < 40 ? 'right' : '';
           return (
             <Fragment key={c.label}>
-              <SubtableChartLabels className='truncate justify-self-end'>
+              <SubtableChartLabels className='rad:truncate rad:justify-self-end'>
                 {c.label}
               </SubtableChartLabels>
               <div

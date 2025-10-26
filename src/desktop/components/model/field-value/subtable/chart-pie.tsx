@@ -40,7 +40,7 @@ export default function PieChart(props: {
     return (
       <ChartContainer>
         <StyledPieChart style={{ backgroundImage: 'conic-gradient(#ddd)' }}>
-          <Total className='text-gray-400'>No Data</Total>
+          <Total className='rad:text-gray-400'>No Data</Total>
         </StyledPieChart>
       </ChartContainer>
     );
