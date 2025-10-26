@@ -677,6 +677,110 @@ const PluginConfigV11Schema = z.object({
   conditions: z.array(PluginConditionV11Schema),
 });
 
+/**
+ * バージョン12
+ *
+ * - isViewFieldsControlEnabledを追加
+ *    - 画面上で表示フィールドの追加・削除を可能にするかどうかのフラグ
+ *    - trueの場合、画面上に「表示フィールド設定」ボタンを表示し、ユーザーが表示フィールドを動的に変更できる
+ *    - trueの場合、isAllFieldsSearchEnabledと同様に全フィールドを取得
+ * - viewFieldsにmaxHeightを追加
+ *    - maxHeightはセルの最大高さ(px)。nullの場合は高さ制限なし
+ *    - 値が設定されている場合、overflow-y: autoで縦方向のスクロールバーを表示
+ * - isAllFieldsSearchEnabledを追加
+ *    - すべてのフィールドを検索対象とするかどうかのフラグ
+ *    - trueの場合、レコード取得時にすべてのフィールドを取得し、検索対象とする
+ *    - falseの場合(デフォルト)、表示フィールドとフィルターフィールドのみ取得(従来の動作)
+ */
+const PluginConditionV12Schema = z.object({
+  id: z.string(),
+  viewId: z.string(),
+  viewFields: z.array(
+    z.object({
+      id: z.string(),
+      fieldCode: z.string(),
+      width: z.number(),
+      isEditable: z.boolean(),
+      joinConditionId: z.string().nullable(),
+      displayName: z.string().nullable(),
+      nowrap: z.boolean(),
+      maxHeight: z.number().nullable(),
+      isMiniGraphEnabled: z.boolean().optional(),
+      miniGraphType: z.enum(['bar', 'stackedBar', 'pie']).optional(),
+      miniGraphValueFieldCode: z.string().optional(),
+      miniGraphLabelFieldCode: z.string().optional(),
+      isFormatConditionEnabled: z.boolean().optional(),
+      formatConditions: z.array(CellFormatConditionSchema).optional(),
+    })
+  ),
+  extractedInputs: z.array(
+    z.object({
+      type: z.union([
+        z.literal('text'),
+        z.literal('date'),
+        z.literal('month'),
+        z.literal('year'),
+        z.literal('autocomplete'),
+      ]),
+      fieldCode: z.string(),
+    })
+  ),
+  isCsvDownloadButtonHidden: z.boolean(),
+  isEditable: z.boolean(),
+  isDeletable: z.boolean(),
+  isSortable: z.boolean(),
+  paginationChunk: z.number(),
+  isPaginationChunkControlShown: z.boolean(),
+  isCaseSensitive: z.boolean(),
+  isKatakanaSensitive: z.boolean(),
+  isZenkakuEisujiSensitive: z.boolean(),
+  isHankakuKatakanaSensitive: z.boolean(),
+  isCursorAPIEnabled: z.boolean(),
+  isOpenInNewTab: z.boolean(),
+  isEditorControlEnabled: z.boolean(),
+  editors: z.array(
+    z.object({
+      type: z.union([z.literal('user'), z.literal('group'), z.literal('organization')]),
+      code: z.string(),
+    })
+  ),
+  isDeleterControlEnabled: z.boolean(),
+  deleters: z.array(
+    z.object({
+      type: z.union([z.literal('user'), z.literal('group'), z.literal('organization')]),
+      code: z.string(),
+    })
+  ),
+  isViewSortConditionEnabled: z.boolean(),
+  viewType: z.union([z.literal('table'), z.literal('card')]),
+  isViewTypeControlEnabled: z.boolean(),
+  /** 画面上で表示フィールドの追加・削除を可能にするかどうか */
+  isViewFieldsControlEnabled: z.boolean(),
+  /** すべてのフィールドを検索対象とするかどうか */
+  isAllFieldsSearchEnabled: z.boolean(),
+  /** 他アプリとの結合設定 */
+  joinConditions: z.array(
+    z.object({
+      /** 設定ID */
+      id: z.string(),
+      /** プラグインを設定しているアプリのキーとなるフィールド */
+      srcKeyFieldCode: z.string(),
+      /** 結合先アプリのアプリID */
+      dstAppId: z.string(),
+      /** 結合先アプリのスペースID */
+      dstSpaceId: z.string().nullable(),
+      /** 結合先アプリのゲストスペースかどうか */
+      isDstAppGuestSpace: z.boolean(),
+      /** 結合先アプリのキーとなるフィールド */
+      dstKeyFieldCode: z.string(),
+    })
+  ),
+});
+const PluginConfigV12Schema = z.object({
+  version: z.literal(12),
+  conditions: z.array(PluginConditionV12Schema),
+});
+
 export const AnyPluginConfigSchema = z.discriminatedUnion('version', [
   PluginConfigV1Schema,
   PluginConfigV2Schema,
@@ -689,9 +793,10 @@ export const AnyPluginConfigSchema = z.discriminatedUnion('version', [
   PluginConfigV9Schema,
   PluginConfigV10Schema,
   PluginConfigV11Schema,
+  PluginConfigV12Schema,
 ]);
 
-const LatestPluginConfigSchema = PluginConfigV11Schema;
+const LatestPluginConfigSchema = PluginConfigV12Schema;
 
 export const LatestPluginConditionSchema = LatestPluginConfigSchema.shape.conditions.element;
 
