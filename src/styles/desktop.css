@@ -1,0 +1,48 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme) prefix(rad);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import 'tw-animate-css';
+
+@import './theme.css';
+
+/** preflight */
+@layer base {
+  :where(.🐸) {
+    color: var(--🐸foreground);
+  }
+
+  :where(.🐸) :where(*) {
+    border-color: var(--🐸border);
+    outline-color: var(--🐸ring);
+  }
+
+  :where(.🐸) :where(*, :after, :before, ::backdrop) {
+    box-sizing: border-box;
+    border: 0 solid;
+    margin: 0;
+    padding: 0;
+  }
+
+  :where(.🐸) :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  :where(.🐸) :where(ol, ul, menu) {
+    list-style: none;
+  }
+
+  .MuiAutocomplete-popper[role='presentation'],
+  .MuiPaper-root,
+  .MuiDialogContent-root {
+    ::-webkit-scrollbar {
+      @apply rad:w-1 rad:h-1 rad:md:w-2 rad:md:h-2;
+    }
+    ::-webkit-scrollbar-thumb {
+      @apply rad:rounded-full rad:bg-foreground/30;
+    }
+    ::-webkit-scrollbar-track {
+      @apply rad:bg-transparent;
+    }
+  }
+}
