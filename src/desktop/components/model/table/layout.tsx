@@ -1,8 +1,9 @@
-import { PluginCondition } from '@/schema/plugin-config';
+import { PluginCondition, PluginViewField } from '@/schema/plugin-config';
 import styled from '@emotion/styled';
 
 export const MyTable = styled.table<{
   condition: PluginCondition | null;
+  viewFields?: PluginViewField[];
   isDetailCellHidden?: boolean;
 }>`
   background-color: #fff;
@@ -10,10 +11,12 @@ export const MyTable = styled.table<{
   line-height: 30px;
 
   display: grid;
-  grid-template-columns: ${({ isDetailCellHidden = false }) =>
-      isDetailCellHidden ? '' : 'auto'} ${({ condition }) => {
-      const viewFields = condition?.viewFields ?? [];
-      return viewFields
+  grid-template-columns: ${({ isDetailCellHidden = false }) => (isDetailCellHidden ? '' : 'auto')} ${({
+      viewFields,
+      condition,
+    }) => {
+      const fields = viewFields ?? condition?.viewFields ?? [];
+      return fields
         .map(({ width }) => {
           if (width === 0) {
             return '1fr';
@@ -35,15 +38,29 @@ export const MyTable = styled.table<{
   td {
     display: block;
     border-right: 1px solid #0002;
+    min-height: 100%;
 
-    ${({ condition }) => {
-      const viewFields = condition?.viewFields ?? [];
-      return viewFields
-        .map(({ nowrap }, i) => {
-          if (!nowrap) {
+    ${({ viewFields, condition }) => {
+      const fields = viewFields ?? condition?.viewFields ?? [];
+      return fields
+        .map(({ nowrap, maxHeight }, i) => {
+          const styles: string[] = [];
+
+          if (nowrap) {
+            styles.push('white-space: nowrap;');
+            styles.push('overflow: auto;');
+          }
+
+          if (maxHeight !== null && maxHeight > 0) {
+            styles.push(`max-height: ${Math.max(maxHeight, 46)}px;`);
+            styles.push('overflow-y: auto;');
+          }
+
+          if (styles.length === 0) {
             return '';
           }
-          return `&:nth-of-type(${i + 2}) {white-space: nowrap;overflow: auto;}`;
+
+          return `&:nth-of-type(${i + 2}) {${styles.join('')}}`;
         })
         .filter((v) => v)
         .join('\n');
