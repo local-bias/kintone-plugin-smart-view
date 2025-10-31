@@ -10,6 +10,7 @@ import { atomFamily } from 'jotai/utils';
 import { ChangeEvent } from 'react';
 import { currentAppFieldPropertiesAtom, currentAppIdAtom } from './kintone';
 import { paginationIndexAtom } from './pagination';
+import { visibleFieldsAtom } from './visible-fields';
 
 /**
  * プラグインの設定情報から、画面表示に必要な情報を補完したテーブルのカラム情報
@@ -37,7 +38,12 @@ export const resolvedTableColumnsAtom = atom<ResolvedTableColumnProps[]>((get) =
   if (!condition) {
     return [];
   }
-  const tableColumns = condition.viewFields.map((field) => {
+
+  const viewFields: PluginViewField[] = condition.isViewFieldsControlEnabled
+    ? get(visibleFieldsAtom)
+    : condition.viewFields;
+
+  const tableColumns = viewFields.map((field) => {
     return { ...field, appId: String(get(currentAppIdAtom)) };
   });
   return tableColumns;
