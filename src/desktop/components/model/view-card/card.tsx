@@ -25,7 +25,7 @@ const Component: FCX<Props> = ({ className, record }) => {
   const imageFieldCode = useAtomValue(cardImageFieldCodeAtom);
   const viewFields = useAtomValue(cardViewFieldsAtom) ?? [];
 
-  const files = imageFieldCode ? ((record.record[imageFieldCode]?.value as FileInfo[]) ?? []) : [];
+  const files = imageFieldCode ? (record.record[imageFieldCode]?.value as FileInfo[]) ?? [] : [];
 
   let image: FileInfo | null = null;
 
@@ -56,7 +56,7 @@ const Component: FCX<Props> = ({ className, record }) => {
           >
             <Tooltip title='レコード詳細'>
               <IconButton>
-                <DocumentIcon className='w-5 h-5' />
+                <DocumentIcon className='rad:w-5 rad:h-5' />
               </IconButton>
             </Tooltip>
           </a>
