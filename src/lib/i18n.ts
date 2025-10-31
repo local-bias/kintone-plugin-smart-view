@@ -104,6 +104,10 @@ export const ui = {
     'config.app.form.view-fields.nowrap.description':
       'フィールドの幅を設定している場合にのみ有効になります。スイッチをオフにした場合、既定の幅に収まらないテキストは折り返されます。スイッチをオンにした場合、テキストは折り返されず、既定の幅に収まらない場合はスクロールバーが表示されます。',
     'config.app.form.view-fields.nowrap.label': 'セル内のテキストを折り返さない',
+    'config.app.form.view-fields.maxHeight.title': 'セルの高さ制限',
+    'config.app.form.view-fields.maxHeight.description':
+      'セルの最大高さを設定します。値を設定した場合、フィールドの値が複数行でもセルの高さは固定され、縦方向のスクロールバーが表示されます。空欄の場合や、指定した値よりも大きいセルが存在する場合、セルの高さは自動的に拡張されます。1行分の高さを下回ることはありません。高さの目安: (行数 x 30) + 16 ピクセル',
+    'config.app.form.view-fields.maxHeight.label': '最大高さ（ピクセル）',
     'config.app.form.view-fields.minigraph.title': 'ミニグラフ',
     'config.app.form.view-fields.minigraph.description':
       'サブテーブルをテーブルとしてではなく、簡易的なグラフとして表示します。',
@@ -192,6 +196,15 @@ export const ui = {
       '絞り込みの際、半角カナと全角カナを区別する',
     'config.app.form.isZenkakuEisujiSensitive.label':
       '絞り込みの際、全角英数字と半角英数字を区別する',
+    'config.app.form.searchSettings.title': '検索設定',
+    'config.app.form.isAllFieldsSearchEnabled.label': 'すべてのフィールドを検索対象にする',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      'このオプションを有効にすると、表示フィールドとして設定されていないフィールドも検索対象に含まれます。多くのフィールドを持つアプリでは、パフォーマンスが低下する可能性があります。',
+    'config.app.form.isViewFieldsControlEnabled.title': '表示フィールドの画面上での制御',
+    'config.app.form.isViewFieldsControlEnabled.label':
+      '画面上で表示フィールドの追加・削除を可能にする',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      'このオプションを有効にすると、一覧画面に「表示フィールド設定」ボタンが表示され、ユーザーが表示するフィールドを動的に変更できるようになります。変更は一時的なもので、ページをリロードすると元に戻ります。他のユーザーには影響しません。フィールド数の多いアプリでは、パフォーマンスが低下する可能性があります。',
     'config.app.form.pageTransition.title': 'ページ遷移の設定',
     'config.app.form.isOpenInNewTab.label': 'レコードの詳細画面を新しいタブで開く',
     'config.app.form.joinConditions.title': 'JOIN - 他アプリのレコードを参照・更新する',
@@ -224,6 +237,19 @@ export const ui = {
       '設定情報のインポートに失敗しました、ファイルに誤りがないか確認してください',
     'config.error.export':
       'プラグインの設定情報のエクスポートに失敗しました。プラグイン開発者にお問い合わせください。',
+    'config.error.migration.title': '設定情報の読み込みエラー',
+    'config.error.migration.description':
+      '保存されているプラグイン設定情報の読み込み中にエラーが発生しました。設定が破損しているか、古いバージョンからの移行に失敗した可能性があります。',
+    'config.error.migration.errorDetails': 'エラー詳細',
+    'config.error.migration.recoverySteps': 'この問題を解決するには、以下の手順を実行してください:',
+    'config.error.migration.step1': '「設定をリセット」ボタンをクリックして、設定を初期状態に戻す',
+    'config.error.migration.step2': '必要な設定を再度行う',
+    'config.error.migration.step3': '「保存」ボタンをクリックして設定を保存する',
+    'config.error.migration.resetButton': '設定をリセット',
+    'config.error.migration.resetSuccess':
+      '設定をリセットしました。必要な設定を行い、保存してください。',
+    'config.error.migration.resetFailed':
+      '設定のリセットに失敗しました。ページをリロードして再度お試しください。',
 
     'desktop.app.empty.title': '条件に一致するレコードが見つかりませんでした。',
     'desktop.app.empty.description.1':
@@ -359,6 +385,10 @@ export const ui = {
     'config.app.form.view-fields.nowrap.description':
       'This is only effective if the width of the field is set. If the switch is turned off, text that does not fit within the default width will wrap. If the switch is turned on, the text will not wrap, and a scrollbar will be displayed if the text does not fit within the default width.',
     'config.app.form.view-fields.nowrap.label': 'Do not wrap text in cell',
+    'config.app.form.view-fields.maxHeight.title': 'Cell height limit',
+    'config.app.form.view-fields.maxHeight.description':
+      'Set the maximum height of the cell. If a value is set, the cell height remains fixed even for multi-line field values, and a vertical scrollbar is displayed. If left blank, the cell height expands automatically.',
+    'config.app.form.view-fields.maxHeight.label': 'Maximum height (pixels)',
     'config.app.form.view-type.title': 'Display type settings',
     'config.app.form.view-type.description.1':
       'Set how to display the records. If you select the card type, the first attachment field among the displayed fields will be referenced for the image.',
@@ -439,6 +469,14 @@ export const ui = {
       'Distinguish between half-width and full-width Katakana when filtering',
     'config.app.form.isZenkakuEisujiSensitive.label':
       'Distinguish between full-width and half-width alphanumeric characters when filtering',
+    'config.app.form.searchSettings.title': 'Search settings',
+    'config.app.form.isAllFieldsSearchEnabled.label': 'Search all fields',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      'When enabled, fields not configured as display fields will also be included in the search. For apps with many fields, this may reduce performance.',
+    'config.app.form.isViewFieldsControlEnabled.label':
+      'Enable adding/removing display fields on screen',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      'When enabled, a "Field Settings" button will be displayed on the list screen, allowing users to dynamically change which fields are displayed. Enabling this option will fetch all fields.',
     'config.app.form.pageTransition.title': 'Page transition settings',
     'config.app.form.isOpenInNewTab.label': 'Open record detail screen in a new tab',
     'config.app.form.joinConditions.title': 'JOIN - Reference and update records from other apps',
@@ -473,6 +511,19 @@ export const ui = {
       'Failed to import settings information, please check the file for errors',
     'config.error.export':
       'Failed to export plugin settings information. Please contact the plugin developer.',
+    'config.error.migration.title': 'Configuration Load Error',
+    'config.error.migration.description':
+      'An error occurred while loading the saved plugin configuration. The settings may be corrupted or the migration from an older version may have failed.',
+    'config.error.migration.errorDetails': 'Error Details',
+    'config.error.migration.recoverySteps': 'To resolve this issue, follow these steps:',
+    'config.error.migration.step1':
+      'Click the "Reset Settings" button to restore settings to default',
+    'config.error.migration.step2': 'Reconfigure the necessary settings',
+    'config.error.migration.step3': 'Click the "Save" button to save the settings',
+    'config.error.migration.resetButton': 'Reset Settings',
+    'config.error.migration.resetSuccess': 'Settings have been reset. Please reconfigure and save.',
+    'config.error.migration.resetFailed':
+      'Failed to reset settings. Please reload the page and try again.',
 
     'desktop.app.empty.title': 'No records matching the conditions were found.',
     'desktop.app.empty.description.1':
@@ -612,6 +663,10 @@ export const ui = {
     'config.app.form.view-fields.nowrap.description':
       'Solo es efectivo si se ha configurado el ancho del campo. Si desactiva el interruptor, el texto que no cabe en el ancho predeterminado se ajustará. Si activa el interruptor, el texto no se ajustará y se mostrará una barra de desplazamiento si no cabe en el ancho predeterminado.',
     'config.app.form.view-fields.nowrap.label': 'No ajustar el texto dentro de la celda',
+    'config.app.form.view-fields.maxHeight.title': 'Límite de altura de celda',
+    'config.app.form.view-fields.maxHeight.description':
+      'Establezca la altura máxima de la celda. Si se establece un valor, la altura de la celda permanece fija incluso para valores de campo multilínea y se muestra una barra de desplazamiento vertical. Si se deja en blanco, la altura de la celda se expande automáticamente.',
+    'config.app.form.view-fields.maxHeight.label': 'Altura máxima (píxeles)',
     'config.app.form.view-type.title': 'Configuración del tipo de visualización',
     'config.app.form.view-type.description.1':
       'Configure cómo se mostrarán los registros. Si selecciona el tipo de tarjeta, el primer campo de archivo adjunto de los campos a mostrar se referenciará como imagen.',
@@ -692,6 +747,14 @@ export const ui = {
       'Distinguir entre katakana de ancho medio y katakana de ancho completo al filtrar',
     'config.app.form.isZenkakuEisujiSensitive.label':
       'Distinguir entre caracteres alfanuméricos de ancho completo y de ancho medio al filtrar',
+    'config.app.form.searchSettings.title': 'Configuración de búsqueda',
+    'config.app.form.isAllFieldsSearchEnabled.label': 'Buscar en todos los campos',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      'Cuando está habilitado, los campos no configurados como campos de visualización también se incluirán en la búsqueda. Para aplicaciones con muchos campos, esto puede reducir el rendimiento.',
+    'config.app.form.isViewFieldsControlEnabled.label':
+      'Permitir agregar/eliminar campos de visualización en la pantalla',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      'Cuando está habilitado, se mostrará un botón "Configuración de campos" en la pantalla de lista, permitiendo a los usuarios cambiar dinámicamente qué campos se muestran. Habilitar esta opción obtendrá todos los campos.',
     'config.app.form.pageTransition.title': 'Configuración de transición de página',
     'config.app.form.isOpenInNewTab.label':
       'Abrir la pantalla de detalles del registro en una nueva pestaña',
@@ -860,6 +923,10 @@ export const ui = {
     'config.app.form.view-fields.nowrap.description':
       '仅在设置了字段宽度时有效。如果关闭开关，文本将会换行显示。如果打开开关，文本将不会换行，超出宽度时将显示滚动条。',
     'config.app.form.view-fields.nowrap.label': '不换行显示单元格内的文本',
+    'config.app.form.view-fields.maxHeight.title': '单元格高度限制',
+    'config.app.form.view-fields.maxHeight.description':
+      '设置单元格的最大高度。如果设置了值，即使字段值为多行，单元格高度也保持固定，并显示垂直滚动条。如果留空，单元格高度会自动扩展。',
+    'config.app.form.view-fields.maxHeight.label': '最大高度（像素）',
     'config.app.form.view-type.title': '显示类型设置',
     'config.app.form.view-type.description.1':
       '设置记录的显示形式。如果选择卡片类型，将从显示字段中引用第一个附件字段作为图片。',
@@ -935,6 +1002,13 @@ export const ui = {
     'config.app.form.isKatakanaSensitive.label': '筛选时区分片假名和平假名',
     'config.app.form.isHankakuKatakanaSensitive.label': '筛选时区分半角片假名和全角片假名',
     'config.app.form.isZenkakuEisujiSensitive.label': '筛选时区分全角英数字和半角英数字',
+    'config.app.form.searchSettings.title': '搜索设置',
+    'config.app.form.isAllFieldsSearchEnabled.label': '搜索所有字段',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      '启用后，未配置为显示字段的字段也将包含在搜索中。对于具有许多字段的应用程序，这可能会降低性能。',
+    'config.app.form.isViewFieldsControlEnabled.label': '允许在屏幕上添加/删除显示字段',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      '启用后，列表屏幕上将显示"字段设置"按钮，允许用户动态更改显示的字段。启用此选项将获取所有字段。',
     'config.app.form.pageTransition.title': '页面跳转设置',
     'config.app.form.isOpenInNewTab.label': '在新标签页中打开记录详细页面',
     'config.app.form.joinConditions.title': 'JOIN - 与其他应用的连接条件设置',
@@ -964,6 +1038,17 @@ export const ui = {
     'config.toast.export': '已导出插件设置信息',
     'config.error.import': '导入设置信息失败，请检查文件是否有误',
     'config.error.export': '导出插件设置信息失败。请联系插件开发者。',
+    'config.error.migration.title': '配置加载错误',
+    'config.error.migration.description':
+      '加载已保存的插件配置时发生错误。设置可能已损坏，或者从旧版本的迁移可能失败。',
+    'config.error.migration.errorDetails': '错误详情',
+    'config.error.migration.recoverySteps': '要解决此问题，请执行以下步骤：',
+    'config.error.migration.step1': '点击"重置设置"按钮将设置恢复为默认值',
+    'config.error.migration.step2': '重新配置必要的设置',
+    'config.error.migration.step3': '点击"保存"按钮保存设置',
+    'config.error.migration.resetButton': '重置设置',
+    'config.error.migration.resetSuccess': '设置已重置。请重新配置并保存。',
+    'config.error.migration.resetFailed': '重置设置失败。请重新加载页面后重试。',
 
     'desktop.app.empty.title': '未找到符合条件的记录。',
     'desktop.app.empty.description.1': '除了输入的搜索条件，还应用了列表的筛选条件。',
@@ -1086,6 +1171,10 @@ export const ui = {
     'config.app.form.view-fields.nowrap.description':
       '僅在設置了字段寬度時有效。如果關閉開關，超出標準寬度的文本將換行。如果打開開關，文本將不換行，超出標準寬度時將顯示滾動條。',
     'config.app.form.view-fields.nowrap.label': '不換行顯示單元格內的文本',
+    'config.app.form.view-fields.maxHeight.title': '單元格高度限制',
+    'config.app.form.view-fields.maxHeight.description':
+      '設置單元格的最大高度。如果設置了值，即使字段值為多行，單元格高度也保持固定，並顯示垂直滾動條。如果留空，單元格高度會自動擴展。',
+    'config.app.form.view-fields.maxHeight.label': '最大高度（像素）',
     'config.app.form.view-type.title': '顯示類型設置',
     'config.app.form.view-type.description.1':
       '設置如何顯示記錄。如果選擇卡片類型，將從顯示字段中參考第一個附件字段作為圖像。',
@@ -1161,6 +1250,13 @@ export const ui = {
     'config.app.form.isKatakanaSensitive.label': '篩選時區分片假名和平假名',
     'config.app.form.isHankakuKatakanaSensitive.label': '篩選時區分半角片假名和全角片假名',
     'config.app.form.isZenkakuEisujiSensitive.label': '篩選時區分全角英數字和半角英數字',
+    'config.app.form.searchSettings.title': '搜索設置',
+    'config.app.form.isAllFieldsSearchEnabled.label': '搜索所有字段',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      '啟用後，未配置為顯示字段的字段也將包含在搜索中。對於具有許多字段的應用程式，這可能會降低性能。',
+    'config.app.form.isViewFieldsControlEnabled.label': '允許在螢幕上添加/刪除顯示字段',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      '啟用後，列表螢幕上將顯示「字段設置」按鈕，允許使用者動態更改顯示的字段。啟用此選項將獲取所有字段。',
     'config.app.form.pageTransition.title': '頁面跳轉設置',
     'config.app.form.isOpenInNewTab.label': '在新標籤頁中打開記錄詳細畫面',
     'config.app.form.joinConditions.title': 'JOIN - 與其他應用的結合條件設置',
@@ -1190,6 +1286,17 @@ export const ui = {
     'config.toast.export': '已導出插件設置信息',
     'config.error.import': '導入設置信息失敗，請檢查文件是否有誤',
     'config.error.export': '導出插件設置信息失敗。請聯繫插件開發者。',
+    'config.error.migration.title': '配置加載錯誤',
+    'config.error.migration.description':
+      '加載已保存的插件配置時發生錯誤。設置可能已損壞，或者從舊版本的遷移可能失敗。',
+    'config.error.migration.errorDetails': '錯誤詳情',
+    'config.error.migration.recoverySteps': '要解決此問題，請執行以下步驟：',
+    'config.error.migration.step1': '點擊"重置設置"按鈕將設置恢復為默認值',
+    'config.error.migration.step2': '重新配置必要的設置',
+    'config.error.migration.step3': '點擊"保存"按鈕保存設置',
+    'config.error.migration.resetButton': '重置設置',
+    'config.error.migration.resetSuccess': '設置已重置。請重新配置並保存。',
+    'config.error.migration.resetFailed': '重置設置失敗。請重新加載頁面後重試。',
 
     'desktop.app.empty.title': '未找到符合條件的記錄。',
     'desktop.app.empty.description.1': '除了輸入的搜索條件外，還應用了列表的篩選條件。',
@@ -1317,6 +1424,10 @@ export const ui = {
     'config.app.form.view-fields.nowrap.description':
       'Só é efetivo se a largura do campo estiver definida. Se o interruptor estiver desligado, o texto que não couber na largura padrão será quebrado. Se o interruptor estiver ligado, o texto não será quebrado e uma barra de rolagem será exibida se não couber na largura padrão.',
     'config.app.form.view-fields.nowrap.label': 'Não quebrar texto na célula',
+    'config.app.form.view-fields.maxHeight.title': 'Limite de altura da célula',
+    'config.app.form.view-fields.maxHeight.description':
+      'Defina a altura máxima da célula. Se um valor for definido, a altura da célula permanece fixa mesmo para valores de campo multilinha e uma barra de rolagem vertical é exibida. Se deixado em branco, a altura da célula se expande automaticamente.',
+    'config.app.form.view-fields.maxHeight.label': 'Altura máxima (pixels)',
     'config.app.form.view-type.title': 'Configurações do tipo de exibição',
     'config.app.form.view-type.description.1':
       'Configure como os registros serão exibidos. Se você selecionar o tipo de cartão, o primeiro campo de anexo entre os campos exibidos será referenciado para imagem.',
@@ -1395,6 +1506,14 @@ export const ui = {
       'Distinguir entre Katakana de meia largura e largura completa ao filtrar',
     'config.app.form.isZenkakuEisujiSensitive.label':
       'Distinguir entre caracteres alfanuméricos de largura completa e meia largura ao filtrar',
+    'config.app.form.searchSettings.title': 'Configurações de pesquisa',
+    'config.app.form.isAllFieldsSearchEnabled.label': 'Pesquisar em todos os campos',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      'Quando ativado, os campos não configurados como campos de exibição também serão incluídos na pesquisa. Para apps com muitos campos, isso pode reduzir o desempenho.',
+    'config.app.form.isViewFieldsControlEnabled.label':
+      'Permitir adicionar/remover campos de exibição na tela',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      'Quando ativado, um botão "Configurações de campos" será exibido na tela de lista, permitindo aos usuários alterar dinamicamente quais campos são exibidos. Ativar esta opção irá buscar todos os campos.',
     'config.app.form.pageTransition.title': 'Configurações de transição de página',
     'config.app.form.isOpenInNewTab.label': 'Abrir tela de detalhes do registro em nova aba',
     'config.app.form.joinConditions.title':
@@ -1640,6 +1759,13 @@ export const ui = {
       'แยกคาตาคานะครึ่งความกว้างและเต็มความกว้างเมื่อกรอง',
     'config.app.form.isZenkakuEisujiSensitive.label':
       'แยกตัวอักษรและตัวเลขเต็มความกว้างและครึ่งความกว้างเมื่อกรอง',
+    'config.app.form.searchSettings.title': 'การตั้งค่าการค้นหา',
+    'config.app.form.isAllFieldsSearchEnabled.label': 'ค้นหาทุกฟิลด์',
+    'config.app.form.isAllFieldsSearchEnabled.description':
+      'เมื่อเปิดใช้งาน ฟิลด์ที่ไม่ได้กำหนดค่าเป็นฟิลด์การแสดงผลจะรวมอยู่ในการค้นหาด้วย สำหรับแอปที่มีฟิลด์จำนวนมาก อาจลดประสิทธิภาพการทำงาน',
+    'config.app.form.isViewFieldsControlEnabled.label': 'อนุญาตให้เพิ่ม/ลบฟิลด์การแสดงผลบนหน้าจอ',
+    'config.app.form.isViewFieldsControlEnabled.description':
+      'เมื่อเปิดใช้งาน ปุ่ม "การตั้งค่าฟิลด์" จะแสดงบนหน้าจอรายการ ทำให้ผู้ใช้สามารถเปลี่ยนฟิลด์ที่แสดงได้แบบไดนามิก การเปิดใช้งานตัวเลือกนี้จะดึงข้อมูลฟิลด์ทั้งหมด',
     'config.app.form.pageTransition.title': 'การตั้งค่าการเปลี่ยนหน้า',
     'config.app.form.isOpenInNewTab.label': 'เปิดหน้าจอรายละเอียดเรคคอร์ดในแท็บใหม่',
     'config.app.form.joinConditions.title': 'JOIN - อ้างอิงและอัปเดตเรคคอร์ดจากแอปอื่น',
