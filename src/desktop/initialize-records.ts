@@ -26,14 +26,19 @@ export const initializeRecords = async (condition: PluginCondition) => {
       isKatakanaSensitive,
       isHankakuKatakanaSensitive,
       isZenkakuEisujiSensitive,
+      isAllFieldsSearchEnabled = false,
+      isViewFieldsControlEnabled = false,
     } = condition;
 
     const query = (getQuery() || '').replace(/limit [0-9]+/g, '').replace(/offset [0-9]+/g, '');
 
+    // isAllFieldsSearchEnabledまたはisViewFieldsControlEnabledがtrueの場合、fieldsパラメータを指定しない（すべてのフィールドを取得）
+    // falseの場合、表示フィールドと結合キーフィールドのみを取得
     const targetFields = viewFields
       .filter(({ fieldCode }) => !!fieldCode)
       .map(({ fieldCode }) => fieldCode);
-    const fields = ['$id', ...targetFields];
+    const fields =
+      isAllFieldsSearchEnabled || isViewFieldsControlEnabled ? undefined : ['$id', ...targetFields];
 
     const getTableRow = (record: kintoneAPI.RecordData): TableRow => {
       const __quickSearch = getYuruChara(getQuickSearchString(record), {
