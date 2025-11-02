@@ -5,7 +5,15 @@ import { atom, SetStateAction } from 'jotai';
 import { atomWithDefault } from 'jotai/utils';
 import { ViewFieldProperty } from './app-fields';
 
-export const pluginConfigAtom = atom<PluginConfig>(restorePluginConfig());
+const { config: initialConfig, error: configError } = restorePluginConfig();
+
+export const pluginConfigAtom = atom<PluginConfig>(initialConfig);
+
+/**
+ * プラグイン設定の読み込み時に発生したエラーを保持するatom
+ * エラーがない場合はnull
+ */
+export const configErrorAtom = atom<Error | null>(configError ?? null);
 
 export const pluginConditionsAtom = atom(
   (get) => get(pluginConfigAtom).conditions,
