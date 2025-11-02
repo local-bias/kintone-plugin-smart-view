@@ -27,7 +27,7 @@ const TableBodyRow = (props: { tableRow: TableRow; }) => {
       </td>
       {columns.map((column) => {
         const { id, fieldCode, width, appId } = column;
-        const field = record?.[fieldCode];
+        const field = tableRow.record?.[fieldCode];
         if (!field) {
           return <td key={id}>{!isProd ? '⚠' : ''}</td>;
         }
