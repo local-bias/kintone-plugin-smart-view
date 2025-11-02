@@ -24,7 +24,7 @@ const Container: FC = () => {
   const importConfig = useSetAtom(importPluginConfigAtom);
 
   return (
-    <PluginFooter className='[&_button]:m-2'>
+    <PluginFooter className='[&_button]:m-2!'>
       <div>
         <Button
           variant='contained'
