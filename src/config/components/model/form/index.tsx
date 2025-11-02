@@ -45,6 +45,19 @@ const Component: FC = () => {
           <ImportingViewFields />
         </div>
         <ViewDisplayingFieldsForm />
+
+        <div className='mt-8'>
+          <h3 className='text-base font-bold!'>
+            {t('config.app.form.isViewFieldsControlEnabled.title')}
+          </h3>
+          <PluginFormDescription last className='pt-4'>
+            {t('config.app.form.isViewFieldsControlEnabled.description')}
+          </PluginFormDescription>
+          <JotaiSwitch
+            atom={getConditionPropertyAtom('isViewFieldsControlEnabled')}
+            label={t('config.app.form.isViewFieldsControlEnabled.label')}
+          />
+        </div>
       </PluginFormSection>
 
       <PluginFormSection>
@@ -186,6 +199,19 @@ const Component: FC = () => {
                 label={t('config.app.form.isZenkakuEisujiSensitive.label')}
               />
             </div>
+          </PluginFormSection>
+        </div>
+
+        <div className='px-4 py-2 ml-4 mt-2 border-l'>
+          <PluginFormSection>
+            <h3 className='text-base font-bold'>{t('config.app.form.searchSettings.title')}</h3>
+            <PluginFormDescription last>
+              {t('config.app.form.isAllFieldsSearchEnabled.description')}
+            </PluginFormDescription>
+            <JotaiSwitch
+              atom={getConditionPropertyAtom('isAllFieldsSearchEnabled')}
+              label={t('config.app.form.isAllFieldsSearchEnabled.label')}
+            />
           </PluginFormSection>
         </div>
 
