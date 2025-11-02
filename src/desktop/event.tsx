@@ -21,7 +21,7 @@ import { getQuery, getSortFromQuery } from '@konomi-app/kintone-utilities';
 let cachedRoot: Root | null = null;
 
 listener.add(['app.record.index.show'], async (event) => {
-  const config = restorePluginConfig();
+  const { config } = restorePluginConfig();
   const targetCondition = config.conditions.find(
     (condition) => Number(condition.viewId) === event.viewId
   );
@@ -69,7 +69,7 @@ listener.add(['app.record.index.show'], async (event) => {
   store.set(pluginConditionAtom, targetCondition);
   store.set(paginationChunkAtom, targetCondition.paginationChunk || 100);
   store.set(viewTypeAtom, targetCondition.viewType || 'table');
-  
+
   // React 19 optimized: Process extracted search conditions efficiently
   for (let index = 0; index < extractedSearchCondition.length; index++) {
     store.set(extractedSearchConditionsAtom(index), extractedSearchCondition[index]);
