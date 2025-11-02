@@ -18,12 +18,14 @@ import config from '../../plugin.config.mjs';
 import Footer from './components/model/footer';
 import Form from './components/model/form';
 import Sidebar from './components/sidebar';
+import { ConfigErrorAlert } from './components/ui/config-error-alert';
 
 const Component: FC = () => {
   return (
     <>
       <Sidebar />
       <PluginContent>
+        <ConfigErrorAlert />
         <PluginErrorBoundary>
           <Form />
         </PluginErrorBoundary>
@@ -35,8 +37,8 @@ const Component: FC = () => {
 };
 
 const Container: FC = () => (
-  <Provider store={store}>
-    <Suspense fallback={<LoaderWithLabel label={t('config.app.root.loading')} />}>
+  <Suspense fallback={<LoaderWithLabel label={t('config.app.root.loading')} />}>
+    <Provider store={store}>
       <ThemeProvider>
         <PluginErrorBoundary>
           <PluginConfigProvider config={config}>
@@ -51,14 +53,9 @@ const Container: FC = () => (
           </PluginConfigProvider>
         </PluginErrorBoundary>
       </ThemeProvider>
-      <iframe
-        title='promotion'
-        loading='lazy'
-        src={URL_PROMOTION}
-        className='border-0 w-full h-16'
-      />
-    </Suspense>
-  </Provider>
+    </Provider>
+    <iframe title='promotion' loading='lazy' src={URL_PROMOTION} className='border-0 w-full h-16' />
+  </Suspense>
 );
 
 export default Container;
