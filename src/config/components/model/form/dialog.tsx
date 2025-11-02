@@ -67,6 +67,17 @@ const Component: FC = () => {
     }, [])
   );
 
+  const onMaxHeightChange = useAtomCallback(
+    useCallback((_, set, index: number, value: string) => {
+      set(selectedConditionAtom, (prev) =>
+        produce(prev, (draft) => {
+          const numValue = value === '' ? null : Number(value);
+          draft.viewFields[index].maxHeight = numValue;
+        })
+      );
+    }, [])
+  );
+
   return (
     <Dialog open={open} onClose={onClose} scroll='paper'>
       <DialogTitle>
@@ -112,6 +123,19 @@ const Component: FC = () => {
               />
             }
             label={t('config.app.form.view-fields.nowrap.label')}
+          />
+        </PluginFormSection>
+        <PluginFormSection>
+          <PluginFormTitle>{t('config.app.form.view-fields.maxHeight.title')}</PluginFormTitle>
+          <PluginFormDescription last>
+            {t('config.app.form.view-fields.maxHeight.description')}
+          </PluginFormDescription>
+          <TextField
+            type='number'
+            label={t('config.app.form.view-fields.maxHeight.label')}
+            value={viewField?.maxHeight ?? ''}
+            onChange={(e) => onMaxHeightChange(index, e.target.value)}
+            inputProps={{ min: 0 }}
           />
         </PluginFormSection>
         <ViewFieldDetailDialogMinigraphForm />
