@@ -6,6 +6,7 @@ import { FC } from 'react';
 import Footer from './components/model/footer';
 import Header from './components/model/header';
 import Layout from './components/model/layout';
+import FieldSettingsDialog from './components/model/field-settings-dialog';
 import View from './components/model/view';
 import { DocumentIconSymbol } from './components/ui/document-icon';
 
@@ -17,6 +18,7 @@ const App: FC = () => {
         <View />
         <Footer />
       </Layout>
+      <FieldSettingsDialog />
     </>
   );
 };
