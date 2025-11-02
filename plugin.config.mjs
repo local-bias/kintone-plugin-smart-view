@@ -14,17 +14,10 @@ export default /** @type { const } */ ({
   lint: {
     build: false,
   },
-  tailwind: {
-    css: 'src/styles/global.css',
-    config: {
-      desktop: 'tailwind.config.desktop.mjs',
-      config: 'tailwind.config.config.mjs',
-    },
-  },
   manifest: {
     base: {
       manifest_version: 1,
-      version: '5.4.0',
+      version: '6.0.0',
       type: 'APP',
       name: {
         en: 'faster search plugin',
@@ -57,7 +50,7 @@ export default /** @type { const } */ ({
       },
       config: {
         html: 'config.html',
-        js: [`${cdn}/common/config.js`],
+        js: [`${cdn}/common/config.js`, `${cdn}/common-plus/config.js`],
         css: [`${cdn}/common/config.css`],
         required_params: [],
       },
