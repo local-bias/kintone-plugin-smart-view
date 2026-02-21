@@ -111,3 +111,6 @@ plugin/**/*.css
 plugin/manifest.json
 plugin/config.html
 .plugin/
+
+# ai
+.kiro
